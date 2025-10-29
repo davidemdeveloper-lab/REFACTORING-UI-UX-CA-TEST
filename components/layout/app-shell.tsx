@@ -1,20 +1,19 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import { Button, ButtonText } from '@/components/ui/button';
 import { Input, InputField, InputIcon, InputSlot } from '@/components/ui/input';
-import { GlassCard } from '@/components/common/glass-card';
+import { GlassCard, GlassPanel } from '@/components/common/glass-card';
 import { ThemeToggle } from '@/components/common/theme-toggle';
 import { AccentPicker } from '@/components/common/accent-picker';
 import { cn, formatDate } from '@/lib/utils';
 import { CommandCenter } from '@/components/common/command-center';
 import {
   BellRing,
-  Bot,
   CalendarClock,
   FilePenLine,
   GaugeCircle,
@@ -98,9 +97,11 @@ const NAVIGATION = [
 
 export default function AppShell({ children }: AppShellProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const [isCommandOpen, setCommandOpen] = useState(false);
   const [commandQuery, setCommandQuery] = useState('');
   const searchFieldRef = useRef<any>(null);
+  const chatNotifications = 3;
 
   const closeCommand = useCallback(() => {
     setCommandOpen(false);
@@ -139,6 +140,14 @@ export default function AppShell({ children }: AppShellProps) {
   const handleSearchTrigger = useCallback(() => {
     openCommand();
   }, [openCommand]);
+
+  const handleOpenReservations = useCallback(() => {
+    router.push('/reservations');
+  }, [router]);
+
+  const handleOpenChat = useCallback(() => {
+    router.push('/chat');
+  }, [router]);
 
   return (
     <Box className="flex flex-row min-h-screen w-full bg-transparent text-typography-0">
@@ -214,64 +223,137 @@ export default function AppShell({ children }: AppShellProps) {
         </Box>
       </aside>
       <Box className="flex min-h-screen flex-1 flex-col">
-        <Box className="border-b border-white/10 bg-black/20 px-4 py-4 backdrop-blur-xl md:px-8">
-          <Box className="mx-auto flex w-full max-w-[var(--page-max-width)] flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <Box className="flex flex-1 items-center gap-3">
-              <Input
-                className="flex-1 rounded-2xl border border-white/10 bg-background-0/40"
-                size="lg"
-                accessibilityLabel="Cerca"
-              >
-                <InputSlot>
-                  <InputIcon as={Search} color="rgb(var(--color-typography-400))" size={18} />
-                </InputSlot>
-                <InputField
-                  ref={searchFieldRef}
-                  editable={false}
-                  caretHidden
-                  onFocus={handleSearchTrigger}
-                  onPressIn={handleSearchTrigger}
-                  placeholder="Cerca clienti, prenotazioni, automazioni..."
-                  placeholderTextColor="rgba(226,231,245,0.6)"
-                />
-                <InputSlot className="hidden items-center pr-2 md:flex">
-                  <Box className="rounded-xl border border-white/15 bg-background-0/40 px-2 py-1">
-                    <Text className="text-[11px] font-semibold uppercase tracking-[0.3em] text-typography-300">⌘K</Text>
-                  </Box>
-                </InputSlot>
-              </Input>
+        <Box className="border-b border-white/10 bg-black/20 px-4 py-2 backdrop-blur-xl md:px-8 md:py-2">
+          <Box className="mx-auto flex w-full max-w-[var(--page-max-width)] flex-col gap-2 md:grid md:grid-cols-[minmax(0,1fr)_200px] md:items-center md:gap-3">
+            <GlassPanel
+              padding="px-4 py-2"
+              className="flex flex-row flex-nowrap items-center gap-3 overflow-x-auto border-white/10 bg-black/30"
+            >
+              <Box className="flex flex-row flex-none items-center gap-2">
+                <Text className="text-[10px] font-semibold uppercase tracking-[0.35em] text-typography-300">
+                  Command Center
+                </Text>
+                <Box className="hidden items-center gap-1 rounded-full border border-white/15 bg-white/5 px-2 py-0.5 md:flex">
+                  <Text className="text-[9px] font-semibold uppercase tracking-[0.3em] text-typography-200">
+                    ⌘
+                  </Text>
+                  <Text className="text-[9px] font-semibold uppercase tracking-[0.3em] text-typography-200">
+                    K
+                  </Text>
+                </Box>
+              </Box>
               <Button
-                size="sm"
+                size="xs"
                 variant="outline"
                 action="secondary"
-                className="hidden items-center gap-2 rounded-2xl border border-white/10 bg-background-0/40 px-4 py-3 md:flex"
-                onPress={() => openCommand('AI suggerimenti personali')}
+                className="flex flex-none items-center gap-1 rounded-full border-white/20 bg-white/5 px-3 py-1 text-left whitespace-nowrap"
+                onPress={handleOpenReservations}
               >
-                <Bot color="rgb(var(--color-primary-500))" size={18} />
-                <ButtonText className="text-sm font-semibold text-typography-0">
-                  Prompt veloce
+                <CalendarClock color="rgb(var(--color-primary-500))" size={14} />
+                <ButtonText className="text-[11px] font-semibold text-typography-0">
+                  Prenotazioni
                 </ButtonText>
               </Button>
-            </Box>
-            <Box className="flex items-center gap-4">
-              <GlassCard padding="px-4 py-3" className="hidden items-center gap-3 md:flex">
-                <Box className="rounded-xl bg-primary-500/20 p-2">
-                  <Sparkles color="rgb(var(--color-primary-500))" size={18} />
+              <Box className="flex min-w-[240px] flex-1 flex-row">
+                <Input
+                  variant="rounded"
+                  size="sm"
+                  className="w-full rounded-full border-white/15 bg-white/5 py-0 data-[focus=true]:border-primary-500/60"
+                  accessibilityLabel="Cerca"
+                >
+                  <InputSlot className="pl-3">
+                    <InputIcon as={Search} color="rgb(var(--color-typography-300))" size={16} />
+                  </InputSlot>
+                  <InputField
+                    ref={searchFieldRef}
+                    editable={false}
+                    caretHidden
+                    onFocus={handleSearchTrigger}
+                    onPressIn={handleSearchTrigger}
+                    className="text-sm text-typography-0 placeholder:text-typography-400"
+                    placeholder="Cerca clienti, prenotazioni, automazioni..."
+                    placeholderTextColor="rgba(226,231,245,0.45)"
+                  />
+                </Input>
+              </Box>
+              <Button
+                size="xs"
+                variant="outline"
+                action="secondary"
+                className="flex flex-none items-center gap-2 rounded-full border-white/20 bg-white/5 px-3 py-1 text-left whitespace-nowrap"
+                onPress={handleOpenChat}
+              >
+                <MessageCircle color="rgb(var(--color-primary-500))" size={14} />
+                <ButtonText className="text-[11px] font-semibold text-typography-0">
+                  Chat
+                </ButtonText>
+                {chatNotifications > 0 ? (
+                  <Box className="rounded-full bg-error-500/80 px-2 py-0.5">
+                    <Text className="text-[10px] font-semibold text-typography-0">
+                      {chatNotifications}
+                    </Text>
+                  </Box>
+                ) : null}
+              </Button>
+            </GlassPanel>
+            <Box className="flex w-full flex-col gap-2">
+              <GlassPanel
+                padding="px-4 py-2"
+                className="gap-2 border-white/10 bg-black/30 items-center justify-center"
+              >
+                <Box className="flex items-center flex-row  justify-between gap-2 m-auto">
+                  <Box className="rounded-2xl bg-primary-500/20 p-1.5">
+                    <Sparkles color="rgb(var(--color-primary-400))" size={14} />
+                  </Box>
+                  <Box className="flex flex-1 flex-col gap-0.5">
+                    <Text className="text-[10px] font-semibold uppercase tracking-[0.35em] text-primary-200">
+                      AI Copilot
+                    </Text>
+                    <Text className="text-xs font-semibold text-typography-0">
+                      Modalità suggerimento
+                    </Text>
+                  </Box>
                 </Box>
-                <Box>
-                  <Text className="text-xs uppercase tracking-[0.4em] text-typography-400">AI Copilot</Text>
-                  <Text className="text-sm font-semibold text-typography-0">Modalità suggerimento</Text>
+                <Button
+                  size="xs"
+                  variant="link"
+                  action="secondary"
+                  className="self-start px-0"
+                  onPress={() => openCommand('Apri impostazioni AI Copilot')}
+                >
+                  <ButtonText className="text-[10px] font-semibold uppercase tracking-[0.25em] text-primary-300">
+                    Impostazioni
+                  </ButtonText>
+                </Button>
+              </GlassPanel>
+              <GlassPanel
+                padding="px-4 py-2"
+                className="gap-2 border-white/10 bg-black/30 items-center justify-center"
+              >
+                <Box className="flex flex-row items-center gap-2 m-auto">
+                  <Avatar
+                    className="h-8 w-8 items-center justify-center rounded-2xl bg-primary-500/20"
+                    alt="Davide Mineo"
+                  >
+                    <Text className="text-sm font-semibold text-primary-300">DM</Text>
+                  </Avatar>
+                  <Box className="flex flex-1 flex-col gap-0.5">
+                    <Text className="text-sm font-semibold text-typography-0">Davide Mineo</Text>
+                    <Text className="text-[11px] text-typography-400">Hotel Director</Text>
+                  </Box>
                 </Box>
-              </GlassCard>
-              <GlassCard padding="p-3" className="items-center gap-3">
-                <Avatar className="h-10 w-10 items-center justify-center rounded-2xl bg-primary-500/20" alt="Davide Mineo">
-                  <Text className="text-lg font-semibold text-primary-400">DM</Text>
-                </Avatar>
-                <Box>
-                  <Text className="text-sm font-semibold text-typography-0">Davide Mineo</Text>
-                  <Text className="text-xs text-typography-400">Hotel Director</Text>
-                </Box>
-              </GlassCard>
+                <Button
+                  size="xs"
+                  variant="link"
+                  action="secondary"
+                  className="self-start px-0"
+                  onPress={() => openCommand('Apri profilo Davide Mineo')}
+                >
+                  <ButtonText className="text-[10px] font-semibold uppercase tracking-[0.25em] text-primary-300">
+                    Gestisci profilo
+                  </ButtonText>
+                </Button>
+              </GlassPanel>
             </Box>
           </Box>
         </Box>
