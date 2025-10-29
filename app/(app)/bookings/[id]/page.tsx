@@ -4,7 +4,7 @@ import { GlassPanel } from '@/components/app/glass-panel';
 import { CommunicationTimeline } from '@/components/app/communication-timeline';
 import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
-import { Badge } from '@/components/ui/badge';
+import { Badge, BadgeText } from '@/components/ui/badge';
 import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { bookings, clients } from '@/lib/mock-data';
@@ -42,8 +42,10 @@ export default function BookingDetail({ params }: { params: { id: string } }) {
         subtitle={`${booking.roomType} • ${booking.checkIn} → ${booking.checkOut}`}
       >
         <Box className="flex flex-wrap items-center gap-3 text-xs text-typography-400">
-          <Badge className={`rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.35em] ${statusColor[booking.status] ?? 'bg-white/10 text-typography-300'}`}>
-            {booking.status}
+          <Badge>
+            <BadgeText className={`rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.35em] ${statusColor[booking.status] ?? 'bg-white/10 text-typography-300'}`}>
+              {booking.status}
+            </BadgeText>
           </Badge>
           <Box className="flex items-center gap-2">
             <Icon as={CalendarCheck} size="sm" className="text-primary-200" />

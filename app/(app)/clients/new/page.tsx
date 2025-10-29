@@ -2,7 +2,7 @@ import { GlassPanel } from '@/components/app/glass-panel';
 import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Badge, BadgeText } from '@/components/ui/badge';
 import { Sparkles, Send, CalendarPlus, ClipboardList } from '@/components/icons';
 
 const channels = ['Email', 'WhatsApp', 'SMS', 'Chat AI'];
@@ -46,11 +46,10 @@ export default function NewClientPage() {
               </Text>
               <Box className="mt-3 flex flex-wrap gap-2">
                 {channels.map((channel) => (
-                  <Badge
-                    key={channel}
-                    className="rounded-full bg-white/10 px-4 py-2 text-[11px] uppercase tracking-[0.35em] text-typography-200"
-                  >
-                    {channel}
+                  <Badge key={channel}>
+                    <BadgeText className="rounded-full bg-white/10 px-4 py-2 text-[11px] uppercase tracking-[0.35em] text-typography-200">
+                      {channel}
+                    </BadgeText>
                   </Badge>
                 ))}
               </Box>

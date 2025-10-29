@@ -5,7 +5,7 @@ import { chatThreads } from '@/lib/mock-data';
 import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import { GlassPanel } from '@/components/app/glass-panel';
-import { Badge } from '@/components/ui/badge';
+import { Badge, BadgeText } from '@/components/ui/badge';
 import { Icon } from '@/components/ui/icon';
 import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
 import { ScrollView } from '@/components/ui/scroll-view';
@@ -52,8 +52,10 @@ export default function ChatPage() {
                       {thread.guestName}
                     </Text>
                     {thread.unread > 0 && (
-                      <Badge className="rounded-full bg-accent-500/40 px-2 py-0.5 text-[10px] text-accent-100">
-                        {thread.unread}
+                      <Badge>
+                        <BadgeText className="rounded-full bg-accent-500/40 px-2 py-0.5 text-[10px] text-accent-100">
+                          {thread.unread}
+                        </BadgeText>
                       </Badge>
                     )}
                   </Box>
@@ -81,8 +83,10 @@ export default function ChatPage() {
                 Camera {activeThread?.room} • VIP {activeThread?.vip ? 'sì' : 'no'}
               </Text>
             </Box>
-            <Badge className="rounded-full bg-primary-500/20 px-3 py-1 text-[10px] uppercase tracking-[0.35em] text-primary-100">
-              AI assist
+            <Badge>
+              <BadgeText className="rounded-full bg-primary-500/20 px-3 py-1 text-[10px] uppercase tracking-[0.35em] text-primary-100">
+                AI assist
+              </BadgeText>
             </Badge>
           </Box>
           <ScrollView className="mt-4 rounded-3xl border border-white/5 bg-black/20 p-4" style={{ maxHeight: 420 }}>

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { GlassPanel } from '@/components/app/glass-panel';
 import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
-import { Badge } from '@/components/ui/badge';
+import { Badge, BadgeText } from '@/components/ui/badge';
 import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
 import { templates } from '@/lib/mock-data';
 import { Icon } from '@/components/ui/icon';
@@ -19,11 +19,10 @@ export default function TemplatesPage() {
           <Box className="flex flex-wrap items-center justify-between gap-4">
             <Box className="flex flex-wrap gap-2">
               {['Marketing', 'Operativo', 'Ai-assistito'].map((category) => (
-                <Badge
-                  key={category}
-                  className="rounded-full bg-white/10 px-4 py-2 text-xs uppercase tracking-[0.35em] text-typography-300"
-                >
-                  {category}
+                <Badge key={category}>
+                  <BadgeText className="rounded-full bg-white/10 px-4 py-2 text-xs uppercase tracking-[0.35em] text-typography-300">
+                    {category}
+                  </BadgeText>
                 </Badge>
               ))}
             </Box>
@@ -41,8 +40,10 @@ export default function TemplatesPage() {
                 <Text className="text-sm font-semibold text-typography-0">
                   {template.name}
                 </Text>
-                <Badge className="mt-2 rounded-full bg-white/10 px-3 py-1 text-[10px] uppercase tracking-[0.35em] text-typography-300">
-                  {template.category}
+                <Badge className="mt-2">
+                  <BadgeText className="rounded-full bg-white/10 px-3 py-1 text-[10px] uppercase tracking-[0.35em] text-typography-300">
+                    {template.category}
+                  </BadgeText>
                 </Badge>
                 <Text className="mt-3 text-xs text-typography-300">{template.description}</Text>
                 <Box className="mt-4 flex flex-row items-center gap-3 text-xs text-typography-400">

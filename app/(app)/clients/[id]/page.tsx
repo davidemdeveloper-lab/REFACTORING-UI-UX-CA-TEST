@@ -4,7 +4,7 @@ import { GlassPanel } from '@/components/app/glass-panel';
 import { CommunicationTimeline } from '@/components/app/communication-timeline';
 import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
-import { Badge } from '@/components/ui/badge';
+import { Badge, BadgeText } from '@/components/ui/badge';
 import { Icon } from '@/components/ui/icon';
 import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
 import { clients, bookings } from '@/lib/mock-data';
@@ -28,12 +28,16 @@ export default function ClientDetail({ params }: { params: { id: string } }) {
     <Box className="flex flex-col gap-8">
       <GlassPanel title={client.name} subtitle={client.roomPreference}>
         <Box className="flex flex-wrap items-center gap-3 text-xs text-typography-300">
-          <Badge className={`rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.35em] ${loyaltyColors[client.loyaltyLevel] ?? 'bg-white/10 text-typography-200'}`}>
-            {client.loyaltyLevel}
+          <Badge>
+            <BadgeText className={`rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.35em] ${loyaltyColors[client.loyaltyLevel] ?? 'bg-white/10 text-typography-200'}`}>
+              {client.loyaltyLevel}
+            </BadgeText>
           </Badge>
           {client.vip && (
-            <Badge className="rounded-full bg-primary-500/30 px-3 py-1 text-[10px] uppercase tracking-[0.35em] text-primary-100">
-              VIP
+            <Badge>
+              <BadgeText className="rounded-full bg-primary-500/30 px-3 py-1 text-[10px] uppercase tracking-[0.35em] text-primary-100">
+                VIP
+              </BadgeText>
             </Badge>
           )}
           <Box className="flex items-center gap-2">
@@ -114,8 +118,10 @@ export default function ClientDetail({ params }: { params: { id: string } }) {
       <GlassPanel title="Preferenze & tag" subtitle="Gestisci automazioni e segmenti personalizzati.">
         <Box className="flex flex-wrap gap-2">
           {client.tags.map((tag) => (
-            <Badge key={tag} className="rounded-full bg-white/10 px-3 py-1 text-[10px] uppercase tracking-[0.35em] text-typography-300">
-              {tag}
+            <Badge key={tag}>
+              <BadgeText className="rounded-full bg-white/10 px-3 py-1 text-[10px] uppercase tracking-[0.35em] text-typography-300">
+                {tag}
+              </BadgeText>
             </Badge>
           ))}
         </Box>

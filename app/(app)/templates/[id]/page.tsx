@@ -4,7 +4,7 @@ import { GlassPanel } from '@/components/app/glass-panel';
 import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Badge, BadgeText } from '@/components/ui/badge';
 import { templates } from '@/lib/mock-data';
 import { Icon } from '@/components/ui/icon';
 import { Sparkles, Save, MessageSquarePlus, Layers, Mail } from '@/components/icons';
@@ -25,8 +25,10 @@ export default function TemplateDetail({ params }: { params: { id: string } }) {
     <Box className="flex flex-col gap-8">
       <GlassPanel title={template.name} subtitle={template.description}>
         <Box className="flex flex-wrap items-center gap-3 text-xs text-typography-300">
-          <Badge className="rounded-full bg-white/10 px-3 py-1 text-[10px] uppercase tracking-[0.35em] text-typography-300">
-            {template.category}
+          <Badge>
+            <BadgeText className="rounded-full bg-white/10 px-3 py-1 text-[10px] uppercase tracking-[0.35em] text-typography-300">
+              {template.category}
+            </BadgeText>
           </Badge>
           <Text>Aggiornato il {template.updatedAt}</Text>
           <Box className="flex items-center gap-2">
@@ -75,11 +77,15 @@ export default function TemplateDetail({ params }: { params: { id: string } }) {
               {'Ricordati di completare il pre check-in digitale entro 48 ore.'}
             </Text>
             <Box className="mt-5 flex flex-wrap gap-2">
-              <Badge className="rounded-full bg-primary-500/20 px-3 py-1 text-[10px] uppercase tracking-[0.35em] text-primary-100">
-                dynamic ai
+              <Badge>
+                <BadgeText className="rounded-full bg-primary-500/20 px-3 py-1 text-[10px] uppercase tracking-[0.35em] text-primary-100">
+                  dynamic ai
+                </BadgeText>
               </Badge>
-              <Badge className="rounded-full bg-white/10 px-3 py-1 text-[10px] uppercase tracking-[0.35em] text-typography-300">
-                multi lingua
+              <Badge>
+                <BadgeText className="rounded-full bg-white/10 px-3 py-1 text-[10px] uppercase tracking-[0.35em] text-typography-300">
+                  multi lingua
+                </BadgeText>
               </Badge>
             </Box>
           </Box>

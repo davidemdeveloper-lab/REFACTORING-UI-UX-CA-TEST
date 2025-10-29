@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { GlassPanel } from '@/components/app/glass-panel';
 import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
-import { Badge } from '@/components/ui/badge';
+import { Badge, BadgeText } from '@/components/ui/badge';
 import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
 import { clients } from '@/lib/mock-data';
 import { Icon } from '@/components/ui/icon';
@@ -26,11 +26,10 @@ export default function ClientsPage() {
           <Box className="flex flex-col items-start justify-between gap-4 lg:flex-row lg:items-center">
             <Box className="flex flex-wrap gap-2">
               {['VIP', 'Family', 'Business', 'Wellness', 'Eventi'].map((filter) => (
-                <Badge
-                  key={filter}
-                  className="rounded-full bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.35em] text-typography-300"
-                >
-                  {filter}
+                <Badge key={filter}>
+                  <BadgeText className="rounded-full bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.35em] text-typography-300">
+                    {filter}
+                  </BadgeText>
                 </Badge>
               ))}
             </Box>
@@ -69,12 +68,16 @@ export default function ClientsPage() {
                       {client.name}
                     </Text>
                     <Box className="mt-2 flex flex-wrap gap-2">
-                      <Badge className={`rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.35em] ${loyaltyColors[client.loyaltyLevel] ?? 'bg-white/10 text-typography-200'}`}>
-                        {client.loyaltyLevel}
+                      <Badge>
+                        <BadgeText className={`rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.35em] ${loyaltyColors[client.loyaltyLevel] ?? 'bg-white/10 text-typography-200'}`}>
+                          {client.loyaltyLevel}
+                        </BadgeText>
                       </Badge>
                       {client.vip && (
-                        <Badge className="rounded-full bg-primary-500/30 px-3 py-1 text-[10px] uppercase tracking-[0.35em] text-primary-100">
-                          VIP
+                        <Badge>
+                          <BadgeText className="rounded-full bg-primary-500/30 px-3 py-1 text-[10px] uppercase tracking-[0.35em] text-primary-100">
+                            VIP
+                          </BadgeText>
                         </Badge>
                       )}
                     </Box>
@@ -94,8 +97,10 @@ export default function ClientsPage() {
                   </Box>
                   <Box className="col-span-2">
                     <Text className="text-xs text-typography-400">Automazione</Text>
-                    <Badge className="mt-2 rounded-full bg-primary-500/20 px-3 py-1 text-[10px] uppercase tracking-[0.3em] text-primary-100">
-                      {client.automationLevel}
+                    <Badge className="mt-2">
+                      <BadgeText className="rounded-full bg-primary-500/20 px-3 py-1 text-[10px] uppercase tracking-[0.3em] text-primary-100">
+                        {client.automationLevel}
+                      </BadgeText>
                     </Badge>
                   </Box>
                   <Box className="col-span-1">

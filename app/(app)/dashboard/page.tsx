@@ -3,7 +3,7 @@ import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import { Icon } from '@/components/ui/icon';
 import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Badge, BadgeText } from '@/components/ui/badge';
 import {
   aiNotifications,
   bookings,
@@ -152,8 +152,10 @@ export default function DashboardPage() {
                 className="rounded-2xl border border-white/10 bg-black/25 px-4 py-3 backdrop-blur-xl"
               >
                 <Box className="flex flex-row items-center justify-between">
-                  <Badge className="bg-primary-500/20 px-3 py-1 text-[10px] uppercase tracking-[0.4em] text-primary-100">
-                    {notification.type}
+                  <Badge>
+                    <BadgeText className="bg-primary-500/20 px-3 py-1 text-[10px] uppercase tracking-[0.4em] text-primary-100">
+                      {notification.type}
+                    </BadgeText>
                   </Badge>
                   <Text className="text-[11px] text-typography-400">
                     {notification.time}
@@ -192,8 +194,10 @@ export default function DashboardPage() {
                   </Text>
                   <Box className="mt-2 flex flex-wrap gap-2">
                     {guest.tags.map((tag) => (
-                      <Badge key={tag} className="bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.4em] text-typography-300">
-                        {tag}
+                      <Badge key={tag}>
+                        <BadgeText className="bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.4em] text-typography-300">
+                          {tag}
+                        </BadgeText>
                       </Badge>
                     ))}
                   </Box>
@@ -227,8 +231,10 @@ export default function DashboardPage() {
                   <Text className="text-lg font-semibold text-typography-0">
                     {booking.guestName}
                   </Text>
-                  <Badge className="bg-primary-500/20 px-3 py-1 text-[10px] uppercase tracking-[0.4em] text-primary-100">
-                    {booking.status}
+                  <Badge>
+                    <BadgeText className="bg-primary-500/20 px-3 py-1 text-[10px] uppercase tracking-[0.4em] text-primary-100">
+                      {booking.status}
+                    </BadgeText>
                   </Badge>
                 </Box>
                 <Text className="text-sm text-typography-300">
@@ -236,8 +242,10 @@ export default function DashboardPage() {
                 </Text>
                 <Box className="mt-3 flex flex-wrap gap-2">
                   {booking.outstandingActions.map((action) => (
-                    <Badge key={action} className="bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.4em] text-typography-300">
-                      {action}
+                    <Badge key={action}>
+                      <BadgeText className="bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.4em] text-typography-300">
+                        {action}
+                      </BadgeText>
                     </Badge>
                   ))}
                 </Box>
@@ -269,8 +277,10 @@ export default function DashboardPage() {
                   <Text className="text-xs text-typography-400">{device.location}</Text>
                 </Box>
                 <Box className="flex flex-row items-center gap-3">
-                  <Badge className="bg-white/5 px-2 py-1 text-[10px] uppercase tracking-[0.3em] text-typography-300">
-                    {device.status}
+                  <Badge>
+                    <BadgeText className="bg-white/5 px-2 py-1 text-[10px] uppercase tracking-[0.3em] text-typography-300">
+                      {device.status}
+                    </BadgeText>
                   </Badge>
                   <Box className="flex items-center gap-2 text-xs text-typography-300">
                     <Icon as={Cpu} size="sm" className="text-primary-200" />

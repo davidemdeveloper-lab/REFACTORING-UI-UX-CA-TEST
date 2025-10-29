@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { GlassPanel } from '@/components/app/glass-panel';
 import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
-import { Badge } from '@/components/ui/badge';
+import { Badge, BadgeText } from '@/components/ui/badge';
 import { bookings } from '@/lib/mock-data';
 import { Icon } from '@/components/ui/icon';
 import { CalendarCheck, MessageCircle, Bot, ArrowUpRight } from '@/components/icons';
@@ -33,8 +33,10 @@ export default function BookingsPage() {
                 <Text className="text-lg font-semibold text-typography-0">
                   {booking.guestName}
                 </Text>
-                <Badge className={`rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.35em] ${statusColor[booking.status] ?? 'bg-white/10 text-typography-300'}`}>
-                  {booking.status}
+                <Badge>
+                  <BadgeText className={`rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.35em] ${statusColor[booking.status] ?? 'bg-white/10 text-typography-300'}`}>
+                    {booking.status}
+                  </BadgeText>
                 </Badge>
               </Box>
               <Text className="text-sm text-typography-300">
@@ -56,8 +58,10 @@ export default function BookingsPage() {
               </Box>
               <Box className="mt-2 flex flex-wrap gap-2">
                 {booking.outstandingActions.map((action) => (
-                  <Badge key={action} className="rounded-full bg-white/10 px-3 py-1 text-[10px] uppercase tracking-[0.35em] text-typography-300">
-                    {action}
+                  <Badge key={action}>
+                    <BadgeText className="rounded-full bg-white/10 px-3 py-1 text-[10px] uppercase tracking-[0.35em] text-typography-300">
+                      {action}
+                    </BadgeText>
                   </Badge>
                 ))}
               </Box>
