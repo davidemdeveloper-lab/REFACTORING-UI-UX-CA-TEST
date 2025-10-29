@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'Customer Automator',
   description:
-    'Suite di automazione per strutture alberghiere: comunicazioni, prenotazioni, servizi e AI.',
+    'Control room front-end per hotel: dashboard metal-glassy, chat AI, gestione clienti e prenotazioni con GlueStack UI.',
 };
 
 export default function RootLayout({
@@ -29,7 +29,11 @@ export default function RootLayout({
     <html lang="it">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <StyledJsxRegistry>
-          <GluestackUIProvider mode="light">{children}</GluestackUIProvider>
+          <GluestackUIProvider mode="light">
+            <div className="min-h-screen w-screen overflow-hidden text-white">
+              {children}
+            </div>
+          </GluestackUIProvider>
         </StyledJsxRegistry>
       </body>
     </html>
