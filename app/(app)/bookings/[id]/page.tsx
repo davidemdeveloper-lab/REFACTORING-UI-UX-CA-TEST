@@ -4,7 +4,7 @@ import { GlassPanel } from '@/components/app/glass-panel';
 import { CommunicationTimeline } from '@/components/app/communication-timeline';
 import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
-import { Badge } from '@/components/ui/badge';
+import { Badge, BadgeText } from '@/components/ui/badge';
 import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { bookings, clients } from '@/lib/mock-data';
@@ -41,9 +41,11 @@ export default function BookingDetail({ params }: { params: { id: string } }) {
         title={booking.guestName}
         subtitle={`${booking.roomType} • ${booking.checkIn} → ${booking.checkOut}`}
       >
-        <Box className="flex flex-wrap items-center gap-3 text-xs text-typography-400">
-          <Badge className={`rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.35em] ${statusColor[booking.status] ?? 'bg-white/10 text-typography-300'}`}>
-            {booking.status}
+        <Box className="flex flex-wrap items-center gap-3 text-xs text-typography-200">
+          <Badge>
+            <BadgeText className={`rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.35em] ${statusColor[booking.status] ?? 'bg-white/10 text-typography-300'}`}>
+              {booking.status}
+            </BadgeText>
           </Badge>
           <Box className="flex items-center gap-2">
             <Icon as={CalendarCheck} size="sm" className="text-primary-200" />
@@ -51,7 +53,7 @@ export default function BookingDetail({ params }: { params: { id: string } }) {
           </Box>
           <Box className="flex items-center gap-2">
             <Icon as={Clock4} size="sm" className="text-info-200" />
-            <Text>{booking.timeline.filter((item) => item.completed).length} / {booking.timeline.length} step completati</Text>
+            <Text>{booking.timeline.filter((item) => item.completed).length} / {booking.timeline.length} rituali completati</Text>
           </Box>
           <Box className="flex items-center gap-2">
             <Icon as={Bot} size="sm" className="text-success-200" />
@@ -62,23 +64,23 @@ export default function BookingDetail({ params }: { params: { id: string } }) {
 
       <Box className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <GlassPanel
-          title="Timeline comunicazioni"
-          subtitle="Ogni step si illumina al completamento, con riferimento ai template collegati."
+          title="Timeline di cura"
+          subtitle="Ogni tocco racconta il percorso emotivo con template e canali collegati."
           className="lg:col-span-2"
         >
           <CommunicationTimeline events={booking.timeline} />
         </GlassPanel>
-        <GlassPanel title="Stato camera" subtitle="Comfort e dispositivi pronti all'arrivo.">
-          <Box className="flex flex-col gap-3 text-sm text-typography-300">
-            <Box className="flex items-center gap-2 rounded-2xl border border-white/10 bg-black/15 px-4 py-3">
+        <GlassPanel title="Comfort stanza" subtitle="Dispositivi e dettagli già sincronizzati per il benessere.">
+          <Box className="flex flex-col gap-3 text-sm text-typography-100">
+            <Box className="flex items-center gap-2 rounded-2xl border border-white/10 bg-black/30 px-4 py-3">
               <Icon as={Thermometer} size="sm" className="text-warning-200" />
               <Text>Temperatura impostata a 21°C</Text>
             </Box>
-            <Box className="flex items-center gap-2 rounded-2xl border border-white/10 bg-black/15 px-4 py-3">
+            <Box className="flex items-center gap-2 rounded-2xl border border-white/10 bg-black/30 px-4 py-3">
               <Icon as={Droplets} size="sm" className="text-info-200" />
               <Text>Minibar allineato al profilo al 76%</Text>
             </Box>
-            <Box className="flex items-center gap-2 rounded-2xl border border-white/10 bg-black/15 px-4 py-3">
+            <Box className="flex items-center gap-2 rounded-2xl border border-white/10 bg-black/30 px-4 py-3">
               <Icon as={Sparkles} size="sm" className="text-primary-200" />
               <Text>Luci scenografiche pronte per check-in esperienziale</Text>
             </Box>
@@ -86,28 +88,28 @@ export default function BookingDetail({ params }: { params: { id: string } }) {
         </GlassPanel>
       </Box>
 
-      <GlassPanel title="Azioni consigliate" subtitle="Automazioni da inviare ora o pianificare.">
+      <GlassPanel title="Gesti consigliati" subtitle="Automazioni e follow-up per far sentire l'ospite speciale.">
         <Box className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <Box className="rounded-3xl border border-white/10 bg-black/20 px-5 py-4">
+          <Box className="rounded-3xl border border-white/10 bg-black/35 px-5 py-4 backdrop-blur-2xl">
             <Text className="text-sm font-semibold text-typography-0">
               Prossime comunicazioni
             </Text>
-            <Box className="mt-2 flex flex-col gap-2 text-xs text-typography-300">
+            <Box className="mt-2 flex flex-col gap-2 text-xs text-typography-100">
               {booking.outstandingActions.map((action) => (
                 <Text key={action}>• {action}</Text>
               ))}
             </Box>
-            <Button action="primary" className="mt-4 bg-primary-500/30 px-4">
+            <Button action="primary" className="mt-4 bg-primary-500/40 px-4">
               <ButtonIcon as={Send} />
               <ButtonText className="text-typography-0">Invia ora</ButtonText>
             </Button>
           </Box>
-          <Box className="rounded-3xl border border-white/10 bg-black/20 px-5 py-4">
+          <Box className="rounded-3xl border border-white/10 bg-black/35 px-5 py-4 backdrop-blur-2xl">
             <Text className="text-sm font-semibold text-typography-0">
               Conversazioni collegate
             </Text>
-            <Text className="mt-2 text-xs text-typography-300">
-              L'AI segnala 1 conversazione in attesa di risposta.
+            <Text className="mt-2 text-xs text-typography-200">
+              L'AI segnala 1 conversazione in attesa di risposta empatica.
             </Text>
             <Link
               href={`/chat?thread=${booking.id}`}
@@ -122,10 +124,10 @@ export default function BookingDetail({ params }: { params: { id: string } }) {
 
       {client && (
         <GlassPanel
-          title="Anagrafica ospite"
+          title="Ritratto ospite"
           subtitle="Insight rapidi per personalizzare ulteriormente l'esperienza."
         >
-          <Box className="flex flex-col gap-3 text-sm text-typography-300">
+          <Box className="flex flex-col gap-3 text-sm text-typography-100">
             <Text>Email: {client.email}</Text>
             <Text>Telefono: {client.phone}</Text>
             <Text>Preferenze: {client.roomPreference}</Text>
@@ -143,4 +145,4 @@ export default function BookingDetail({ params }: { params: { id: string } }) {
   );
 }
 
-// Validazione: dettaglio prenotazione con timeline luminosa, stato camera IoT e link azioni AI.
+// Validazione: dettaglio soggiorno centrato su cura ospite, comfort stanza e gesti AI suggeriti.

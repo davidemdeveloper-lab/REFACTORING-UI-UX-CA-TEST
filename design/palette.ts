@@ -148,7 +148,7 @@ export const palette: Palette = {
     800: '#3F4453',
     900: '#2C2F3A',
     950: '#1A1D25',
-    glass: 'rgba(20, 27, 37, 0.58)',
-    overlay: 'rgba(15, 19, 28, 0.85)',
+    glass: 'rgba(12, 18, 28, 0.78)',
+    overlay: 'rgba(10, 14, 22, 0.92)',
   },
 };
