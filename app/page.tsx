@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { Sparkles, Workflow, Users2, CalendarCheck } from 'lucide-react';
 import { Box } from '@/components/ui/box';

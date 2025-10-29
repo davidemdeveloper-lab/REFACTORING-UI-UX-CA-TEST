@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
-import { Button, ButtonIcon } from '@/components/ui/button';
+import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
 import { useUIStore } from '@/store/ui-store';
 
 const navItems = [
@@ -117,7 +117,7 @@ export function SidebarNav() {
                 className="h-10 w-full rounded-xl bg-amber-500/90 text-slate-900"
               >
                 <ButtonIcon as={Plus} className="text-slate-900" size="sm" />
-                {!isSidebarCollapsed && 'Nuova proposta'}
+                {!isSidebarCollapsed && <ButtonText className="text-slate-900">Nuova proposta</ButtonText>}
               </Button>
             </Link>
           </div>

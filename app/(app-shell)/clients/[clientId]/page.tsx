@@ -6,8 +6,9 @@ import { Timeline } from '@/components/common/Timeline';
 import { StatusPill } from '@/components/common/StatusPill';
 import { formatCurrency, stayStatusLabel } from '@/lib/utils';
 
-export default function ClientDetailPage({ params }: { params: { clientId: string } }) {
-  const client = clients.find((item) => item.id === params.clientId);
+export default async function ClientDetailPage({ params }: { params: Promise<{ clientId: string }> }) {
+  const { clientId } = await params;
+  const client = clients.find((item) => item.id === clientId);
   if (!client) {
     notFound();
   }

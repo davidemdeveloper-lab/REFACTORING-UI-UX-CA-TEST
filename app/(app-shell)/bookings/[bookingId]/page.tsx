@@ -6,8 +6,9 @@ import { Timeline } from '@/components/common/Timeline';
 import { StatusPill } from '@/components/common/StatusPill';
 import { bookingStatusColor, formatCurrency, formatDate } from '@/lib/utils';
 
-export default function BookingDetailPage({ params }: { params: { bookingId: string } }) {
-  const booking = bookings.find((item) => item.id === params.bookingId);
+export default async function BookingDetailPage({ params }: { params: Promise<{ bookingId: string }> }) {
+  const { bookingId } = await params;
+  const booking = bookings.find((item) => item.id === bookingId);
   if (!booking) {
     notFound();
   }
