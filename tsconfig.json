@@ -1,52 +1,61 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
+    "target": "ES2020",
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
-    "allowJs": true,
+    "allowJs": false,
     "skipLibCheck": true,
-    "strict": false,
-    "noImplicitAny": false,
-    "noEmit": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
     "module": "esnext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "jsxImportSource": "nativewind",
     "incremental": true,
+    "types": [
+      "jest",
+      "node"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/components/*": [
+        "components/*"
+      ],
+      "@/features/*": [
+        "features/*"
+      ],
+      "@/theme/*": [
+        "theme/*"
+      ],
+      "@/lib/*": [
+        "lib/*"
+      ],
+      "@/mock/*": [
+        "mock/*"
+      ]
+    },
+    "noEmit": true,
     "plugins": [
       {
         "name": "next"
       }
-    ],
-    "paths": {
-      "@/*": [
-        "./*"
-      ],
-      "@/utils/*": [
-        "./utils/*"
-      ],
-      "@/components/*": [
-        "./components/*"
-      ],
-      "tailwind.config": [
-        "./tailwind.config.js"
-      ]
-    }
+    ]
   },
   "include": [
-    "next-env.d.ts",
+    "**/*.cjs",
+    "**/*.d.ts",
+    "**/*.json",
+    "**/*.mjs",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
-    "next.config.mjs",
-    "nativewind-env.d.ts",
-    "tailwind-variants.d.ts"
+    "next-env.d.ts",
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

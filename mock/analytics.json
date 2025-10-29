@@ -1,0 +1,17 @@
+{
+  "occupancy": [
+    { "roomType": "Suite", "occupancy": 85 },
+    { "roomType": "Junior Suite", "occupancy": 72 },
+    { "roomType": "Home Suite", "occupancy": 64 }
+  ],
+  "revenue": [
+    { "label": "Gen", "value": 145000 },
+    { "label": "Feb", "value": 152000 },
+    { "label": "Mar", "value": 165000 }
+  ],
+  "services": [
+    { "service": "SPA", "usage": 68 },
+    { "service": "Trasferimenti", "usage": 42 },
+    { "service": "Ristorante", "usage": 85 }
+  ]
+}

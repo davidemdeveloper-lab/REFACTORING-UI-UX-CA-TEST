@@ -1,0 +1,29 @@
+[
+  {
+    "id": "notification-1",
+    "kind": "ai",
+    "title": "AI suggerisce upsell SPA",
+    "body": "Giovanni Greco ha mostrato interesse per il percorso benessere.",
+    "createdAt": "2024-01-15T09:10:00.000Z",
+    "read": false,
+    "link": { "type": "booking", "id": "booking-1" }
+  },
+  {
+    "id": "notification-2",
+    "kind": "chat",
+    "title": "Nuovo messaggio da Maria Rossi",
+    "body": "Richiesta disponibilità parcheggio coperto",
+    "createdAt": "2024-01-15T09:05:00.000Z",
+    "read": false,
+    "link": { "type": "chat", "id": "conversation-2" }
+  },
+  {
+    "id": "notification-3",
+    "kind": "system",
+    "title": "Dispositivo IoT offline",
+    "body": "Minibar stanza 305 necessita manutenzione",
+    "createdAt": "2024-01-14T21:30:00.000Z",
+    "read": true,
+    "link": { "type": "iot", "id": "iot-2" }
+  }
+]
