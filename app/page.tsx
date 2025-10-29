@@ -1,72 +1,158 @@
-import { Box } from '@/components/ui/box';
-import { Text } from '@/components/ui/text';
-import Image from 'next/image';
+'use client';
 
-export default function Home() {
+import { motion } from 'framer-motion';
+import NextLink from 'next/link';
+import {
+  Box,
+  Button,
+  ButtonText,
+  Card,
+  Heading,
+  HStack,
+  Icon,
+  Text,
+  VStack,
+} from '@gluestack-ui/themed';
+import { ArrowRight, CheckCircle2, Sparkles } from 'lucide-react';
+
+const highlights = [
+  {
+    title: 'Gestione Centralizzata',
+    description:
+      'Metti in regia clienti, prenotazioni e check-in con un’unica interfaccia impeccabile.',
+    icon: Sparkles,
+  },
+  {
+    title: 'Comunicazioni Automatiche',
+    description:
+      'Sequenze multicanale pronte che si aggiornano in base alle azioni del cliente.',
+    icon: CheckCircle2,
+  },
+  {
+    title: 'Proposte Personalizzate',
+    description:
+      'Suggerimenti dinamici di upsell creati sui dati del soggiorno e sulle preferenze.',
+    icon: ArrowRight,
+  },
+];
+
+export default function LandingPage() {
   return (
-    <main>
-      <Container />
-    </main>
+    <Box
+      px="$12"
+      py="$20"
+      gap="$16"
+      bgColor="rgba(10, 17, 30, 0.78)"
+      minHeight="100vh"
+      display="flex"
+      flexDirection="column"
+    >
+      <HStack justifyContent="space-between" alignItems="center">
+        <Box>
+          <Heading size="4xl" color="$background50" maxWidth="640px">
+            Benvenuto in Customer Automator
+          </Heading>
+          <Text
+            mt="$4"
+            fontSize="$xl"
+            lineHeight="$2xl"
+            color="rgba(226, 235, 255, 0.82)"
+            maxWidth="620px"
+          >
+            La suite all-in-one per automatizzare la gestione di ospiti, prenotazioni e
+            comunicazioni in hotel. Concentrati sull’accoglienza, al resto pensiamo noi.
+          </Text>
+          <HStack gap="$4" mt="$8" flexWrap="wrap">
+            <Button asChild bgColor="rgba(255,255,255,0.18)" borderColor="rgba(255,255,255,0.32)" borderWidth={1}>
+              <NextLink href="/dashboard">
+                <HStack alignItems="center" gap="$2">
+                  <ButtonText color="$background50" fontSize="$lg">
+                    Accedi all’area di gestione
+                  </ButtonText>
+                  <Icon as={ArrowRight} color="$background50" />
+                </HStack>
+              </NextLink>
+            </Button>
+            <Button
+              variant="outline"
+              borderColor="rgba(255,255,255,0.36)"
+              bgColor="rgba(255,255,255,0.08)"
+              asChild
+            >
+              <NextLink href="#funzionalita">
+                <ButtonText color="rgba(226,235,255,0.82)">Scopri le funzionalità</ButtonText>
+              </NextLink>
+            </Button>
+          </HStack>
+        </Box>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.92 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}
+        >
+          <Card
+            maxWidth="420px"
+            bg="linear-gradient(160deg, rgba(79,111,255,0.45) 0%, rgba(17,35,61,0.9) 100%)"
+            borderColor="rgba(255,255,255,0.25)"
+            borderWidth={1}
+            style={{ backdropFilter: 'blur(24px)' }}
+          >
+            <VStack space="lg">
+              <Heading size="xl" color="$background50">
+                Struttura Aurora Luxury
+              </Heading>
+              <Text color="rgba(226,235,255,0.82)">
+                42 camere connesse, punteggio ospiti 4.9/5, automazioni attive 12.
+              </Text>
+              <VStack space="sm">
+                {['Check-in virtuale', 'Upsell SPA', 'Campagna pre-soggiorno'].map((item) => (
+                  <HStack
+                    key={item}
+                    px="$4"
+                    py="$3"
+                    borderRadius="$xl"
+                    bgColor="rgba(255,255,255,0.08)"
+                    alignItems="center"
+                    justifyContent="space-between"
+                  >
+                    <Text color="$background50">{item}</Text>
+                    <Icon as={CheckCircle2} color="$success400" />
+                  </HStack>
+                ))}
+              </VStack>
+              <Text fontSize="$sm" color="rgba(226,235,255,0.62)">
+                Dati aggiornati ogni 15 minuti grazie alle automazioni Customer Automator.
+              </Text>
+            </VStack>
+          </Card>
+        </motion.div>
+      </HStack>
+
+      <VStack id="funzionalita" gap="$8">
+        <Heading size="xl" color="$background50">
+          La potenza della tua nuova control room digitale
+        </Heading>
+        <HStack gap="$6" flexWrap="wrap">
+          {highlights.map((item) => (
+            <Card
+              key={item.title}
+              width="min(100%, 320px)"
+              bgColor="rgba(18, 27, 44, 0.86)"
+              borderColor="rgba(255,255,255,0.18)"
+              style={{ backdropFilter: 'blur(16px)' }}
+            >
+              <VStack space="sm">
+                <Icon as={item.icon} color="$primary300" size="lg" />
+                <Heading size="lg" color="$background50">
+                  {item.title}
+                </Heading>
+                <Text color="rgba(226,235,255,0.78)">{item.description}</Text>
+              </VStack>
+            </Card>
+          ))}
+        </HStack>
+      </VStack>
+    </Box>
   );
 }
-
-const FeatureCard = ({ iconSvg, name, desc }: any) => {
-  return (
-    <Box className="flex-column border border-w-1 border-outline-700 flex-1 m-2 p-4 rounded">
-      <Box className="items-center flex flex-row">
-        <Image
-          src={`/${iconSvg}`}
-          alt="document"
-          priority
-          width={22}
-          height={22}
-        />
-        <Text className="text-typography-white font-medium ml-2 text-xl">
-          {name}
-        </Text>
-      </Box>
-      <Text className="text-typography-400 mt-2">{desc}</Text>
-    </Box>
-  );
-};
-
-const Container = () => {
-  return (
-    <Box className="flex-1 bg-black h-[100vh]">
-      <Box className="absolute h-[500px] w-[500px] lg:w-[700px] lg:h-[700px]">
-        <Image src="/gradient.svg" alt="Gradient" fill priority />
-      </Box>
-      <Box className="flex flex-1 items-center my-16 mx-5 lg:my-24 lg:mx-32">
-        <Box className="py-2 px-6 rounded-full items-center flex-column sm:flex-row md:self-start">
-          <Text className="text-typography-white font-normal">
-            Get started by editing
-          </Text>
-          <Text className="text-typography-white font-medium ml-2">
-            <code>./app/page.tsx</code>
-          </Text>
-        </Box>
-        <Box className="flex-1 justify-center items-center h-[20px] w-[300px] lg:h-[160px] lg:w-[400px]">
-          <Image src="/logo.svg" fill alt="logo" priority />
-        </Box>
-
-        <Box className="flex-column md:flex-row">
-          <FeatureCard
-            iconSvg="document-data.svg"
-            name="Docs"
-            desc="Find in-depth information about gluestack features and API."
-          />
-          <FeatureCard
-            iconSvg="lightbulb-person.svg"
-            name="Learn"
-            desc="Learn about gluestack in an interactive course with quizzes!"
-          />
-          <FeatureCard
-            iconSvg="rocket.svg"
-            name="Deploy"
-            desc="Instantly drop your gluestack site to a shareable URL with vercel."
-          />
-        </Box>
-      </Box>
-    </Box>
-  );
-};

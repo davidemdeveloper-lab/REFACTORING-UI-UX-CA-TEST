@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Customer Automator
 
-## Getting Started
+Applicazione front-end realizzata con Next.js (App Router) e TypeScript per digitalizzare la gestione dei clienti alberghieri. L'interfaccia sfrutta GlueStack UI v3 con un tema "metal-glassy" personalizzato, mock data realistici e componenti pensati per le principali esigenze operative.
 
-First, run the development server:
+## Caratteristiche principali
+- **Landing page** dedicata alla presentazione del prodotto.
+- **Dashboard** con stato clienti, comunicazioni recenti e panoramica delle prenotazioni.
+- Gestione **Clienti**: elenco, creazione veloce e dettaglio con timeline delle interazioni.
+- Flusso **Prenotazioni**: lista, nuova segnalazione di prenotazione persa e dettaglio con comunicazioni.
+- Gestione **Template email** con editor drag & drop, anteprima e blocchi logici.
+- **Chat** con layout a tre colonne per conversazioni dirette o legate alle prenotazioni.
+- Centro **Notifiche** per aggiornamenti operativi e flotta **IoT** per dispositivi connessi.
+- Stato utente leggero con Zustand per preferenze locali.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Struttura del progetto
+```
+app/              # Routing Next.js con layout pubblici e autenticati
+components/       # Componenti UI riutilizzabili e layout
+data/             # Mock data tipizzati
+stores/           # Stato locale (Zustand)
+theme/            # Configurazione GlueStack UI
+lib/              # Utility condivise
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Requisiti
+- Node.js 18+
+- npm (o pnpm/yarn) per la gestione dei pacchetti
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Script disponibili
+```bash
+npm run dev        # Avvia il server di sviluppo su http://localhost:3000
+npm run build      # Compila il progetto per la produzione
+npm run start      # Avvia il server in modalità production
+npm run lint       # Esegue ESLint con la configurazione personalizzata
+npm run typecheck  # Verifica i tipi TypeScript
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Mock data e integrazioni
+Tutti i dati sono fittizi e generati localmente. Non sono presenti integrazioni reali con servizi esterni: l'app è pronta per collegarsi ad API reali tramite fetch o client GraphQL restando però totalmente stand-alone.
 
-## Learn More
+## Accessibilità e UX
+- Colori e contrasti ottimizzati per la leggibilità.
+- Navigazione da tastiera curata per menu laterale e controlli principali.
+- Rispetto dell'impostazione `prefers-reduced-motion` per animazioni.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Licenza
+Questo repository è distribuito con licenza MIT. Consulta il file `LICENSE` (se presente) o definisci la licenza desiderata prima del rilascio pubblico.
