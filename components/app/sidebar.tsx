@@ -13,7 +13,7 @@ import {
   ClipboardList,
   MessageSquareMore,
   Sparkles,
-} from 'lucide-react-native';
+} from '@/components/icons';
 
 const navItems = [
   {

@@ -14,7 +14,7 @@ import {
   Search,
   ChevronRight,
   ShieldCheck,
-} from 'lucide-react-native';
+} from '@/components/icons';
 
 const pageMap: Record<string, { title: string; subtitle: string }> = {
   '/dashboard': {

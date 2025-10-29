@@ -3,7 +3,7 @@ import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Sparkles, Send, CalendarPlus, ClipboardList } from 'lucide-react-native';
+import { Sparkles, Send, CalendarPlus, ClipboardList } from '@/components/icons';
 
 const channels = ['Email', 'WhatsApp', 'SMS', 'Chat AI'];
 

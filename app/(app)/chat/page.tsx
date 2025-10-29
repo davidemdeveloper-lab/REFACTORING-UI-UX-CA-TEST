@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Icon } from '@/components/ui/icon';
 import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
 import { ScrollView } from '@/components/ui/scroll-view';
-import { MessageCircle, Sparkles, Send, Filter } from 'lucide-react-native';
+import { MessageCircle, Sparkles, Send, Filter } from '@/components/icons';
 
 export default function ChatPage() {
   const [activeThreadId, setActiveThreadId] = useState(chatThreads[0]?.id);

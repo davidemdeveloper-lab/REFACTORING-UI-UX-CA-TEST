@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
 import { clients } from '@/lib/mock-data';
 import { Icon } from '@/components/ui/icon';
-import { UserPlus, Filter, ArrowUpRight, Mail, Phone, Bot } from 'lucide-react-native';
+import { UserPlus, Filter, ArrowUpRight, Mail, Phone, Bot } from '@/components/icons';
 
 const loyaltyColors: Record<string, string> = {
   Platinum: 'bg-primary-500/25 text-primary-100 border border-primary-500/40',

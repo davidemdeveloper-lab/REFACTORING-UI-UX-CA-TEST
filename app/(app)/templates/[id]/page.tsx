@@ -7,7 +7,7 @@ import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { templates } from '@/lib/mock-data';
 import { Icon } from '@/components/ui/icon';
-import { Sparkles, Save, MessageSquarePlus, Layers, Mail } from 'lucide-react-native';
+import { Sparkles, Save, MessageSquarePlus, Layers, Mail } from '@/components/icons';
 
 const blocks = [
   { title: 'Blocco Variabili', description: 'Personalizza nome ospite, date, servizi dinamici.' },

@@ -17,7 +17,7 @@ import {
   Droplets,
   Sparkles,
   MessageSquareMore,
-} from 'lucide-react-native';
+} from '@/components/icons';
 
 const statusColor: Record<string, string> = {
   'pre-check-in': 'bg-info-500/20 text-info-100',

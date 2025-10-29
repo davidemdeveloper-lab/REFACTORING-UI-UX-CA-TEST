@@ -24,7 +24,7 @@ import {
   Plug,
   Sparkles,
   MessageSquarePlus,
-} from 'lucide-react-native';
+} from '@/components/icons';
 import Link from 'next/link';
 
 const trendColor = {

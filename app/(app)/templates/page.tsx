@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
 import { templates } from '@/lib/mock-data';
 import { Icon } from '@/components/ui/icon';
-import { Sparkles, PenSquare, ArrowUpRight, GaugeCircle, Inbox } from 'lucide-react-native';
+import { Sparkles, PenSquare, ArrowUpRight, GaugeCircle, Inbox } from '@/components/icons';
 
 export default function TemplatesPage() {
   return (

@@ -6,7 +6,7 @@ import { Text } from '@/components/ui/text';
 import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
 import { GlassPanel } from '@/components/app/glass-panel';
 import { Icon } from '@/components/ui/icon';
-import { Sparkles, Gauge, Users, MessageSquare, ArrowRight } from 'lucide-react-native';
+import { Sparkles, Gauge, Users, MessageSquare, ArrowRight } from '@/components/icons';
 
 const featureCards = [
   {

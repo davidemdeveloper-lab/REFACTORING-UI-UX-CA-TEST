@@ -5,7 +5,7 @@ import { Text } from '@/components/ui/text';
 import { Badge } from '@/components/ui/badge';
 import { bookings } from '@/lib/mock-data';
 import { Icon } from '@/components/ui/icon';
-import { CalendarCheck, MessageCircle, Bot, ArrowUpRight } from 'lucide-react-native';
+import { CalendarCheck, MessageCircle, Bot, ArrowUpRight } from '@/components/icons';
 
 const statusColor: Record<string, string> = {
   'pre-check-in': 'bg-info-500/20 text-info-100',

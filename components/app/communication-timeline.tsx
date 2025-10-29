@@ -4,7 +4,7 @@ import { TimelineEvent } from '@/lib/mock-data';
 import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import { Icon } from '@/components/ui/icon';
-import { Mail, Bot, MessageCircle, PhoneCall } from 'lucide-react-native';
+import { Mail, Bot, MessageCircle, PhoneCall } from '@/components/icons';
 
 const channelIconMap = {
   email: Mail,
