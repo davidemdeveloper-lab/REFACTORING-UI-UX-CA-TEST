@@ -3,19 +3,334 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
+  --font-body: var(--font-manrope);
+  --font-display: var(--font-plus-jakarta);
+  --shadow-glass: 0 24px 50px rgba(6, 14, 24, 0.35);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-sheen: rgba(255, 255, 255, 0.03);
+  --glass-blur: 18px;
+  --page-max-width: 1440px;
+  --color-primary-0: 4 20 26;
+  --color-primary-50: 10 37 48;
+  --color-primary-100: 12 52 63;
+  --color-primary-200: 14 66 77;
+  --color-primary-300: 21 96 109;
+  --color-primary-400: 32 134 144;
+  --color-primary-500: 52 184 188;
+  --color-primary-600: 90 213 214;
+  --color-primary-700: 129 229 227;
+  --color-primary-800: 182 244 239;
+  --color-primary-900: 219 252 246;
+  --color-primary-950: 235 255 250;
+  --color-secondary-0: 15 16 27;
+  --color-secondary-50: 22 23 38;
+  --color-secondary-100: 29 30 51;
+  --color-secondary-200: 40 41 66;
+  --color-secondary-300: 55 57 87;
+  --color-secondary-400: 77 80 115;
+  --color-secondary-500: 101 106 147;
+  --color-secondary-600: 132 137 181;
+  --color-secondary-700: 168 172 208;
+  --color-secondary-800: 200 204 230;
+  --color-secondary-900: 226 229 245;
+  --color-secondary-950: 242 244 250;
+  --color-tertiary-50: 19 22 35;
+  --color-tertiary-100: 28 32 48;
+  --color-tertiary-200: 36 42 61;
+  --color-tertiary-300: 50 57 83;
+  --color-tertiary-400: 70 77 112;
+  --color-tertiary-500: 93 102 148;
+  --color-tertiary-600: 121 130 178;
+  --color-tertiary-700: 156 165 209;
+  --color-tertiary-800: 192 200 232;
+  --color-tertiary-900: 225 230 246;
+  --color-tertiary-950: 240 243 252;
+  --color-error-0: 63 5 11;
+  --color-error-50: 92 12 20;
+  --color-error-100: 120 20 28;
+  --color-error-200: 154 31 40;
+  --color-error-300: 190 46 55;
+  --color-error-400: 216 72 79;
+  --color-error-500: 234 118 110;
+  --color-error-600: 241 149 138;
+  --color-error-700: 249 181 170;
+  --color-error-800: 252 209 201;
+  --color-error-900: 255 232 226;
+  --color-error-950: 255 243 239;
+  --color-success-0: 6 28 19;
+  --color-success-50: 11 44 28;
+  --color-success-100: 15 58 36;
+  --color-success-200: 21 79 47;
+  --color-success-300: 31 108 63;
+  --color-success-400: 44 143 82;
+  --color-success-500: 63 183 105;
+  --color-success-600: 96 210 135;
+  --color-success-700: 143 229 173;
+  --color-success-800: 189 244 210;
+  --color-success-900: 222 250 233;
+  --color-success-950: 238 253 244;
+  --color-warning-0: 47 28 6;
+  --color-warning-50: 72 42 10;
+  --color-warning-100: 96 56 14;
+  --color-warning-200: 127 75 20;
+  --color-warning-300: 168 99 29;
+  --color-warning-400: 209 128 41;
+  --color-warning-500: 242 162 59;
+  --color-warning-600: 250 186 96;
+  --color-warning-700: 254 210 140;
+  --color-warning-800: 255 230 185;
+  --color-warning-900: 255 243 217;
+  --color-warning-950: 255 248 233;
+  --color-info-0: 5 27 48;
+  --color-info-50: 9 41 73;
+  --color-info-100: 12 55 95;
+  --color-info-200: 16 76 131;
+  --color-info-300: 22 103 177;
+  --color-info-400: 37 132 221;
+  --color-info-500: 69 163 255;
+  --color-info-600: 114 191 255;
+  --color-info-700: 157 212 255;
+  --color-info-800: 194 231 255;
+  --color-info-900: 224 243 255;
+  --color-info-950: 239 248 255;
+  --color-typography-0: 232 236 245;
+  --color-typography-50: 206 211 221;
+  --color-typography-100: 181 186 197;
+  --color-typography-200: 156 161 173;
+  --color-typography-300: 131 137 149;
+  --color-typography-400: 107 113 126;
+  --color-typography-500: 84 91 105;
+  --color-typography-600: 63 70 85;
+  --color-typography-700: 43 50 65;
+  --color-typography-800: 26 32 46;
+  --color-typography-900: 15 19 31;
+  --color-typography-950: 9 12 20;
+  --color-outline-0: 26 30 43;
+  --color-outline-50: 32 36 50;
+  --color-outline-100: 39 44 59;
+  --color-outline-200: 47 54 71;
+  --color-outline-300: 56 65 85;
+  --color-outline-400: 67 78 102;
+  --color-outline-500: 79 92 120;
+  --color-outline-600: 94 111 145;
+  --color-outline-700: 119 137 171;
+  --color-outline-800: 154 170 199;
+  --color-outline-900: 191 202 221;
+  --color-outline-950: 214 224 235;
+  --color-background-0: 6 11 18;
+  --color-background-50: 9 16 25;
+  --color-background-100: 12 20 30;
+  --color-background-200: 16 25 37;
+  --color-background-300: 21 31 46;
+  --color-background-400: 28 39 58;
+  --color-background-500: 35 48 71;
+  --color-background-600: 45 59 87;
+  --color-background-700: 61 77 109;
+  --color-background-800: 86 104 141;
+  --color-background-900: 116 135 173;
+  --color-background-950: 148 166 202;
+  --color-background-error: 60 12 20;
+  --color-background-warning: 64 38 12;
+  --color-background-muted: 19 25 38;
+  --color-background-success: 14 42 26;
+  --color-background-info: 13 30 52;
+  --color-indicator-primary: 52 184 188;
+  --color-indicator-info: 69 163 255;
+  --color-indicator-error: 234 118 110;
+  --app-background: radial-gradient(circle at 20% 20%, rgba(73, 169, 187, 0.35), transparent 55%),
+    radial-gradient(circle at 80% 10%, rgba(119, 98, 234, 0.25), transparent 50%),
+    linear-gradient(140deg, rgba(6, 14, 24, 0.95), rgba(8, 18, 32, 0.95));
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  height: 100%;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  font-family: var(--font-body), 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--app-background);
+  color: rgb(var(--color-typography-0));
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
+
+html[data-mode='light'] {
+  color-scheme: light;
+  --color-background-0: 241 243 248;
+  --color-background-50: 234 237 244;
+  --color-background-100: 226 230 239;
+  --color-background-200: 214 219 232;
+  --color-background-300: 196 204 220;
+  --color-background-400: 174 184 205;
+  --color-background-500: 154 166 189;
+  --color-background-600: 128 142 168;
+  --color-background-700: 101 117 145;
+  --color-background-800: 76 92 118;
+  --color-background-900: 54 70 94;
+  --color-background-950: 38 52 76;
+  --color-typography-0: 18 24 36;
+  --color-typography-50: 34 41 56;
+  --color-typography-100: 48 57 72;
+  --color-typography-200: 67 78 95;
+  --color-typography-300: 89 101 122;
+  --color-typography-400: 111 124 148;
+  --color-typography-500: 135 149 173;
+  --color-typography-600: 160 173 194;
+  --color-typography-700: 187 198 215;
+  --color-typography-800: 212 220 231;
+  --color-typography-900: 232 236 242;
+  --color-typography-950: 244 246 250;
+  --color-outline-200: 203 210 224;
+  --color-outline-300: 188 196 214;
+  --color-outline-400: 172 182 203;
+  --color-outline-500: 152 164 189;
+  --color-outline-600: 131 147 173;
+  --color-outline-700: 110 130 156;
+  --color-outline-800: 90 110 136;
+  --color-outline-900: 69 90 115;
+  --color-outline-950: 55 75 101;
+  --color-background-muted: 225 231 240;
+  --color-background-success: 215 243 229;
+  --color-background-info: 214 232 255;
+  --color-background-warning: 249 235 211;
+  --color-background-error: 245 220 223;
+  --glass-border: rgba(12, 25, 41, 0.08);
+  --glass-sheen: rgba(255, 255, 255, 0.55);
+  --app-background: radial-gradient(circle at 12% 14%, rgba(86, 190, 212, 0.18), transparent 50%),
+    radial-gradient(circle at 88% 8%, rgba(154, 133, 255, 0.25), transparent 52%),
+    linear-gradient(150deg, rgba(246, 248, 253, 0.94), rgba(228, 235, 246, 0.94));
+}
+
+html[data-accent='ember'] {
+  --color-primary-300: 210 99 55;
+  --color-primary-400: 229 126 75;
+  --color-primary-500: 242 149 82;
+  --color-primary-600: 255 170 104;
+  --color-primary-700: 255 197 140;
+  --color-primary-800: 255 216 177;
+  --color-primary-900: 255 233 210;
+  --color-primary-950: 255 241 225;
+  --color-indicator-primary: 242 149 82;
+  --color-indicator-info: 255 190 130;
+  --app-background: radial-gradient(circle at 18% 24%, rgba(255, 136, 85, 0.32), transparent 54%),
+    radial-gradient(circle at 80% 0%, rgba(255, 204, 128, 0.28), transparent 55%),
+    linear-gradient(140deg, rgba(17, 10, 6, 0.94), rgba(49, 26, 16, 0.94));
+}
+
+html[data-mode='light'][data-accent='ember'] {
+  --app-background: radial-gradient(circle at 20% 18%, rgba(253, 179, 132, 0.25), transparent 54%),
+    radial-gradient(circle at 82% 6%, rgba(255, 218, 173, 0.32), transparent 60%),
+    linear-gradient(145deg, rgba(255, 248, 244, 0.96), rgba(255, 236, 223, 0.96));
+}
+
+html[data-accent='royal'] {
+  --color-primary-300: 88 95 202;
+  --color-primary-400: 108 118 225;
+  --color-primary-500: 126 136 255;
+  --color-primary-600: 160 166 255;
+  --color-primary-700: 190 195 255;
+  --color-primary-800: 214 217 255;
+  --color-primary-900: 233 235 255;
+  --color-primary-950: 240 242 255;
+  --color-indicator-primary: 126 136 255;
+  --color-indicator-info: 168 176 255;
+  --app-background: radial-gradient(circle at 22% 20%, rgba(98, 106, 255, 0.32), transparent 55%),
+    radial-gradient(circle at 85% 6%, rgba(143, 117, 255, 0.28), transparent 55%),
+    linear-gradient(145deg, rgba(11, 13, 37, 0.96), rgba(23, 18, 54, 0.96));
+}
+
+html[data-mode='light'][data-accent='royal'] {
+  --app-background: radial-gradient(circle at 12% 20%, rgba(161, 168, 255, 0.2), transparent 55%),
+    radial-gradient(circle at 88% 6%, rgba(192, 172, 255, 0.26), transparent 60%),
+    linear-gradient(150deg, rgba(245, 247, 255, 0.97), rgba(229, 232, 255, 0.97));
+}
+
+html[data-accent='moss'] {
+  --color-primary-300: 74 122 90;
+  --color-primary-400: 92 154 110;
+  --color-primary-500: 109 182 129;
+  --color-primary-600: 140 205 157;
+  --color-primary-700: 178 224 191;
+  --color-primary-800: 210 238 218;
+  --color-primary-900: 232 247 235;
+  --color-primary-950: 241 251 243;
+  --color-indicator-primary: 109 182 129;
+  --color-indicator-info: 148 214 167;
+  --app-background: radial-gradient(circle at 15% 30%, rgba(88, 150, 120, 0.36), transparent 55%),
+    radial-gradient(circle at 82% 8%, rgba(58, 108, 94, 0.28), transparent 55%),
+    linear-gradient(140deg, rgba(8, 18, 12, 0.95), rgba(11, 24, 18, 0.95));
+}
+
+html[data-mode='light'][data-accent='moss'] {
+  --app-background: radial-gradient(circle at 16% 22%, rgba(150, 210, 180, 0.2), transparent 52%),
+    radial-gradient(circle at 88% 4%, rgba(188, 226, 204, 0.28), transparent 58%),
+    linear-gradient(145deg, rgba(242, 248, 244, 0.97), rgba(224, 237, 229, 0.97));
+}
+
+html[data-accent='aurora'] {
+  --app-background: radial-gradient(circle at 20% 20%, rgba(73, 169, 187, 0.35), transparent 55%),
+    radial-gradient(circle at 80% 10%, rgba(119, 98, 234, 0.25), transparent 50%),
+    linear-gradient(140deg, rgba(6, 14, 24, 0.95), rgba(8, 18, 32, 0.95));
+}
+
+html[data-mode='light'][data-accent='aurora'] {
+  --app-background: radial-gradient(circle at 12% 14%, rgba(86, 190, 212, 0.18), transparent 50%),
+    radial-gradient(circle at 88% 8%, rgba(154, 133, 255, 0.25), transparent 52%),
+    linear-gradient(150deg, rgba(246, 248, 253, 0.94), rgba(228, 235, 246, 0.94));
+}
+
+.glass-surface {
+  background: rgba(12, 20, 32, 0.55);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-glass);
+  backdrop-filter: blur(var(--glass-blur));
+}
+
+html[data-mode='light'] .glass-surface {
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.glass-surface-strong {
+  background: rgba(14, 22, 36, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 24px 60px rgba(4, 10, 20, 0.55);
+  backdrop-filter: blur(calc(var(--glass-blur) + 8px));
+}
+
+html[data-mode='light'] .glass-surface-strong {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(12, 25, 41, 0.08);
+}
+
+.text-gradient {
+  background: linear-gradient(120deg, rgb(var(--color-primary-600)) 0%, rgb(var(--color-primary-400)) 40%, rgb(var(--color-tertiary-500)) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(18, 25, 40, 0.4);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(96, 136, 170, 0.5);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(118, 168, 210, 0.7);
+}
+
+html[data-mode='light'] ::-webkit-scrollbar-track {
+  background: rgba(214, 219, 232, 0.7);
+}
+html[data-mode='light'] ::-webkit-scrollbar-thumb {
+  background: rgba(140, 178, 212, 0.65);
+}
+
