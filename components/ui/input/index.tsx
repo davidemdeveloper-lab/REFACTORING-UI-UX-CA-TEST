@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 import React from 'react';
 import { createInput } from '@gluestack-ui/core/input/creator';

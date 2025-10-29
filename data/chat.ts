@@ -1,0 +1,100 @@
+import { Conversation } from '@/types';
+
+export const conversations: Conversation[] = [
+  {
+    id: 'ch1',
+    title: 'Giovanni Greco',
+    type: 'direct',
+    relatedId: 'c1',
+    lastUpdate: '2025-03-18T09:50:00Z',
+    unread: 2,
+    participants: ['Giovanni Greco', 'Davide (Guest Experience)'],
+    timeline: [
+      {
+        id: 'm1',
+        author: 'Giovanni Greco',
+        authorRole: 'ospite',
+        at: '2025-03-18T09:32:00Z',
+        content: 'Ciao Davide, possiamo anticipare il check-in alle 13? Arrivo con volo mattutino.',
+      },
+      {
+        id: 'm2',
+        author: 'Davide (Guest Experience)',
+        authorRole: 'staff',
+        at: '2025-03-18T09:40:00Z',
+        content: 'Certo Giovanni, predisponiamo accesso smart room dalle 12:45 e welcome drink personalizzato.',
+      },
+      {
+        id: 'm3',
+        author: 'Giovanni Greco',
+        authorRole: 'ospite',
+        at: '2025-03-18T09:48:00Z',
+        content: 'Perfetto, grazie! Potrei ricevere anche una lista aggiornamenti eventi cittadini?',
+      },
+    ],
+  },
+  {
+    id: 'ch2',
+    title: 'Booking #3 · Anniversario',
+    type: 'booking',
+    relatedId: 'b3',
+    lastUpdate: '2025-03-17T18:05:00Z',
+    unread: 0,
+    participants: ['Francesca Gallo', 'Concierge Automator'],
+    timeline: [
+      {
+        id: 'm4',
+        author: 'Concierge Automator',
+        authorRole: 'staff',
+        at: '2025-03-17T17:22:00Z',
+        content: 'Ciao Francesca! Ti va un upgrade cena panoramica con violino dal vivo per il tuo anniversario?',
+      },
+      {
+        id: 'm5',
+        author: 'Francesca Gallo',
+        authorRole: 'ospite',
+        at: '2025-03-17T17:40:00Z',
+        content: 'Che idea meravigliosa, accetto volentieri! Potete includere opzione vegetarian?',
+      },
+      {
+        id: 'm6',
+        author: 'Concierge Automator',
+        authorRole: 'staff',
+        at: '2025-03-17T18:02:00Z',
+        content: 'Assolutamente, aggiorno subito la tua scheda preferenze e confermo con il ristorante.',
+      },
+    ],
+  },
+  {
+    id: 'ch3',
+    title: 'Richiesta Business · Antonio',
+    type: 'direct',
+    relatedId: 'c2',
+    lastUpdate: '2025-03-16T14:12:00Z',
+    unread: 1,
+    participants: ['Antonio Marino', 'Revenue Team'],
+    timeline: [
+      {
+        id: 'm7',
+        author: 'Antonio Marino',
+        authorRole: 'ospite',
+        at: '2025-03-16T13:48:00Z',
+        content: 'Buongiorno, avete disponibilità di sala meeting per 10 persone il 18 aprile?',
+      },
+      {
+        id: 'm8',
+        author: 'Revenue Team',
+        authorRole: 'staff',
+        at: '2025-03-16T14:05:00Z',
+        content: 'Ciao Antonio, abbiamo la sala Executive. Posso inviarti una proposta con catering personalizzato.',
+      },
+      {
+        id: 'm9',
+        author: 'Antonio Marino',
+        authorRole: 'ospite',
+        at: '2025-03-16T14:12:00Z',
+        content: 'Grazie, attendo il preventivo entro oggi pomeriggio.',
+      },
+    ],
+  },
+];
