@@ -8,9 +8,8 @@ import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { HStack } from '@/components/ui/hstack';
 import { ScrollView } from '@/components/ui/scroll-view';
-import { Avatar } from '@/components/ui/avatar';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Divider } from '@/components/ui/divider';
-import { Icon } from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
 import { Input, InputField } from '@/components/ui/input';
 import { Pressable } from '@/components/ui/pressable';
@@ -18,7 +17,6 @@ import { useAccent } from '@/components/theme/accent-provider';
 import {
   Bot,
   Briefcase,
-  CalendarClock,
   CalendarDays,
   ChevronRight,
   Home,
@@ -81,7 +79,7 @@ export const AppShell = ({ children, title, description, actions }: AppShellProp
       <aside className="hidden h-screen w-80 shrink-0 flex-col bg-white/6 px-6 pb-8 pt-10 backdrop-blur-2xl lg:flex">
         <Box className="flex items-center gap-3">
           <Box className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 shadow-lg shadow-[var(--accent-glow)]">
-            <Icon as={Bot} color="rgba(255,255,255,0.95)" size={24} />
+            <Bot color="rgba(255,255,255,0.95)" size={24} />
           </Box>
           <Box>
             <Text className="text-sm uppercase tracking-[0.35em] text-white/60">
@@ -114,8 +112,7 @@ export const AppShell = ({ children, title, description, actions }: AppShellProp
                               isActive ? 'bg-white/15' : ''
                             }`}
                           >
-                            <Icon
-                              as={item.icon}
+                            <item.icon
                               size={20}
                               color={isActive ? accent.value : 'rgba(255,255,255,0.75)'}
                             />
@@ -124,7 +121,7 @@ export const AppShell = ({ children, title, description, actions }: AppShellProp
                             {item.label}
                           </Text>
                         </HStack>
-                        <Icon as={ChevronRight} size={18} color="rgba(255,255,255,0.4)" />
+                        <ChevronRight size={18} color="rgba(255,255,255,0.4)" />
                       </Box>
                     </Link>
                   );
@@ -141,16 +138,16 @@ export const AppShell = ({ children, title, description, actions }: AppShellProp
             Ottimizza il tono dei messaggi e automatizza i follow-up in base alle emozioni rilevate nella conversazione.
           </Text>
           <Button
-            className="mt-4 self-start rounded-xl bg-[var(--accent-color)] px-4 py-2 text-xs font-semibold text-[#0a141f] shadow-lg shadow-[var(--accent-glow)]"
+            className="mt-4 self-start rounded-xl bg-[var(--accent-color)] px-4 py-2 shadow-lg shadow-[var(--accent-glow)]"
           >
-            Esplora suggerimenti
+            <Text className="text-xs font-semibold text-[#0a141f]">Esplora suggerimenti</Text>
           </Button>
         </Box>
         <Divider className="my-6 border-white/10" />
         <HStack className="items-center justify-between rounded-2xl border border-white/10 bg-white/5 p-4">
           <HStack space="md" className="items-center">
             <Avatar className="h-11 w-11 border border-white/30">
-              <Avatar.Image
+              <AvatarImage
                 source={{ uri: 'https://i.pravatar.cc/150?img=47' }}
                 className="h-full w-full"
                 alt="Direttore struttura"
@@ -162,7 +159,7 @@ export const AppShell = ({ children, title, description, actions }: AppShellProp
             </Box>
           </HStack>
           <Pressable className="rounded-xl border border-white/10 bg-white/10 p-2">
-            <Icon as={LogOut} size={18} color="rgba(255,255,255,0.7)" />
+            <LogOut size={18} color="rgba(255,255,255,0.7)" />
           </Pressable>
         </HStack>
       </aside>
@@ -180,13 +177,13 @@ export const AppShell = ({ children, title, description, actions }: AppShellProp
             </Box>
             <HStack className="items-center gap-3">
               <Box className="hidden items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-2 lg:flex">
-                <Icon as={Sparkles} size={18} color="rgba(255,255,255,0.7)" />
+                <Sparkles size={18} color="rgba(255,255,255,0.7)" />
                 <Text className="text-xs text-white/70">Suggerimenti AI disponibili</Text>
               </Box>
               <AccentSelector />
               <ModeSelector />
               <Box className="hidden items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 shadow-inner shadow-white/5 lg:flex">
-                <Icon as={Palette} size={18} color="rgba(255,255,255,0.65)" />
+                <Palette size={18} color="rgba(255,255,255,0.65)" />
                 <Box className="flex flex-col">
                   <Text className="text-[0.6rem] uppercase tracking-[0.3em] text-white/50">
                     Atmosfera stanza
@@ -198,7 +195,7 @@ export const AppShell = ({ children, title, description, actions }: AppShellProp
           </HStack>
           <HStack className="w-full flex-wrap items-center gap-3">
             <Box className="flex min-w-[260px] flex-1 items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-              <Icon as={SearchIcon} size={18} color="rgba(255,255,255,0.55)" />
+              <SearchIcon size={18} color="rgba(255,255,255,0.55)" />
               <Input className="flex-1 bg-transparent">
                 <InputField
                   placeholder="Cerca clienti, prenotazioni o conversazioni"
