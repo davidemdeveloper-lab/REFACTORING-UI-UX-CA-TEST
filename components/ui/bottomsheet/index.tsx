@@ -43,7 +43,7 @@ const bottomSheetItemStyle = tva({
 
 const BottomSheetContext = createContext<{
   visible: boolean;
-  bottomSheetRef: React.RefObject<GorhomBottomSheet>;
+  bottomSheetRef: React.RefObject<any>;
   handleClose: () => void;
   handleOpen: () => void;
 }>({
@@ -53,7 +53,7 @@ const BottomSheetContext = createContext<{
   handleOpen: () => {},
 });
 
-type IBottomSheetProps = React.ComponentProps<typeof GorhomBottomSheet>;
+type IBottomSheetProps = Record<string, unknown>;
 export const BottomSheet = ({
   snapToIndex = 1,
   onOpen,
@@ -65,7 +65,7 @@ export const BottomSheet = ({
   onOpen?: () => void;
   onClose?: () => void;
 }) => {
-  const bottomSheetRef = useRef<GorhomBottomSheet>(null);
+  const bottomSheetRef = useRef<any>(null);
 
   const [visible, setVisible] = useState(false);
 
