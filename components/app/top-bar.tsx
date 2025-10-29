@@ -18,28 +18,28 @@ import {
 
 const pageMap: Record<string, { title: string; subtitle: string }> = {
   '/dashboard': {
-    title: 'Dashboard operativa',
-    subtitle: 'Automazione integrata per ogni punto di contatto con gli ospiti.',
+    title: 'Dashboard esperienziale',
+    subtitle: 'Indice care, sorprese attive e comfort camere sempre aggiornati.',
   },
   '/clients': {
-    title: 'Gestione clienti',
-    subtitle: 'Profilazione avanzata, tag e insight in tempo reale.',
+    title: 'Schede ospiti',
+    subtitle: 'Preferenze, emozioni e automazioni per coccolare ogni cliente.',
   },
   '/clients/new': {
     title: 'Accogli un nuovo ospite',
-    subtitle: 'Crea proposte smart e collega automazioni pre-stay.',
+    subtitle: 'Prepara proposte di benvenuto coordinando canali e comfort.',
   },
   '/bookings': {
-    title: 'Prenotazioni',
-    subtitle: 'Monitoraggio timeline e stato automazioni per ogni soggiorno.',
+    title: 'Timeline soggiorni',
+    subtitle: 'Ogni prenotazione con azioni di cura e follow-up intelligente.',
   },
   '/templates': {
-    title: 'Template & AI Studio',
-    subtitle: 'Costruisci sequenze omnicanale con suggerimenti AI.',
+    title: 'Template empatici',
+    subtitle: 'Sequenze omnicanale con voce calda e suggerimenti AI.',
   },
   '/chat': {
     title: 'Inbox conversazioni',
-    subtitle: 'Chat master-detail con routing intelligente delle richieste.',
+    subtitle: 'Risposte empatiche con co-pilot AI su tutti i canali.',
   },
 };
 
@@ -50,7 +50,7 @@ const getPageDescriptor = (pathname: string) => {
   return (
     match?.[1] ?? {
       title: 'Customer Automator',
-      subtitle: 'Design metal-glassy per esperienze memorabili.',
+      subtitle: 'Suite metal-glassy per coccolare gli ospiti in ogni tocco.',
     }
   );
 };
@@ -83,7 +83,7 @@ export const TopBar = () => {
             <Icon as={Search} size="md" className="text-typography-400" />
             <input
               className="flex-1 bg-transparent text-sm text-typography-100 placeholder:text-typography-500 focus:outline-none"
-              placeholder="Cerca ospiti, prenotazioni o automazioni..."
+              placeholder="Cerca ospiti, momenti di cura o automazioni..."
               aria-label="Cerca"
             />
           </Box>
@@ -94,7 +94,7 @@ export const TopBar = () => {
           >
             <ButtonIcon as={Sparkles} className="text-accent-400" />
             <ButtonText className="text-sm text-typography-50">
-              Hub AI
+              Rituali AI
             </ButtonText>
           </Button>
           <Box className="relative">

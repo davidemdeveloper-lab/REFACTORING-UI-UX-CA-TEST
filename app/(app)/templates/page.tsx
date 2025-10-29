@@ -12,15 +12,15 @@ export default function TemplatesPage() {
   return (
     <Box className="flex flex-col gap-8">
       <GlassPanel
-        title="Template & AI Studio"
-        subtitle="Crea sequenze omnicanale con suggerimenti dinamici."
+        title="Template empatici"
+        subtitle="Crea sequenze omnicanale con voce calda e suggerimenti AI."
       >
         <Box className="flex flex-col gap-6">
           <Box className="flex flex-wrap items-center justify-between gap-4">
             <Box className="flex flex-wrap gap-2">
-              {['Marketing', 'Operativo', 'Ai-assistito'].map((category) => (
+              {['Marketing', 'Operativo', 'AI assistito'].map((category) => (
                 <Badge key={category}>
-                  <BadgeText className="rounded-full bg-white/10 px-4 py-2 text-xs uppercase tracking-[0.35em] text-typography-300">
+                  <BadgeText className="rounded-full bg-white/15 px-4 py-2 text-xs uppercase tracking-[0.35em] text-typography-200">
                     {category}
                   </BadgeText>
                 </Badge>
@@ -35,18 +35,18 @@ export default function TemplatesPage() {
             {templates.map((template) => (
               <Box
                 key={template.id}
-                className="rounded-3xl border border-white/10 bg-black/20 px-5 py-4 backdrop-blur-xl"
+                className="rounded-3xl border border-white/10 bg-black/30 px-5 py-4 backdrop-blur-2xl"
               >
                 <Text className="text-sm font-semibold text-typography-0">
                   {template.name}
                 </Text>
                 <Badge className="mt-2">
-                  <BadgeText className="rounded-full bg-white/10 px-3 py-1 text-[10px] uppercase tracking-[0.35em] text-typography-300">
+                  <BadgeText className="rounded-full bg-white/15 px-3 py-1 text-[10px] uppercase tracking-[0.35em] text-typography-200">
                     {template.category}
                   </BadgeText>
                 </Badge>
-                <Text className="mt-3 text-xs text-typography-300">{template.description}</Text>
-                <Box className="mt-4 flex flex-row items-center gap-3 text-xs text-typography-400">
+                <Text className="mt-3 text-xs text-typography-100">{template.description}</Text>
+                <Box className="mt-4 flex flex-row items-center gap-3 text-xs text-typography-200">
                   <Box className="flex items-center gap-1">
                     <Icon as={GaugeCircle} size="sm" className="text-success-200" />
                     <Text>Open rate {template.engagement}%</Text>
@@ -58,7 +58,7 @@ export default function TemplatesPage() {
                 </Box>
                 <Link
                   href={`/templates/${template.id}`}
-                  className="mt-4 inline-flex items-center gap-2 text-sm text-primary-200 hover:text-primary-100"
+                  className="mt-4 inline-flex items-center gap-2 text-sm text-primary-200 hover:text-primary-50"
                 >
                   Apri editor
                   <ArrowUpRight size={16} color="currentColor" />
@@ -72,4 +72,4 @@ export default function TemplatesPage() {
   );
 }
 
-// Validazione: lista template con categorie, metriche e accesso rapido all'editor.
+// Validazione: lista template empatici con filtri, metriche di engagement e accesso rapido all'editor.

@@ -19,14 +19,14 @@ const statusColor: Record<string, string> = {
 export default function BookingsPage() {
   return (
     <GlassPanel
-      title="Prenotazioni"
-      subtitle="Analizza stato, canali e automazioni legate ad ogni soggiorno."
+      title="Timeline soggiorni"
+      subtitle="Analizza rituali di cura, canali e automazioni legate ad ogni ospite."
     >
       <Box className="flex flex-col gap-5">
         {bookings.map((booking) => (
           <Box
             key={booking.id}
-            className="flex flex-col gap-3 rounded-3xl border border-white/10 bg-black/20 px-5 py-4 backdrop-blur-xl md:flex-row md:items-center md:justify-between"
+            className="flex flex-col gap-3 rounded-3xl border border-white/10 bg-black/35 px-5 py-4 backdrop-blur-2xl md:flex-row md:items-center md:justify-between"
           >
             <Box className="flex flex-1 flex-col gap-2">
               <Box className="flex flex-wrap items-center gap-2">
@@ -39,7 +39,7 @@ export default function BookingsPage() {
                   </BadgeText>
                 </Badge>
               </Box>
-              <Text className="text-sm text-typography-300">
+              <Text className="text-sm text-typography-100">
                 {booking.roomType} • Camera {booking.roomNumber} • {booking.checkIn} → {booking.checkOut}
               </Text>
               <Box className="flex flex-wrap items-center gap-3 text-xs text-typography-400">
@@ -49,7 +49,7 @@ export default function BookingsPage() {
                 </Box>
                 <Box className="flex items-center gap-1">
                   <Icon as={MessageCircle} size="sm" className="text-info-200" />
-                  <Text>{booking.timeline.filter((item) => item.completed).length} / {booking.timeline.length} step completati</Text>
+                  <Text>{booking.timeline.filter((item) => item.completed).length} / {booking.timeline.length} rituali completati</Text>
                 </Box>
                 <Box className="flex items-center gap-1">
                   <Icon as={Bot} size="sm" className="text-success-200" />
@@ -59,7 +59,7 @@ export default function BookingsPage() {
               <Box className="mt-2 flex flex-wrap gap-2">
                 {booking.outstandingActions.map((action) => (
                   <Badge key={action}>
-                    <BadgeText className="rounded-full bg-white/10 px-3 py-1 text-[10px] uppercase tracking-[0.35em] text-typography-300">
+                    <BadgeText className="rounded-full bg-white/15 px-3 py-1 text-[10px] uppercase tracking-[0.35em] text-typography-200">
                       {action}
                     </BadgeText>
                   </Badge>
@@ -68,7 +68,7 @@ export default function BookingsPage() {
             </Box>
             <Link
               href={`/bookings/${booking.id}`}
-              className="inline-flex items-center gap-2 text-sm text-primary-200 hover:text-primary-100"
+              className="inline-flex items-center gap-2 text-sm text-primary-200 hover:text-primary-50"
             >
               Apri dettaglio
               <ArrowUpRight size={16} color="currentColor" />
@@ -80,4 +80,4 @@ export default function BookingsPage() {
   );
 }
 
-// Validazione: lista prenotazioni con stato timeline e insight AI per ogni card.
+// Validazione: lista soggiorni con focus su rituali di cura, insight AI e azioni coordinate.

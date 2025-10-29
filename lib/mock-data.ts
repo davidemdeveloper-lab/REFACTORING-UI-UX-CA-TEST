@@ -404,9 +404,27 @@ export const roomAnalytics: RoomAnalytics[] = [
 ];
 
 export const revenueHighlights: RevenueHighlight[] = [
-  { id: 'rev-01', label: 'Fatturato mensile', amount: '€ 128.400', delta: '+12,4%', positive: true },
-  { id: 'rev-02', label: 'Servizi SPA & Wellness', amount: '€ 24.900', delta: '+6,8%', positive: true },
-  { id: 'rev-03', label: 'Servizi F&B', amount: '€ 18.750', delta: '-2,1%', positive: false },
+  {
+    id: 'rev-01',
+    label: 'Indice di cura ospiti',
+    amount: '92 / 100',
+    delta: '+4,2 pt',
+    positive: true,
+  },
+  {
+    id: 'rev-02',
+    label: 'Tempo medio risposta AI',
+    amount: '1,8 min',
+    delta: '35s più rapidi',
+    positive: true,
+  },
+  {
+    id: 'rev-03',
+    label: 'Esperienze personalizzate',
+    amount: '47 attive',
+    delta: '+8',
+    positive: true,
+  },
 ];
 
 export const iotDevices: IoTDevice[] = [

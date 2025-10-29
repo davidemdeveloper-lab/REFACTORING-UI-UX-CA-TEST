@@ -19,15 +19,15 @@ export default function ClientsPage() {
   return (
     <Box className="flex flex-col gap-8">
       <GlassPanel
-        title="Clienti e relazioni"
-        subtitle="Monitora lo stato degli ospiti e personalizza le automazioni su misura."
+        title="Schede ospiti"
+        subtitle="Monitora relazioni, emozioni e automazioni per personalizzare ogni cura."
       >
         <Box className="flex flex-col gap-6">
           <Box className="flex flex-col items-start justify-between gap-4 lg:flex-row lg:items-center">
             <Box className="flex flex-wrap gap-2">
               {['VIP', 'Family', 'Business', 'Wellness', 'Eventi'].map((filter) => (
                 <Badge key={filter}>
-                  <BadgeText className="rounded-full bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.35em] text-typography-300">
+                  <BadgeText className="rounded-full bg-white/10 px-4 py-2 text-xs uppercase tracking-[0.35em] text-typography-200">
                     {filter}
                   </BadgeText>
                 </Badge>
@@ -61,7 +61,7 @@ export default function ClientsPage() {
               {clients.map((client) => (
                 <Box
                   key={client.id}
-                  className="grid grid-cols-12 gap-4 px-6 py-5 text-sm text-typography-200 hover:bg-white/5"
+                  className="grid grid-cols-12 gap-4 px-6 py-5 text-sm text-typography-100 hover:bg-white/5"
                 >
                   <Box className="col-span-3">
                     <Text className="text-base font-semibold text-typography-0">
@@ -134,8 +134,8 @@ export default function ClientsPage() {
       </GlassPanel>
 
       <GlassPanel
-        title="Segmenti suggeriti dall'AI"
-        subtitle="Suggerimenti basati su pattern di soggiorno e interessi."
+        title="Segmenti emotivi suggeriti dall'AI"
+        subtitle="Pattern di soggiorno e interessi per personalizzare sorprese mirate."
       >
         <Box className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {[
@@ -154,21 +154,19 @@ export default function ClientsPage() {
           ].map((segment) => (
             <Box
               key={segment.title}
-              className="rounded-3xl border border-white/10 bg-black/20 px-5 py-4 backdrop-blur-xl"
+              className="rounded-3xl border border-white/10 bg-black/30 px-5 py-4 backdrop-blur-2xl"
             >
               <Text className="text-sm font-semibold text-typography-0">
                 {segment.title}
               </Text>
-              <Text className="mt-2 text-xs text-typography-300">{segment.desc}</Text>
+              <Text className="mt-2 text-xs text-typography-100">{segment.desc}</Text>
               <Button
                 variant="outline"
                 action="secondary"
                 className="mt-4 border-white/15 px-4"
               >
                 <ButtonIcon as={Bot} className="text-primary-200" />
-                <ButtonText className="text-typography-100">
-                  Attiva automazioni
-                </ButtonText>
+                <ButtonText className="text-typography-50">Attiva automazioni</ButtonText>
               </Button>
             </Box>
           ))}
@@ -178,4 +176,4 @@ export default function ClientsPage() {
   );
 }
 
-// Validazione: lista clienti con filtri, automazioni e segmenti AI secondo requisiti di gestione ospiti.
+// Validazione: lista ospiti orientata alla cura con filtri emotivi, automazioni e segmenti AI coordinati.

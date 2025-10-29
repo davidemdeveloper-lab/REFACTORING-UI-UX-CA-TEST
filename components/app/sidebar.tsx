@@ -22,7 +22,7 @@ const navItems = [
     icon: LayoutDashboard,
   },
   {
-    label: 'Clienti',
+    label: 'Schede ospiti',
     href: '/clients',
     icon: Users,
   },
@@ -32,17 +32,17 @@ const navItems = [
     icon: UserPlus,
   },
   {
-    label: 'Prenotazioni',
+    label: 'Timeline soggiorni',
     href: '/bookings',
     icon: CalendarClock,
   },
   {
-    label: 'Template email',
+    label: 'Template empatici',
     href: '/templates',
     icon: ClipboardList,
   },
   {
-    label: 'Chat & AI',
+    label: 'Inbox conversazioni',
     href: '/chat',
     icon: MessageSquareMore,
   },
@@ -50,7 +50,7 @@ const navItems = [
 
 const supportItems = [
   {
-    label: 'Hub servizi',
+    label: 'Rituali attivi',
     href: '/dashboard#servizi',
     icon: Sparkles,
   },
@@ -108,7 +108,7 @@ export const Sidebar = () => {
       </Box>
       <Box>
         <Text className="mb-2 text-[11px] uppercase tracking-[0.4em] text-typography-500">
-          Servizi rapidi
+          Rituali rapidi
         </Text>
         {supportItems.map((item) => (
           <Link key={item.href} href={item.href} className="group">

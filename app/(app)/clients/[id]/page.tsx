@@ -27,7 +27,7 @@ export default function ClientDetail({ params }: { params: { id: string } }) {
   return (
     <Box className="flex flex-col gap-8">
       <GlassPanel title={client.name} subtitle={client.roomPreference}>
-        <Box className="flex flex-wrap items-center gap-3 text-xs text-typography-300">
+        <Box className="flex flex-wrap items-center gap-3 text-xs text-typography-100">
           <Badge>
             <BadgeText className={`rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.35em] ${loyaltyColors[client.loyaltyLevel] ?? 'bg-white/10 text-typography-200'}`}>
               {client.loyaltyLevel}
@@ -57,31 +57,31 @@ export default function ClientDetail({ params }: { params: { id: string } }) {
 
       <Box className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <GlassPanel
-          title="Cronologia comunicazioni"
-          subtitle="Ogni contatto collega template e canali intelligenti."
+          title="Timeline di cura"
+          subtitle="Ogni contatto collega template e canali empatici per l'ospite."
           className="lg:col-span-2"
         >
           <CommunicationTimeline events={client.timeline} />
         </GlassPanel>
-        <GlassPanel title="Insight AI" subtitle="Suggerimenti per il prossimo soggiorno.">
-          <Box className="flex flex-col gap-3 text-sm text-typography-300">
-            <Box className="rounded-3xl border border-white/10 bg-black/20 px-4 py-3">
+        <GlassPanel title="Insight AI" subtitle="Suggerimenti per il prossimo soggiorno memorabile.">
+          <Box className="flex flex-col gap-3 text-sm text-typography-100">
+            <Box className="rounded-3xl border border-white/10 bg-black/30 px-4 py-3">
               <Text className="text-sm font-semibold text-typography-0">
                 Proposte consigliate
               </Text>
-              <Text className="mt-2 text-xs text-typography-300">
+              <Text className="mt-2 text-xs text-typography-100">
                 L'AI suggerisce pacchetto golf + transfer privato per il prossimo weekend.
               </Text>
-              <Button action="primary" className="mt-3 bg-primary-500/30 px-4">
+              <Button action="primary" className="mt-3 bg-primary-500/40 px-4">
                 <ButtonIcon as={Sparkles} />
                 <ButtonText className="text-typography-0">Crea proposta</ButtonText>
               </Button>
             </Box>
-            <Box className="rounded-3xl border border-white/10 bg-black/20 px-4 py-3">
+            <Box className="rounded-3xl border border-white/10 bg-black/30 px-4 py-3">
               <Text className="text-sm font-semibold text-typography-0">
                 Valutazioni
               </Text>
-              <Text className="mt-2 text-xs text-typography-300">
+              <Text className="mt-2 text-xs text-typography-200">
                 Ultima recensione 5/5 con menzione speciale per il servizio concierge.
               </Text>
             </Box>
@@ -89,23 +89,23 @@ export default function ClientDetail({ params }: { params: { id: string } }) {
         </GlassPanel>
       </Box>
 
-      <GlassPanel title="Prenotazioni collegate" subtitle="Stato attuale e storico recente.">
+      <GlassPanel title="Percorsi collegati" subtitle="Stato attuale e storico recente.">
         <Box className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {relatedBookings.map((booking) => (
             <Box
               key={booking.id}
-              className="rounded-3xl border border-white/10 bg-black/20 px-5 py-4 backdrop-blur-xl"
+              className="rounded-3xl border border-white/10 bg-black/30 px-5 py-4 backdrop-blur-2xl"
             >
               <Text className="text-base font-semibold text-typography-0">
                 {booking.roomType}
               </Text>
-              <Text className="text-xs text-typography-300">
+              <Text className="text-xs text-typography-100">
                 {booking.checkIn} → {booking.checkOut}
               </Text>
-              <Text className="mt-2 text-xs text-typography-400">{booking.aiInsights}</Text>
+              <Text className="mt-2 text-xs text-typography-200">{booking.aiInsights}</Text>
               <Link
                 href={`/bookings/${booking.id}`}
-                className="mt-3 inline-flex items-center gap-2 text-sm text-primary-200 hover:text-primary-100"
+                className="mt-3 inline-flex items-center gap-2 text-sm text-primary-200 hover:text-primary-50"
               >
                 Vai al dettaglio prenotazione
                 <Star size={14} color="currentColor" />
@@ -119,7 +119,7 @@ export default function ClientDetail({ params }: { params: { id: string } }) {
         <Box className="flex flex-wrap gap-2">
           {client.tags.map((tag) => (
             <Badge key={tag}>
-              <BadgeText className="rounded-full bg-white/10 px-3 py-1 text-[10px] uppercase tracking-[0.35em] text-typography-300">
+              <BadgeText className="rounded-full bg-white/15 px-3 py-1 text-[10px] uppercase tracking-[0.35em] text-typography-200">
                 {tag}
               </BadgeText>
             </Badge>
@@ -127,11 +127,11 @@ export default function ClientDetail({ params }: { params: { id: string } }) {
         </Box>
         <Button variant="outline" action="secondary" className="mt-4 border-white/15 px-4">
           <ButtonIcon as={Bot} />
-          <ButtonText className="text-typography-100">Genera nuova automazione</ButtonText>
+          <ButtonText className="text-typography-50">Genera nuova automazione</ButtonText>
         </Button>
       </GlassPanel>
     </Box>
   );
 }
 
-// Validazione: dettaglio cliente con timeline comunicativa, suggerimenti AI e collegamenti prenotazioni.
+// Validazione: dettaglio ospite focalizzato su timeline di cura, insight AI e collegamenti ai percorsi attivi.

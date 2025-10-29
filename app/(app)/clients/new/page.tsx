@@ -12,7 +12,7 @@ export default function NewClientPage() {
     <Box className="flex flex-col gap-8">
       <GlassPanel
         title="Accogli un nuovo ospite"
-        subtitle="Prepara la proposta perfetta collegando automazioni, canali e IoT camera."
+        subtitle="Prepara rituali di benvenuto coordinando automazioni, canali e comfort in camera."
       >
         <Box className="grid grid-cols-1 gap-6 lg:grid-cols-5">
           <Box className="lg:col-span-3">
@@ -40,25 +40,25 @@ export default function NewClientPage() {
             </Box>
           </Box>
           <Box className="flex flex-col gap-4 lg:col-span-2">
-            <Box className="rounded-3xl border border-white/10 bg-black/20 px-5 py-4">
+            <Box className="rounded-3xl border border-white/10 bg-black/30 px-5 py-4">
               <Text className="text-sm font-semibold text-typography-0">
                 Canali di onboarding
               </Text>
               <Box className="mt-3 flex flex-wrap gap-2">
                 {channels.map((channel) => (
                   <Badge key={channel}>
-                    <BadgeText className="rounded-full bg-white/10 px-4 py-2 text-[11px] uppercase tracking-[0.35em] text-typography-200">
+                    <BadgeText className="rounded-full bg-white/15 px-4 py-2 text-[11px] uppercase tracking-[0.35em] text-typography-200">
                       {channel}
                     </BadgeText>
                   </Badge>
                 ))}
               </Box>
             </Box>
-            <Box className="rounded-3xl border border-white/10 bg-black/20 px-5 py-4">
+            <Box className="rounded-3xl border border-white/10 bg-black/30 px-5 py-4">
               <Text className="text-sm font-semibold text-typography-0">
                 Template suggeriti
               </Text>
-              <Box className="mt-3 flex flex-col gap-2 text-xs text-typography-300">
+              <Box className="mt-3 flex flex-col gap-2 text-xs text-typography-100">
                 <Box className="flex flex-row items-center gap-2">
                   <Sparkles size={14} color="rgb(var(--color-primary-300))" />
                   <Text>Welcome VIP con upsell SPA</Text>
@@ -78,52 +78,48 @@ export default function NewClientPage() {
       </GlassPanel>
 
       <GlassPanel
-        title="Azioni iniziali"
+        title="Rituali iniziali"
         subtitle="Coordina comunicazioni, attività interne e dispositivi camera."
       >
         <Box className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          <Box className="rounded-3xl border border-white/10 bg-black/20 px-5 py-4">
+          <Box className="rounded-3xl border border-white/10 bg-black/30 px-5 py-4">
             <Text className="text-sm font-semibold text-typography-0">
               Sequenza comunicazioni
             </Text>
-            <Box className="mt-3 flex flex-col gap-2 text-xs text-typography-300">
+            <Box className="mt-3 flex flex-col gap-2 text-xs text-typography-100">
               <Text>• Email conferma con firma digitale</Text>
               <Text>• WhatsApp pre-arrivo con upsell transfer</Text>
               <Text>• Automazione AI per preferenze camera</Text>
             </Box>
             <Button variant="outline" action="secondary" className="mt-4 border-white/15 px-4">
               <ButtonIcon as={ClipboardList} />
-              <ButtonText className="text-typography-100">
-                Modifica timeline
-              </ButtonText>
+              <ButtonText className="text-typography-50">Modifica timeline</ButtonText>
             </Button>
           </Box>
-          <Box className="rounded-3xl border border-white/10 bg-black/20 px-5 py-4">
+          <Box className="rounded-3xl border border-white/10 bg-black/30 px-5 py-4">
             <Text className="text-sm font-semibold text-typography-0">
               Attività interne
             </Text>
-            <Box className="mt-3 flex flex-col gap-2 text-xs text-typography-300">
+            <Box className="mt-3 flex flex-col gap-2 text-xs text-typography-100">
               <Text>• Blocco camera 701 con priorità VIP</Text>
               <Text>• Prepara welcome kit detox + amenities</Text>
               <Text>• Allerta concierge per transfer privato</Text>
             </Box>
             <Button variant="outline" action="secondary" className="mt-4 border-white/15 px-4">
               <ButtonIcon as={CalendarPlus} />
-              <ButtonText className="text-typography-100">
-                Crea to-do
-              </ButtonText>
+              <ButtonText className="text-typography-50">Crea to-do</ButtonText>
             </Button>
           </Box>
-          <Box className="rounded-3xl border border-white/10 bg-black/20 px-5 py-4">
+          <Box className="rounded-3xl border border-white/10 bg-black/30 px-5 py-4">
             <Text className="text-sm font-semibold text-typography-0">
               IoT & comfort camera
             </Text>
-            <Box className="mt-3 flex flex-col gap-2 text-xs text-typography-300">
+            <Box className="mt-3 flex flex-col gap-2 text-xs text-typography-100">
               <Text>• Temperatura iniziale 21°C</Text>
               <Text>• Minibar premium pronto al 90%</Text>
               <Text>• Accendi luci scenografiche all'arrivo</Text>
             </Box>
-            <Button action="primary" className="mt-4 bg-primary-500/30 px-4">
+            <Button action="primary" className="mt-4 bg-primary-500/40 px-4">
               <ButtonIcon as={Send} />
               <ButtonText className="text-typography-0">
                 Invia automazioni
@@ -136,4 +132,4 @@ export default function NewClientPage() {
   );
 }
 
-// Validazione: form accoglienza cliente con sezioni automazioni, canali e IoT come da specifiche.
+// Validazione: form accoglienza orientato ai rituali di cura con canali, automazioni e comfort coordinati.

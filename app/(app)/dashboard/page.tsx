@@ -33,6 +33,12 @@ const trendColor = {
   stable: 'text-warning-200',
 };
 
+const trendLabel = {
+  up: 'momenti wow in crescita',
+  down: 'attenzioni da rinforzare',
+  stable: 'rituali stabili',
+};
+
 export default function DashboardPage() {
   const upcomingGuests = clients.slice(0, 3);
   const activeBookings = bookings.slice(0, 3);
@@ -40,31 +46,28 @@ export default function DashboardPage() {
   return (
     <Box className="flex flex-col gap-10">
       <GlassPanel
-        title="Welcome back, Davide!"
-        subtitle="Panoramica completa dello stato camere, automazioni e interazioni AI."
+        title="Bentornato, Davide!"
+        subtitle="Qui controlli come il team e l'AI stanno coccolando ogni ospite in tempo reale."
         className="relative overflow-hidden"
       >
         <Box className="absolute -right-16 -top-14 h-64 w-64 rounded-full bg-primary-500/20 blur-3xl" />
         <Box className="grid grid-cols-1 gap-6 md:grid-cols-5">
           <Box className="md:col-span-3">
             <Text className="text-4xl font-semibold text-typography-0">
-              86% occupazione media camere
+              92/100 indice di cura ospiti
             </Text>
-            <Text className="mt-3 max-w-xl text-sm text-typography-200">
-              Grazie alle automazioni Customer Automator hai ridotto del 38% i tempi di risposta e aumentato del 18% gli upgrade spontanei.
+            <Text className="mt-3 max-w-xl text-sm text-typography-100">
+              L'AI suggerisce micro-sorprese e coordina il team per anticipare i bisogni: risposte più rapide del 35% e
+              recensioni con tono emozionale in crescita.
             </Text>
             <Box className="mt-6 flex flex-wrap gap-3">
-              <Button action="primary" className="bg-primary-500/40 px-5">
+              <Button action="primary" className="bg-primary-500/50 px-5">
                 <ButtonIcon as={Sparkles} />
-                <ButtonText className="text-typography-0">
-                  Crea proposta istantanea
-                </ButtonText>
+                <ButtonText className="text-typography-0">Attiva sorpresa</ButtonText>
               </Button>
               <Button variant="outline" action="secondary" className="border-white/20 px-5">
                 <ButtonIcon as={MessageSquarePlus} className="text-typography-100" />
-                <ButtonText className="text-typography-50">
-                  Apri inbox AI
-                </ButtonText>
+                <ButtonText className="text-typography-50">Apri inbox AI</ButtonText>
               </Button>
             </Box>
           </Box>
@@ -94,7 +97,7 @@ export default function DashboardPage() {
                     {card.delta}
                   </Text>
                   <Text className="text-[11px] text-typography-400">
-                    vs mese precedente
+                    vs ultima settimana
                   </Text>
                 </Box>
               </Box>
@@ -104,18 +107,18 @@ export default function DashboardPage() {
       </GlassPanel>
 
       <Box className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-        <GlassPanel title="Uso stanze & trend" className="xl:col-span-2">
+        <GlassPanel title="Comfort camere & attenzioni" className="xl:col-span-2">
           <Box className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {roomAnalytics.map((room) => (
               <Box
                 key={room.roomType}
-                className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/25 px-5 py-5 backdrop-blur-xl"
+                className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/35 px-5 py-5 backdrop-blur-xl"
               >
-                <Text className="text-sm font-medium text-typography-200">
+                <Text className="text-sm font-medium text-typography-100">
                   {room.roomType}
                 </Text>
                 <Text className="mt-2 text-3xl font-semibold text-typography-0">
-                  {room.occupancy}%
+                  {room.occupancy}% rituali completati
                 </Text>
                 <Box className="mt-3 flex flex-row items-center gap-2">
                   <Icon
@@ -130,7 +133,7 @@ export default function DashboardPage() {
                     size="sm"
                   />
                   <Text className={`text-xs ${trendColor[room.trend]}`}>
-                    Trend {room.trend === 'up' ? 'positivo' : room.trend === 'down' ? 'negativo' : 'stabile'}
+                    {trendLabel[room.trend]}
                   </Text>
                 </Box>
                 <Box className="mt-4 h-2 w-full overflow-hidden rounded-full bg-white/10">
@@ -144,7 +147,7 @@ export default function DashboardPage() {
             ))}
           </Box>
         </GlassPanel>
-        <GlassPanel title="Hub notifiche AI" subtitle="Conversazioni e alert senza risposta.">
+        <GlassPanel title="Hub attenzioni AI" subtitle="Conversazioni e gesti di cura che richiedono risposta.">
           <Box className="flex flex-col gap-4">
             {aiNotifications.map((notification) => (
               <Box
@@ -161,7 +164,7 @@ export default function DashboardPage() {
                     {notification.time}
                   </Text>
                 </Box>
-                <Text className="mt-2 text-sm text-typography-100">
+                <Text className="mt-2 text-sm text-typography-50">
                   {notification.message}
                 </Text>
                 <Link
@@ -178,40 +181,40 @@ export default function DashboardPage() {
       </Box>
 
       <Box className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <GlassPanel title="Clienti in evidenza" subtitle="Preferenze, stato automazioni e benessere camera.">
+        <GlassPanel title="Ospiti da coccolare oggi" subtitle="Preferenze chiave, rituali attivi e livello comfort.">
           <Box className="flex flex-col gap-4">
             {upcomingGuests.map((guest) => (
               <Box
                 key={guest.id}
-                className="flex flex-col gap-4 rounded-2xl border border-white/10 bg-black/20 px-5 py-4 backdrop-blur-xl lg:flex-row lg:items-center"
+                className="flex flex-col gap-4 rounded-2xl border border-white/10 bg-black/35 px-5 py-4 backdrop-blur-2xl lg:flex-row lg:items-center"
               >
                 <Box className="flex flex-1 flex-col gap-1">
                   <Text className="text-lg font-semibold text-typography-0">
                     {guest.name}
                   </Text>
-                  <Text className="text-sm text-typography-300">
+                  <Text className="text-sm text-typography-100">
                     {guest.roomPreference}
                   </Text>
                   <Box className="mt-2 flex flex-wrap gap-2">
                     {guest.tags.map((tag) => (
                       <Badge key={tag}>
-                        <BadgeText className="bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.4em] text-typography-300">
+                        <BadgeText className="bg-white/10 px-3 py-1 text-[10px] uppercase tracking-[0.4em] text-typography-200">
                           {tag}
                         </BadgeText>
                       </Badge>
                     ))}
                   </Box>
                 </Box>
-                <Box className="grid grid-cols-2 gap-3 text-xs text-typography-300">
-                  <Box className="flex items-center gap-2 rounded-2xl border border-white/10 bg-black/10 px-3 py-2">
+                <Box className="grid grid-cols-2 gap-3 text-xs text-typography-100">
+                  <Box className="flex items-center gap-2 rounded-2xl border border-white/10 bg-black/30 px-3 py-2">
                     <Icon as={ThermometerSun} size="sm" className="text-warning-200" />
                     <Text>{guest.temperature.toFixed(1)}°C</Text>
                   </Box>
-                  <Box className="flex items-center gap-2 rounded-2xl border border-white/10 bg-black/10 px-3 py-2">
+                  <Box className="flex items-center gap-2 rounded-2xl border border-white/10 bg-black/30 px-3 py-2">
                     <Icon as={Droplets} size="sm" className="text-info-200" />
                     <Text>{guest.minibar}% minibar</Text>
                   </Box>
-                  <Box className="col-span-2 flex items-center gap-2 rounded-2xl border border-white/10 bg-black/10 px-3 py-2">
+                  <Box className="col-span-2 flex items-center gap-2 rounded-2xl border border-white/10 bg-black/30 px-3 py-2">
                     <Icon as={Sparkles} size="sm" className="text-primary-200" />
                     <Text>Automazione {guest.automationLevel}</Text>
                   </Box>
@@ -220,12 +223,12 @@ export default function DashboardPage() {
             ))}
           </Box>
         </GlassPanel>
-        <GlassPanel title="Prenotazioni attive" subtitle="Stato comunicazioni e azioni successive.">
+        <GlassPanel title="Percorsi in corso" subtitle="Azioni di cura e follow-up suggeriti dall'AI.">
           <Box className="flex flex-col gap-4">
             {activeBookings.map((booking) => (
               <Box
                 key={booking.id}
-                className="rounded-2xl border border-white/10 bg-black/20 px-5 py-4 backdrop-blur-xl"
+                className="rounded-2xl border border-white/10 bg-black/35 px-5 py-4 backdrop-blur-2xl"
               >
                 <Box className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                   <Text className="text-lg font-semibold text-typography-0">
@@ -237,13 +240,13 @@ export default function DashboardPage() {
                     </BadgeText>
                   </Badge>
                 </Box>
-                <Text className="text-sm text-typography-300">
+                <Text className="text-sm text-typography-100">
                   {booking.roomType} • {booking.checkIn} → {booking.checkOut}
                 </Text>
                 <Box className="mt-3 flex flex-wrap gap-2">
                   {booking.outstandingActions.map((action) => (
                     <Badge key={action}>
-                      <BadgeText className="bg-white/5 px-3 py-1 text-[10px] uppercase tracking-[0.4em] text-typography-300">
+                      <BadgeText className="bg-white/10 px-3 py-1 text-[10px] uppercase tracking-[0.4em] text-typography-200">
                         {action}
                       </BadgeText>
                     </Badge>
@@ -251,7 +254,7 @@ export default function DashboardPage() {
                 </Box>
                 <Link
                   href={`/bookings/${booking.id}`}
-                  className="mt-4 inline-flex items-center gap-1 text-xs text-primary-200 hover:text-primary-100"
+                  className="mt-4 inline-flex items-center gap-1 text-xs text-primary-200 hover:text-primary-50"
                 >
                   Apri dettaglio prenotazione
                   <ArrowUpRight size={14} color="currentColor" />
@@ -263,22 +266,22 @@ export default function DashboardPage() {
       </Box>
 
       <Box className="grid grid-cols-1 gap-6 lg:grid-cols-2" id="servizi">
-        <GlassPanel title="IoT Hub" subtitle="Monitoraggio dispositivi di camera e aree comuni.">
+        <GlassPanel title="Comfort ambienti" subtitle="Dispositivi e sensori al servizio dell'esperienza.">
           <Box className="grid grid-cols-1 gap-3">
             {iotDevices.map((device) => (
               <Box
                 key={device.id}
-                className="flex flex-row items-center justify-between rounded-2xl border border-white/10 bg-black/15 px-4 py-3"
+                className="flex flex-row items-center justify-between rounded-2xl border border-white/10 bg-black/30 px-4 py-3"
               >
                 <Box className="flex flex-col">
                   <Text className="text-sm font-medium text-typography-0">
                     {device.name}
                   </Text>
-                  <Text className="text-xs text-typography-400">{device.location}</Text>
+                  <Text className="text-xs text-typography-200">{device.location}</Text>
                 </Box>
                 <Box className="flex flex-row items-center gap-3">
                   <Badge>
-                    <BadgeText className="bg-white/5 px-2 py-1 text-[10px] uppercase tracking-[0.3em] text-typography-300">
+                    <BadgeText className="bg-white/10 px-2 py-1 text-[10px] uppercase tracking-[0.3em] text-typography-200">
                       {device.status}
                     </BadgeText>
                   </Badge>
@@ -291,18 +294,18 @@ export default function DashboardPage() {
             ))}
           </Box>
         </GlassPanel>
-        <GlassPanel title="Servizi partner" subtitle="Gestione adesioni e attivazioni automatiche.">
+        <GlassPanel title="Partner esperienziali" subtitle="Gestisci sorprese e servizi esterni coordinati dall'AI.">
           <Box className="flex flex-col gap-4">
             {externalServices.map((service) => (
               <Box
                 key={service.id}
-                className="flex flex-col gap-3 rounded-2xl border border-white/10 bg-black/15 px-5 py-4 backdrop-blur-xl md:flex-row md:items-center md:justify-between"
+                className="flex flex-col gap-3 rounded-2xl border border-white/10 bg-black/30 px-5 py-4 backdrop-blur-2xl md:flex-row md:items-center md:justify-between"
               >
                 <Box>
                   <Text className="text-lg font-semibold text-typography-0">
                     {service.name}
                   </Text>
-                  <Text className="text-sm text-typography-300">
+                  <Text className="text-sm text-typography-100">
                     {service.description}
                   </Text>
                 </Box>
@@ -331,4 +334,4 @@ export default function DashboardPage() {
   );
 }
 
-// Validazione: dashboard completa analytics, hub AI, IoT e servizi esterni secondo requisiti.
+// Validazione: dashboard esperienziale focalizzata su cura ospiti, comfort ambienti e coordinamento servizi AI.
