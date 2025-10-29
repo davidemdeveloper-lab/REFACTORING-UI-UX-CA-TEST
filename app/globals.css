@@ -151,7 +151,7 @@
     ),
     radial-gradient(circle at bottom left, rgba(255, 162, 89, 0.18), transparent 60%),
     #0f141c;
-  --foreground: rgb(var(--color-typography-900));
+  --foreground: rgb(var(--color-typography-0));
 }
 
 .dark {
@@ -296,7 +296,7 @@
   --color-indicator-info: 149 212 237;
   --color-indicator-error: 239 110 118;
 
-  --foreground: rgb(var(--color-typography-50));
+  --foreground: rgb(var(--color-typography-950));
 }
 
 body {
