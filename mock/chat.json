@@ -1,0 +1,24 @@
+[
+  {
+    "id": "conversation-1",
+    "type": "booking",
+    "bookingId": "booking-1",
+    "clientId": "client-1",
+    "aiEnabled": true,
+    "messages": [
+      { "id": "msg-1", "sender": "guest", "body": "Buongiorno, posso anticipare il check-in?", "sentAt": "2024-01-10T09:00:00.000Z", "status": "delivered" },
+      { "id": "msg-2", "sender": "hotel", "body": "Certamente, la stanza sarà pronta dalle 12", "sentAt": "2024-01-10T09:05:00.000Z", "status": "delivered" },
+      { "id": "msg-3", "sender": "ai", "body": "Vuoi prenotare un massaggio all'arrivo?", "sentAt": "2024-01-10T09:10:00.000Z", "status": "sent" }
+    ]
+  },
+  {
+    "id": "conversation-2",
+    "type": "direct",
+    "clientId": "client-2",
+    "aiEnabled": false,
+    "messages": [
+      { "id": "msg-4", "sender": "guest", "body": "Avete parcheggio coperto?", "sentAt": "2024-01-12T11:15:00.000Z", "status": "delivered" },
+      { "id": "msg-5", "sender": "hotel", "body": "Sì, disponibile h24", "sentAt": "2024-01-12T11:18:00.000Z", "status": "delivered" }
+    ]
+  }
+]

@@ -1,0 +1,5 @@
+[
+  { "id": "iot-1", "roomNo": "501", "type": "thermostat", "status": "online", "lastSeen": "2024-01-15T10:15:00.000Z" },
+  { "id": "iot-2", "roomNo": "305", "type": "minibar", "status": "warning", "lastSeen": "2024-01-15T09:55:00.000Z" },
+  { "id": "iot-3", "roomNo": "Lobby", "type": "lighting", "status": "offline", "lastSeen": "2024-01-15T08:40:00.000Z" }
+]

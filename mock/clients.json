@@ -1,0 +1,35 @@
+[
+  {
+    "id": "client-1",
+    "name": "Giovanni Greco",
+    "email": "giovanni.greco@example.com",
+    "phone": "+39 333 111 2233",
+    "vip": true,
+    "notes": "Preferisce camere con vista mare",
+    "spaOptIn": true,
+    "lastContact": "2024-01-14T09:30:00.000Z",
+    "status": "attivo"
+  },
+  {
+    "id": "client-2",
+    "name": "Maria Rossi",
+    "email": "maria.rossi@example.com",
+    "phone": "+39 340 654 1122",
+    "vip": false,
+    "notes": "Richiede colazione senza glutine",
+    "spaOptIn": false,
+    "lastContact": "2024-01-08T15:45:00.000Z",
+    "status": "attivo"
+  },
+  {
+    "id": "client-3",
+    "name": "Alberto Marino",
+    "email": "alberto.marino@example.com",
+    "phone": "+39 329 777 4455",
+    "vip": false,
+    "notes": "Interessato a suite familiare",
+    "spaOptIn": true,
+    "lastContact": "2023-12-30T12:00:00.000Z",
+    "status": "vip"
+  }
+]
