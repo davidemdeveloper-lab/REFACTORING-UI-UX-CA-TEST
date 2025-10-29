@@ -9,7 +9,7 @@ import { Icon } from '@/components/layout/UiIcon';
 import { Button } from '@/components/ui/button';
 import { Box } from '@/components/ui/box';
 
-export default function ReservationDetailPage({ params }: { params: { id: string } }) {
+export default async function ReservationDetailPage({ params }: { params: { id: string } }) {
   const reservation = mockReservations.find((item) => item.id === params.id);
   if (!reservation) return notFound();
 
@@ -62,7 +62,7 @@ export default function ReservationDetailPage({ params }: { params: { id: string
                 borderRadius: 14,
                 paddingHorizontal: 16,
                 paddingVertical: 10,
-                background: 'transparent',
+                backgroundColor: 'transparent',
                 borderColor: palette.borderSoft,
               }}
             >
@@ -78,9 +78,9 @@ export default function ReservationDetailPage({ params }: { params: { id: string
                 borderRadius: 14,
                 paddingHorizontal: 16,
                 paddingVertical: 10,
-                background: 'linear-gradient(135deg, rgba(96,214,255,0.6), rgba(151,255,221,0.65))',
                 borderColor: palette.borderHighlight,
-              }}
+                background: 'linear-gradient(135deg, rgba(96,214,255,0.6), rgba(151,255,221,0.65))',
+              } as any}
             >
               <HStack space="sm" className="items-center">
                 <Icon name="Sparkles" size={16} color="#041320" />
@@ -210,7 +210,7 @@ export default function ReservationDetailPage({ params }: { params: { id: string
                       borderRadius: 12,
                       paddingHorizontal: 16,
                       paddingVertical: 8,
-                      background: 'transparent',
+                      backgroundColor: 'transparent',
                       borderColor: palette.borderSoft,
                     }}
                   >

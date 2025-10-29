@@ -25,3 +25,11 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.app-shell {
+  background: linear-gradient(180deg, #0b101a 0%, #0c121c 100%);
+}
+
+.text-primary {
+  color: #e9efff;
+}

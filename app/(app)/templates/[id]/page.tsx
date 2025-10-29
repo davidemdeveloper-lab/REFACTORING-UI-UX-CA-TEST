@@ -22,7 +22,7 @@ const personalizations = [
   { label: 'Partner', value: 'Link dinamici TripAdvisor & MADEEP SPA' },
 ];
 
-export default function TemplateEditorPage({ params }: { params: { id: string } }) {
+export default async function TemplateEditorPage({ params }: { params: { id: string } }) {
   const template = mockTemplates.find((item) => item.id === params.id);
   if (!template) return notFound();
 
@@ -43,7 +43,7 @@ export default function TemplateEditorPage({ params }: { params: { id: string } 
               borderRadius: 14,
               paddingHorizontal: 16,
               paddingVertical: 10,
-              background: 'transparent',
+              backgroundColor: 'transparent',
               borderColor: palette.borderSoft,
             }}
           >
@@ -56,9 +56,9 @@ export default function TemplateEditorPage({ params }: { params: { id: string } 
               borderRadius: 16,
               paddingHorizontal: 24,
               paddingVertical: 12,
-              background: 'linear-gradient(135deg, rgba(96,214,255,0.6), rgba(151,255,221,0.65))',
               borderColor: palette.borderHighlight,
-            }}
+              background: 'linear-gradient(135deg, rgba(96,214,255,0.6), rgba(151,255,221,0.65))',
+            } as any}
           >
             <HStack space="sm" className="items-center">
               <Icon name="Save" size={16} color="#041320" />
@@ -93,7 +93,11 @@ export default function TemplateEditorPage({ params }: { params: { id: string } 
           </Text>
           <Box
             className="mt-4 rounded-3xl p-8"
-            style={{ background: 'rgba(6, 14, 25, 0.65)', border: `1px solid ${palette.glassStroke}` }}
+            style={{
+              backgroundColor: 'rgba(6, 14, 25, 0.65)',
+              borderWidth: 1,
+              borderColor: palette.glassStroke,
+            }}
           >
             <VStack space="md">
               <Text className="text-xl font-semibold" style={{ color: palette.textPrimary }}>
@@ -116,7 +120,7 @@ export default function TemplateEditorPage({ params }: { params: { id: string } 
                     borderRadius: 14,
                     paddingHorizontal: 20,
                     paddingVertical: 10,
-                    background: palette.accentPrimary,
+                    backgroundColor: palette.accentPrimary,
                     borderColor: palette.borderHighlight,
                   }}
                 >
@@ -155,13 +159,14 @@ export default function TemplateEditorPage({ params }: { params: { id: string } 
             <Box
               className="h-64 rounded-3xl"
               style={{
-                background: 'rgba(5, 17, 30, 0.6)',
-                border: `1px solid ${palette.glassStroke}`,
+                backgroundColor: 'rgba(5, 17, 30, 0.6)',
+                borderWidth: 1,
+                borderColor: palette.glassStroke,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: palette.textSecondary,
-              }}
+              } as any}
             >
               <Text className="text-xs" style={{ color: palette.textSecondary }}>
                 Mock preview 360×780

@@ -2,9 +2,9 @@
 
 import { ReactNode } from 'react';
 import { Box } from '@/components/ui/box';
+import { VStack } from '@/components/ui/vstack';
 import { SidebarNav } from './SidebarNav';
 import { TopBar } from './TopBar';
-import { palette, gradients } from '@/design/palette';
 
 interface AppShellProps {
   children: ReactNode;
@@ -12,29 +12,14 @@ interface AppShellProps {
 
 export const AppShell = ({ children }: AppShellProps) => {
   return (
-    <Box
-      style={{
-        display: 'flex',
-        minHeight: '100vh',
-        background: gradients.hero,
-        color: palette.textPrimary,
-      }}
-    >
+    <Box className="app-shell flex flex-row min-h-screen">
       <SidebarNav />
-      <Box className="flex-1" style={{ position: 'relative', paddingBottom: 32 }}>
+      <VStack className="flex-1 relative pb-8">
         <TopBar />
-        <Box
-          className="px-6 py-6"
-          style={{
-            minHeight: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 24,
-          }}
-        >
+        <Box className="flex-1 px-6 py-6 flex flex-col gap-6 text-primary">
           {children}
         </Box>
-      </Box>
+      </VStack>
     </Box>
   );
 };
