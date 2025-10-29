@@ -2,20 +2,112 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+  min-height: 100%;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+  --accent-surface: rgba(221 242 253 / 0.09);
+  --accent-border: rgba(221 242 253 / 0.35);
+  --accent-glow: rgba(90 234 255 / 0.19);
+  --accent-range-fill: rgba(221 242 253 / 0.65);
+  --accent-intensity: 0.75;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    color-scheme: dark;
   }
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(
+      circle at 0% 0%,
+      rgba(255, 255, 255, 0.7),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at 100% 100%,
+      rgba(129, 140, 248, 0.15),
+      transparent 50%
+    );
+  color: rgb(var(--color-typography-900));
+  font-family: var(--font-plus-jakarta), system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.glass-panel {
+  background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.16),
+      rgba(255, 255, 255, 0.05)
+    );
+  border: 1px solid var(--accent-border);
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.18);
+  backdrop-filter: blur(18px);
+}
+
+.accent-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 0.45rem;
+  border-radius: 9999px;
+  background: linear-gradient(
+      90deg,
+      var(--accent-range-fill) calc(var(--accent-intensity, 0.75) * 100%),
+      rgba(255, 255, 255, 0.16) calc(var(--accent-intensity, 0.75) * 100%)
+    );
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+  outline: none;
+  transition: background 120ms ease;
+}
+
+.accent-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 9999px;
+  background: var(--accent-range-fill);
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.15), 0 8px 20px rgba(15, 23, 42, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+.accent-range::-webkit-slider-thumb:hover {
+  transform: scale(1.04);
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.25), 0 10px 24px rgba(15, 23, 42, 0.4);
+}
+
+.accent-range::-moz-range-thumb {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 9999px;
+  background: var(--accent-range-fill);
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.15), 0 8px 20px rgba(15, 23, 42, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+.accent-range:focus-visible {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.24);
+}
+
