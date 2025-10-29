@@ -182,6 +182,7 @@ module.exports = {
         code: ['var(--font-source-code-pro)'],
         inter: ['var(--font-inter)'],
         'space-mono': ['var(--font-space-mono)'],
+        'space-grotesk': ['var(--font-space-grotesk)'],
       },
       fontWeight: {
         extrablack: '950',

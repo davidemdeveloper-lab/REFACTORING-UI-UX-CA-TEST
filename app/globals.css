@@ -3,19 +3,104 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light dark;
+  --accent-solid: #4ac8ff;
+  --accent-soft: #9df3ff;
+  --glass-dark: rgba(20, 24, 32, 0.68);
+  --glass-light: rgba(255, 255, 255, 0.7);
+  --metal-gradient: radial-gradient(circle at top left, rgba(255, 255, 255, 0.06), transparent 55%),
+    linear-gradient(130deg, rgba(255, 255, 255, 0.06) 0%, rgba(57, 72, 92, 0.7) 35%, rgba(12, 14, 19, 0.95) 100%);
+  --grid-accent: linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  min-height: 100%;
+  background-color: rgb(var(--color-background-900));
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  @apply bg-background-950 text-typography-50;
+  font-family: var(--font-plus-jakarta-sans), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    sans-serif;
+  background-image: var(--metal-gradient);
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+[data-mode='light'] body {
+  background-image: linear-gradient(160deg, #f2f6ff 0%, #f7f9fb 30%, #ffffff 100%);
+  color: rgb(var(--color-typography-900));
+}
+
+[data-mode='light'] .glass-panel {
+  background: color-mix(in srgb, var(--accent-soft) 10%, rgba(255, 255, 255, 0.86));
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(16px);
+}
+
+[data-mode='dark'] .glass-panel {
+  background: color-mix(in srgb, rgba(12, 18, 28, 0.85) 90%, var(--accent-solid) 10%);
+  border: 1px solid rgba(90, 115, 150, 0.35);
+  backdrop-filter: blur(18px);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.glass-panel {
+  border-radius: 22px;
+  box-shadow: 0 20px 60px rgba(12, 14, 19, 0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.08), transparent 45%);
+  pointer-events: none;
+}
+
+.grid-overlay {
+  background-image: var(--grid-accent);
+  background-size: 120px 120px;
+  opacity: 0.35;
+}
+
+.clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+a {
+  @apply text-[color:var(--accent-solid)] underline-offset-4;
+}
+
+button, input, textarea {
+  font-family: inherit;
+}
+
+code {
+  font-family: var(--font-space-grotesk), 'Fira Mono', ui-monospace, SFMono-Regular;
 }
