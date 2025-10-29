@@ -2,7 +2,7 @@
 
 import { devices } from '@/data/devices';
 import { PageHeader } from '@/components/common/PageHeader';
-import { Cpu, Wifi, Battery } from 'lucide-react';
+import { Cpu, Wifi, Battery } from '@/components/icons';
 
 const statusTone: Record<string, string> = {
   online: 'text-emerald-300',

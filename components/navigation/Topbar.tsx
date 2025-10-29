@@ -1,12 +1,13 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { Search, SlidersHorizontal, Sparkles, MoonStar } from 'lucide-react';
+import { Search, SlidersHorizontal, Sparkles, MoonStar } from '@/components/icons';
 import { Input, InputField, InputSlot, InputIcon } from '@/components/ui/input';
 import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
 import { HStack } from '@/components/ui/hstack';
-import { Avatar } from '@/components/ui/avatar';
+import { Avatar, AvatarFallbackText } from '@/components/ui/avatar';
 import { Switch } from '@/components/ui/switch';
+import { Icon } from '@/components/ui/icon';
 
 export function Topbar() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -54,7 +55,7 @@ export function Topbar() {
             <ButtonText className="text-white">Crea automazione</ButtonText>
           </Button>
           <HStack className="items-center gap-2 rounded-2xl border border-white/15 bg-white/5 px-3 py-2">
-            <MoonStar className="h-4 w-4 text-white/60" strokeWidth={1.7} />
+            <Icon as={MoonStar} size="xs" className="text-white/60" />
             <Switch value={true} accessibilityLabel="Attiva night mode" />
           </HStack>
           <div className="flex items-center gap-3 rounded-2xl border border-white/15 bg-white/5 px-4 py-2">
@@ -63,7 +64,7 @@ export function Topbar() {
               <p className="text-xs text-white/50">Hospitality Curator</p>
             </div>
             <Avatar>
-              <Avatar.FallbackText>DM</Avatar.FallbackText>
+              <AvatarFallbackText>DM</AvatarFallbackText>
             </Avatar>
           </div>
         </HStack>

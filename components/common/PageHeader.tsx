@@ -15,11 +15,11 @@ export function PageHeader({ title, description, actions }: PageHeaderProps) {
   return (
     <HStack className="w-full flex-col gap-4 md:flex-row md:items-center md:justify-between">
       <VStack className="gap-1">
-        <Text className="text-2xl font-semibold text-white" accessibilityRole="header">
+        <Text className="text-2xl font-semibold text-white">
           {title}
         </Text>
         {description ? (
-          <Text className="text-sm text-white/70" accessibilityRole="text">
+          <Text className="text-sm text-white/70">
             {description}
           </Text>
         ) : null}

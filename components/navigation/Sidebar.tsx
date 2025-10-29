@@ -10,7 +10,7 @@ import {
   MessageCircleMore,
   BellRing,
   Cpu,
-} from 'lucide-react';
+} from '@/components/icons';
 
 const items = [
   { href: '/dashboard', label: 'Dashboard', icon: Home },

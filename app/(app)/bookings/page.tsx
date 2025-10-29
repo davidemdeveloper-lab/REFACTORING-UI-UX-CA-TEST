@@ -9,7 +9,7 @@ import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
 import { Input, InputField } from '@/components/ui/input';
 import { StatusBadge } from '@/components/common/StatusBadge';
 import { formatCurrency } from '@/lib/format';
-import { Plus } from 'lucide-react';
+import { Plus } from '@/components/icons';
 
 const filters = [
   { label: 'Tutte', value: 'all' },

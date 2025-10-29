@@ -3,7 +3,7 @@
 import { CommunicationEvent } from '@/types';
 import { format } from 'date-fns';
 import { it } from 'date-fns/locale';
-import { MessageSquare, Mail, PhoneCall, MessageCircle } from 'lucide-react';
+import { MessageSquare, Mail, PhoneCall, MessageCircle } from '@/components/icons';
 
 const iconMap = {
   email: Mail,

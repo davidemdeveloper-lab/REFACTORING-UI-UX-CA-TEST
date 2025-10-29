@@ -6,7 +6,7 @@ import { html } from '@codemirror/lang-html';
 import { oneDark } from '@codemirror/theme-one-dark';
 import { Template } from '@/types';
 import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
-import { Save, Eye } from 'lucide-react';
+import { Save, Eye } from '@/components/icons';
 
 const CodeMirror = dynamic(() => import('@uiw/react-codemirror'), { ssr: false });
 

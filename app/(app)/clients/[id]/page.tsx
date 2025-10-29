@@ -9,7 +9,7 @@ import { StatusBadge } from '@/components/common/StatusBadge';
 import { Timeline } from '@/components/bookings/Timeline';
 import { Button, ButtonText } from '@/components/ui/button';
 import { formatCurrency, statusLabel } from '@/lib/format';
-import { BadgeCheck, Mail, MessageSquareText } from 'lucide-react';
+import { BadgeCheck, Mail, MessageSquareText } from '@/components/icons';
 
 export default function ClientDetailPage() {
   const params = useParams();

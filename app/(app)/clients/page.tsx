@@ -8,7 +8,7 @@ import { PageHeader } from '@/components/common/PageHeader';
 import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
 import { Input, InputField } from '@/components/ui/input';
 import { StatusBadge } from '@/components/common/StatusBadge';
-import { Plus, Filter } from 'lucide-react';
+import { Plus, Filter } from '@/components/icons';
 
 const filters = [
   { label: 'Tutti', value: 'all' },

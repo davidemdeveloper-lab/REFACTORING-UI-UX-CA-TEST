@@ -5,7 +5,7 @@ import { conversations } from '@/data/chat';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Input, InputField } from '@/components/ui/input';
 import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
-import { MessageCircleMore, SendHorizontal, Filter } from 'lucide-react';
+import { MessageCircleMore, SendHorizontal, Filter } from '@/components/icons';
 
 export default function ChatPage() {
   const [query, setQuery] = useState('');

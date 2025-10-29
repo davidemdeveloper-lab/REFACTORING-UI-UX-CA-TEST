@@ -7,7 +7,7 @@ import { bookings } from '@/data/bookings';
 import { clients } from '@/data/clients';
 import { formatCurrency, statusLabel } from '@/lib/format';
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts';
-import { Calendar, Users, Rocket } from 'lucide-react';
+import { Calendar, Users, Rocket } from '@/components/icons';
 
 const performanceData = [
   { label: 'Gen', valore: 120 },

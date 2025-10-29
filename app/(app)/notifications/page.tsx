@@ -3,7 +3,7 @@
 import { notifications } from '@/data/notifications';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
-import { BellRing, Check } from 'lucide-react';
+import { BellRing, Check } from '@/components/icons';
 
 export default function NotificationsPage() {
   return (

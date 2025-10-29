@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { templates } from '@/data/templates';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Button, ButtonIcon, ButtonText } from '@/components/ui/button';
-import { PenSquare } from 'lucide-react';
+import { PenSquare } from '@/components/icons';
 
 export default function TemplatesPage() {
   return (

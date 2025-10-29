@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { LayoutDashboard, Sparkles, HeartHandshake } from 'lucide-react';
+import { LayoutDashboard, Sparkles, HeartHandshake } from '@/components/icons';
 import { Button, ButtonText } from '@/components/ui/button';
 import { HStack } from '@/components/ui/hstack';
 import { VStack } from '@/components/ui/vstack';
