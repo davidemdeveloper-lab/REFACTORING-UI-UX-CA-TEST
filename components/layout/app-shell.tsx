@@ -141,7 +141,7 @@ export default function AppShell({ children }: AppShellProps) {
   }, [openCommand]);
 
   return (
-    <Box className="flex min-h-screen w-full bg-transparent text-typography-0">
+    <Box className="flex flex-row min-h-screen w-full bg-transparent text-typography-0">
       <CommandCenter
         open={isCommandOpen}
         query={commandQuery}
