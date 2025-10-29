@@ -1,9 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter, Playfair_Display, Source_Code_Pro } from 'next/font/google';
 import './globals.css';
-import StyledJsxRegistry from './registry';
-import { GluestackUIProvider } from '@gluestack-ui/themed';
-import { metalGlassyConfig } from '@/theme/config';
+import { Providers } from './providers';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' });
@@ -19,9 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="it" suppressHydrationWarning>
       <body className={`${inter.variable} ${playfair.variable} ${sourceCode.variable}`}>
-        <StyledJsxRegistry>
-          <GluestackUIProvider config={metalGlassyConfig}>{children}</GluestackUIProvider>
-        </StyledJsxRegistry>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
