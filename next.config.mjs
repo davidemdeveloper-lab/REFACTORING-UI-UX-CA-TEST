@@ -1,13 +1,10 @@
 import { withGluestackUI } from '@gluestack/ui-next-adapter';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
+  experimental: {
+    optimizePackageImports: ['@gluestack-ui/themed', 'lucide-react'],
   },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  transpilePackages: [],
 };
 
 export default withGluestackUI(nextConfig);
