@@ -19,12 +19,12 @@ export default function ClientsPage() {
           <Text className="text-xs text-white/50">Preferenze, note e adesione newsletter in un’unica vista.</Text>
         </div>
         <HStack space="md" className="items-center">
-          <div className="hidden items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs text-white/60 md:flex">
+          <Box className="hidden items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 md:flex">
             <Icon as={Filter} size="sm" color="rgba(255,255,255,0.7)" />
-            Filtra per tag
-          </div>
-          <Button className="rounded-full border border-white/20 bg-white/5 px-4 py-2 text-xs text-white/70">
-            Esporta CSV
+            <Text className="text-xs text-white/60">Filtra per tag</Text>
+          </Box>
+          <Button className="rounded-full border border-white/20 bg-white/5 px-4 py-2">
+            <Text className="text-xs text-white/70">Esporta CSV</Text>
           </Button>
         </HStack>
       </HStack>
@@ -38,8 +38,8 @@ export default function ClientsPage() {
             <Icon as={Filter} size="sm" color="rgba(255,255,255,0.6)" />
           </Box>
         </Box>
-        <Button className="rounded-full border border-white/20 bg-white/5 px-4 py-2 text-xs text-white/70">
-          Aggiungi nuovo cliente
+        <Button className="rounded-full border border-white/20 bg-white/5 px-4 py-2">
+          <Text className="text-xs text-white/70">Aggiungi nuovo cliente</Text>
         </Button>
       </div>
 
@@ -76,16 +76,18 @@ export default function ClientsPage() {
                 </div>
                 <div className="flex flex-wrap gap-3">
                   {client.tags.map((tag) => (
-                    <Badge key={tag} className="rounded-full bg-[color:var(--accent-solid)]/10 text-[color:var(--accent-soft)]">
-                      {tag}
+                    <Badge key={tag} className="rounded-full bg-[color:var(--accent-solid)]/10">
+                      <Text className="text-[color:var(--accent-soft)]">{tag}</Text>
                     </Badge>
                   ))}
                   <Badge className={`rounded-full ${
                     client.newsletterOptIn
-                      ? 'bg-[color:var(--accent-solid)]/20 text-[color:var(--accent-soft)]'
-                      : 'bg-white/5 text-white/60'
+                      ? 'bg-[color:var(--accent-solid)]/20'
+                      : 'bg-white/5'
                   }`}>
-                    Newsletter {client.newsletterOptIn ? 'Attiva' : 'Non attiva'}
+                    <Text className={client.newsletterOptIn ? 'text-[color:var(--accent-soft)]' : 'text-white/60'}>
+                      Newsletter {client.newsletterOptIn ? 'Attiva' : 'Non attiva'}
+                    </Text>
                   </Badge>
                 </div>
                 <div className="text-right text-sm text-white/70">

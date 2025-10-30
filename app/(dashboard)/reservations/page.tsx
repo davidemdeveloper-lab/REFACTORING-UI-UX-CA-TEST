@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import { HStack } from '@/components/ui/hstack';
 import { Button } from '@/components/ui/button';
@@ -15,11 +16,11 @@ export default function ReservationsPage() {
           <Text className="text-xs text-white/50">Visualizza proposte, conferme e automazioni attive.</Text>
         </div>
         <HStack space="md" className="items-center">
-          <Button className="rounded-full border border-white/20 bg-white/5 px-4 py-2 text-xs text-white/70">
-            Nuova proposta
+          <Button className="rounded-full border border-white/20 bg-white/5 px-4 py-2">
+            <Text className="text-xs text-white/70">Nuova proposta</Text>
           </Button>
-          <Button className="rounded-full border border-white/20 bg-white/5 px-4 py-2 text-xs text-white/70">
-            Filtri avanzati
+          <Button className="rounded-full border border-white/20 bg-white/5 px-4 py-2">
+            <Text className="text-xs text-white/70">Filtri avanzati</Text>
           </Button>
         </HStack>
       </HStack>
@@ -38,12 +39,12 @@ export default function ReservationsPage() {
                   </Text>
                 </div>
                 <div className="flex flex-wrap items-center gap-3">
-                  <Badge className="rounded-full bg-[color:var(--accent-solid)]/20 text-[color:var(--accent-soft)]">
-                    {reservation.status.toUpperCase()}
+                  <Badge className="rounded-full bg-[color:var(--accent-solid)]/20">
+                    <Text className="text-[color:var(--accent-soft)]">{reservation.status.toUpperCase()}</Text>
                   </Badge>
-                  <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.3em] text-white/60">
-                    {reservation.type}
-                  </span>
+                  <Box className="rounded-full border border-white/10 bg-white/5 px-4 py-2">
+                    <Text className="text-xs uppercase tracking-[0.3em] text-white/60">{reservation.type}</Text>
+                  </Box>
                 </div>
                 <div className="text-right text-sm text-white/70">
                   <Text className="text-xs uppercase tracking-[0.3em] text-white/50">Valore</Text>
@@ -51,11 +52,11 @@ export default function ReservationsPage() {
                   <Text className="text-xs text-white/40">Ultimo update {reservation.lastInteraction}</Text>
                 </div>
               </div>
-              <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-white/60">
+              <div className="mt-4 flex flex-wrap items-center gap-3">
                 {reservation.aiHighlights.map((highlight) => (
-                  <span key={highlight} className="rounded-full border border-white/10 bg-white/5 px-4 py-1">
-                    {highlight}
-                  </span>
+                  <Box key={highlight} className="rounded-full border border-white/10 bg-white/5 px-4 py-1">
+                    <Text className="text-xs text-white/60">{highlight}</Text>
+                  </Box>
                 ))}
               </div>
             </Link>

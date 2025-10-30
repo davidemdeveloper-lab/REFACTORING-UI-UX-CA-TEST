@@ -31,8 +31,8 @@ export default function NewsletterPage() {
           <Text className="mt-2 font-space-grotesk text-2xl text-white">Consensi e segmenti</Text>
           <Text className="text-xs text-white/50">Gestisci adesioni direttamente dalle schede cliente.</Text>
         </div>
-        <Button className="self-start rounded-full border border-white/20 bg-white/5 px-4 py-2 text-xs text-white/70">
-          Esporta elenco
+        <Button className="self-start rounded-full border border-white/20 bg-white/5 px-4 py-2">
+          <Text className="text-xs text-white/70">Esporta elenco</Text>
         </Button>
       </div>
       <div className="mt-6 grid gap-4">
@@ -48,10 +48,12 @@ export default function NewsletterPage() {
               <div className="flex items-center gap-4">
                 <Badge className={`rounded-full ${
                   item.status === 'active'
-                    ? 'bg-[color:var(--accent-solid)]/20 text-[color:var(--accent-soft)]'
-                    : 'bg-white/5 text-white/60'
+                    ? 'bg-[color:var(--accent-solid)]/20'
+                    : 'bg-white/5'
                 }`}>
-                  {item.status === 'active' ? 'Attivo' : 'In pausa'}
+                  <Text className={item.status === 'active' ? 'text-[color:var(--accent-soft)]' : 'text-white/60'}>
+                    {item.status === 'active' ? 'Attivo' : 'In pausa'}
+                  </Text>
                 </Badge>
                 <Switch
                   value={item.status === 'active'}
@@ -59,8 +61,8 @@ export default function NewsletterPage() {
                   className="data-[state=checked]:bg-[color:var(--accent-solid)]"
                 />
               </div>
-              <Button className="rounded-full border border-white/20 bg-white/5 px-4 py-2 text-xs text-white/70">
-                Apri scheda cliente
+              <Button className="rounded-full border border-white/20 bg-white/5 px-4 py-2">
+                <Text className="text-xs text-white/70">Apri scheda cliente</Text>
               </Button>
           </div>
         ))}

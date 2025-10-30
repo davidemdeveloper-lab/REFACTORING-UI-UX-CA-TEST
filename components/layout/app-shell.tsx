@@ -91,15 +91,15 @@ export function AppShell({ children }: AppShellProps) {
                 }`}
               >
                 <Box className="h-3 w-3 rounded-full" style={{ backgroundColor: info.hex }} />
-                {info.name.split(' ')[0]}
+                <Text>{info.name.split(' ')[0]}</Text>
               </Pressable>
             ))}
           </HStack>
           <Button
             onPress={toggleMode}
-            className="mt-4 w-full rounded-full border border-white/20 bg-white/5 py-2 text-xs text-white/70"
+            className="mt-4 w-full rounded-full border border-white/20 bg-white/5 py-2"
           >
-            Modalità {mode === 'dark' ? 'chiara' : 'scura'}
+            <Text className="text-xs text-white/70">Modalità {mode === 'dark' ? 'chiara' : 'scura'}</Text>
           </Button>
         </Box>
       </aside>
@@ -111,10 +111,10 @@ export function AppShell({ children }: AppShellProps) {
               <Text className="text-xs text-white/50">Esperienza orchestrata per hotel visionari</Text>
             </Box>
             <HStack space="md" className="items-center">
-              <div className="hidden items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs text-white/50 lg:flex">
-                <span className="h-2 w-2 rounded-full bg-[color:var(--accent-solid)]" />
-                <span>Performance AI attiva</span>
-              </div>
+              <Box className="hidden items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 lg:flex">
+                <Box className="h-2 w-2 rounded-full bg-[color:var(--accent-solid)]" />
+                <Text className="text-xs text-white/50">Performance AI attiva</Text>
+              </Box>
               <Button className="rounded-full border border-white/20 bg-white/5 px-3 py-2 text-xs text-white/70">
                 <HStack space="sm" className="items-center">
                   <Icon as={Bell} size="sm" color="rgba(255,255,255,0.7)" />

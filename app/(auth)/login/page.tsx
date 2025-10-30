@@ -50,8 +50,8 @@ export default function LoginPage() {
                 </Pressable>
               ))}
             </HStack>
-            <Button onPress={toggleMode} className="self-start rounded-full border border-white/20 bg-white/5 px-4 py-2 text-xs text-white/70">
-              Attiva tema {mode === 'dark' ? 'chiaro' : 'scuro'}
+            <Button onPress={toggleMode} className="self-start rounded-full border border-white/20 bg-white/5 px-4 py-2">
+              <Text className="text-xs text-white/70">Attiva tema {mode === 'dark' ? 'chiaro' : 'scuro'}</Text>
             </Button>
           </VStack>
           <Box className="rounded-2xl border border-white/10 bg-black/30 p-4 text-xs text-white/60">
@@ -103,16 +103,16 @@ export default function LoginPage() {
               </Box>
             </VStack>
             <HStack className="items-center justify-between">
-              <label className="flex items-center gap-2 text-xs text-white/60">
+              <label className="flex items-center gap-2">
                 <input type="checkbox" className="h-4 w-4 rounded border border-white/20 bg-transparent" />
-                Ricorda questo dispositivo
+                <Text className="text-xs text-white/60">Ricorda questo dispositivo</Text>
               </label>
               <Link href="#" className="text-xs text-[color:var(--accent-soft)] underline">
                 Password dimenticata?
               </Link>
             </HStack>
-            <Button className="mt-4 rounded-full bg-[color:var(--accent-solid)] py-3 text-background-950 shadow-[0_20px_45px_-10px_rgba(74,200,255,0.5)]">
-              Accedi e continua
+            <Button className="mt-4 rounded-full bg-[color:var(--accent-solid)] py-3 shadow-[0_20px_45px_-10px_rgba(74,200,255,0.5)]">
+              <Text className="text-background-950">Accedi e continua</Text>
             </Button>
             <Text className="text-xs text-white/40">
               Accedendo accetti la <Link href="#" className="text-[color:var(--accent-soft)] underline">privacy policy</Link> e i

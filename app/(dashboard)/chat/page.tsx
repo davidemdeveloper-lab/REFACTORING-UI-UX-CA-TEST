@@ -75,11 +75,11 @@ export default function ChatPage() {
             <Text className="text-xs text-white/50">{client?.name}</Text>
           </div>
           <HStack space="md">
-            <Button className="rounded-full border border-white/20 bg-white/5 px-4 py-2 text-xs text-white/70">
-              Apri scheda cliente
+            <Button className="rounded-full border border-white/20 bg-white/5 px-4 py-2">
+              <Text className="text-xs text-white/70">Apri scheda cliente</Text>
             </Button>
-            <Button className="rounded-full border border-white/20 bg-white/5 px-4 py-2 text-xs text-white/70">
-              Trasferisci a collega
+            <Button className="rounded-full border border-white/20 bg-white/5 px-4 py-2">
+              <Text className="text-xs text-white/70">Trasferisci a collega</Text>
             </Button>
           </HStack>
         </header>
@@ -102,9 +102,9 @@ export default function ChatPage() {
                     {message.suggestions.map((suggestion) => (
                       <Button
                         key={suggestion}
-                        className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/70"
+                        className="rounded-full border border-white/10 bg-white/5 px-3 py-2"
                       >
-                        {suggestion}
+                        <Text className="text-xs text-white/70">{suggestion}</Text>
                       </Button>
                     ))}
                   </VStack>
@@ -116,8 +116,8 @@ export default function ChatPage() {
         <footer className="border-t border-white/10 px-6 py-4">
           <VStack space="md">
             <div className="flex items-center gap-3">
-              <Badge className="rounded-full bg-[color:var(--accent-solid)]/20 text-[color:var(--accent-soft)]">
-                Modalità suggerimento
+              <Badge className="rounded-full bg-[color:var(--accent-solid)]/20">
+                <Text className="text-[color:var(--accent-soft)]">Modalità suggerimento</Text>
               </Badge>
               <Text className="text-xs text-white/60">
                 L’AI analizza il contesto e propone tre alternative di risposta con tono personalizzato.
@@ -134,8 +134,8 @@ export default function ChatPage() {
                   <Text className="text-xs text-white/70">Suggerisci con AI</Text>
                 </HStack>
               </Button>
-              <Button className="rounded-full bg-[color:var(--accent-solid)] px-6 py-3 text-xs text-background-950">
-                Invia risposta
+              <Button className="rounded-full bg-[color:var(--accent-solid)] px-6 py-3">
+                <Text className="text-xs text-background-950">Invia risposta</Text>
               </Button>
             </HStack>
           </VStack>
@@ -158,14 +158,14 @@ export default function ChatPage() {
         <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-white/70">
           <Text className="text-xs uppercase tracking-[0.3em] text-white/50">Azioni rapide</Text>
           <VStack space="sm" className="mt-3">
-            <Button className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/70">
-              Apri timeline prenotazione
+            <Button className="rounded-full border border-white/10 bg-white/5 px-3 py-2">
+              <Text className="text-xs text-white/70">Apri timeline prenotazione</Text>
             </Button>
-            <Button className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/70">
-              Richiedi intervento umano
+            <Button className="rounded-full border border-white/10 bg-white/5 px-3 py-2">
+              <Text className="text-xs text-white/70">Richiedi intervento umano</Text>
             </Button>
-            <Button className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/70">
-              Crea nota personalizzata
+            <Button className="rounded-full border border-white/10 bg-white/5 px-3 py-2">
+              <Text className="text-xs text-white/70">Crea nota personalizzata</Text>
             </Button>
           </VStack>
         </div>
