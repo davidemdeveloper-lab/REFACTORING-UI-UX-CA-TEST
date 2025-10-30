@@ -21,14 +21,19 @@ export function StatusPill({ label, tone = 'accent' }: StatusPillProps) {
   const toneStyles = toneMap[tone];
   return (
     <Box
-      bg={toneStyles.bg}
-      borderRadius={999}
-      px={12}
-      py={6}
-      borderWidth={1}
-      borderColor={`${toneStyles.color}33`}
+      style={{
+        backgroundColor: toneStyles.bg,
+        borderRadius: 999,
+        paddingLeft: 12,
+        paddingRight: 12,
+        paddingTop: 6,
+        paddingBottom: 6,
+        borderWidth: 1,
+        borderStyle: 'solid',
+        borderColor: `${toneStyles.color}33`,
+      } as any}
     >
-      <Text fontSize={12} fontWeight="600" color={toneStyles.color}>
+      <Text style={{ fontSize: 12, fontWeight: '600', color: toneStyles.color } as any}>
         {label}
       </Text>
     </Box>

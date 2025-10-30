@@ -13,11 +13,20 @@ interface AppShellProps {
 
 export function AppShell({ children }: AppShellProps) {
   return (
-    <HStack w="100%" bg="transparent" style={{ height: '100vh' }}>
+    <HStack style={{ width: '100%', backgroundColor: 'transparent', height: '100vh' } as any}>
       <AppSidebar />
-      <VStack flex={1} style={{ height: '100%' }}>
+      <VStack style={{ flex: 1, height: '100%' } as any}>
         <AppTopbar />
-        <Box flex={1} overflow="auto" px={32} py={28}>
+        <Box
+          style={{
+            flex: 1,
+            overflow: 'auto',
+            paddingLeft: 32,
+            paddingRight: 32,
+            paddingTop: 28,
+            paddingBottom: 28,
+          } as any}
+        >
           {children}
         </Box>
       </VStack>

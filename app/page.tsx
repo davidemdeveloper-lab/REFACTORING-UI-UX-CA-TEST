@@ -34,72 +34,85 @@ const featureList = [
 
 export default function Home() {
   return (
-    <Box px={32} py={48} minH="100vh" display="flex" flexDirection="column" gap={48}>
-      <HStack justifyContent="space-between" alignItems="center" flexWrap="wrap" gap={32}>
-        <VStack space="lg" maxW={520}>
+    <Box
+      style={{
+        paddingLeft: 32,
+        paddingRight: 32,
+        paddingTop: 48,
+        paddingBottom: 48,
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 48,
+      } as any}
+    >
+      <HStack className="justify-between items-center flex-wrap" style={{ gap: 32 } as any}>
+        <VStack space="lg" style={{ maxWidth: 520 } as any}>
           <StatusPill label="Customer Automator" tone="accent" />
           <VStack space="md">
-            <HStack space="sm" alignItems="center">
+            <HStack space="sm" className="items-center">
               <Sparkles size={18} color={palette.accentSecondary} />
-              <Text fontSize={15} color={palette.textSecondary}>
+              <Text style={{ fontSize: 15, color: palette.textSecondary } as any}>
                 Nuovo design metal-glassy pensato per hospitality visionaria
               </Text>
             </HStack>
-            <Text fontSize={48} fontWeight="700" lineHeight={56} color={palette.textPrimary}>
-              L’hub che connette albergatori e ospiti con automazioni empatiche
+            <Text style={{ fontSize: 48, fontWeight: '700', lineHeight: '56px', color: palette.textPrimary } as any}>
+              L'hub che connette albergatori e ospiti con automazioni empatiche
             </Text>
-            <Text fontSize={18} color={palette.textSecondary}>
+            <Text style={{ fontSize: 18, color: palette.textSecondary } as any}>
               Customer Automator orchestra comunicazioni, template dinamici, IoT di camera e servizi esterni.
-              Un’unica interfaccia Next.js + GlueStack ottimizzata per strutture moderne.
+              Un'unica interfaccia Next.js + GlueStack ottimizzata per strutture moderne.
             </Text>
           </VStack>
-          <HStack space="md" alignItems="center">
+          <HStack space="md" className="items-center">
             <Link href="/dashboard" style={{ textDecoration: 'none' }}>
-              <Button size="lg" variant="solid" bg={palette.accentPrimary} borderRadius={16}>
-                <ButtonText color="#020617">Accedi all’area di gestione</ButtonText>
+              <Button size="lg" variant="solid" style={{ backgroundColor: palette.accentPrimary, borderRadius: 16 } as any}>
+                <ButtonText style={{ color: '#020617' } as any}>Accedi all'area di gestione</ButtonText>
               </Button>
             </Link>
             <Link href="/templates" style={{ textDecoration: 'none' }}>
-              <Button size="lg" variant="outline" borderColor="rgba(148,163,184,0.4)" borderRadius={16}>
-                <ButtonText color={palette.textSecondary}>Esplora template</ButtonText>
+              <Button size="lg" variant="outline" style={{ borderColor: 'rgba(148,163,184,0.4)', borderRadius: 16 } as any}>
+                <ButtonText style={{ color: palette.textSecondary } as any}>Esplora template</ButtonText>
               </Button>
             </Link>
           </HStack>
-          <HStack space="md" alignItems="center">
+          <HStack space="md" className="items-center">
             <StatusPill label="Suite pronte" tone="success" />
-            <Text fontSize={14} color={palette.textMuted}>
+            <Text style={{ fontSize: 14, color: palette.textMuted } as any}>
               Dashboard, chat AI, editor template e gestione prenotazioni con mock data realistiche.
             </Text>
           </HStack>
         </VStack>
-        <Box flex={1} minW={320}>
+        <Box style={{ flex: 1, minWidth: 320 } as any}>
           <MetalGlassCard>
             <VStack space="lg">
-              <Text fontSize={18} fontWeight="700" color={palette.textPrimary}>
+              <Text style={{ fontSize: 18, fontWeight: '700', color: palette.textPrimary } as any}>
                 Esperienza unificata
               </Text>
               <VStack space="md">
                 {featureList.map((feature) => {
                   const Icon = feature.icon;
                   return (
-                    <HStack key={feature.title} gap={16} alignItems="flex-start">
+                    <HStack key={feature.title} className="items-start" style={{ gap: 16 } as any}>
                       <Box
-                        w={44}
-                        h={44}
-                        borderRadius={14}
-                        bg="rgba(56,189,248,0.16)"
-                        borderWidth={1}
-                        borderColor="rgba(56,189,248,0.3)"
-                        alignItems="center"
-                        justifyContent="center"
+                        className="items-center justify-center"
+                        style={{
+                          width: 44,
+                          height: 44,
+                          borderRadius: 14,
+                          backgroundColor: 'rgba(56,189,248,0.16)',
+                          borderWidth: 1,
+                          borderStyle: 'solid',
+                          borderColor: 'rgba(56,189,248,0.3)',
+                        } as any}
                       >
                         <Icon size={20} color={palette.accentPrimary} />
                       </Box>
                       <VStack space="xs">
-                        <Text fontSize={16} fontWeight="600" color={palette.textPrimary}>
+                        <Text style={{ fontSize: 16, fontWeight: '600', color: palette.textPrimary } as any}>
                           {feature.title}
                         </Text>
-                        <Text fontSize={13} color={palette.textSecondary}>
+                        <Text style={{ fontSize: 13, color: palette.textSecondary } as any}>
                           {feature.description}
                         </Text>
                       </VStack>
@@ -108,8 +121,8 @@ export default function Home() {
                 })}
               </VStack>
               <Link href="/chat" style={{ textDecoration: 'none', alignSelf: 'flex-end' }}>
-                <HStack alignItems="center" gap={8}>
-                  <Text fontSize={14} color={palette.accentPrimary} fontWeight="600">
+                <HStack className="items-center" style={{ gap: 8 } as any}>
+                  <Text style={{ fontSize: 14, color: palette.accentPrimary, fontWeight: '600' } as any}>
                     Scopri la nuova chat con AI
                   </Text>
                   <ArrowRight size={16} color={palette.accentPrimary} />
@@ -121,28 +134,39 @@ export default function Home() {
       </HStack>
 
       <MetalGlassCard>
-        <HStack justifyContent="space-between" alignItems="center" flexWrap="wrap" gap={24}>
+        <HStack className="justify-between items-center flex-wrap" style={{ gap: 24 } as any}>
           <VStack space="xs">
-            <Text fontSize={14} color={palette.textMuted}>
+            <Text style={{ fontSize: 14, color: palette.textMuted } as any}>
               Palette ufficiale Customer Automator
             </Text>
-            <Text fontSize={24} fontWeight="700" color={palette.textPrimary}>
+            <Text style={{ fontSize: 24, fontWeight: '700', color: palette.textPrimary } as any}>
               Stile metal-glassy con profondità morbide
             </Text>
           </VStack>
-          <HStack gap={14} flexWrap="wrap">
+          <HStack className="flex-wrap" style={{ gap: 14 } as any}>
             {Object.entries(palette).map(([token, value]) => (
               <Box
                 key={token}
-                w={120}
-                borderRadius={16}
-                overflow="hidden"
-                borderWidth={1}
-                borderColor="rgba(148,163,184,0.2)"
+                className="overflow-hidden"
+                style={{
+                  width: 120,
+                  borderRadius: 16,
+                  borderWidth: 1,
+                  borderStyle: 'solid',
+                  borderColor: 'rgba(148,163,184,0.2)',
+                } as any}
               >
-                <Box h={56} bg={value as string} />
-                <Box px={10} py={8} bg="rgba(15,23,42,0.5)">
-                  <Text fontSize={12} color={palette.textSecondary}>
+                <Box style={{ height: 56, backgroundColor: value as string } as any} />
+                <Box
+                  style={{
+                    paddingLeft: 10,
+                    paddingRight: 10,
+                    paddingTop: 8,
+                    paddingBottom: 8,
+                    backgroundColor: 'rgba(15,23,42,0.5)',
+                  } as any}
+                >
+                  <Text style={{ fontSize: 12, color: palette.textSecondary } as any}>
                     {token}
                   </Text>
                 </Box>

@@ -1,0 +1,97 @@
+{
+  "content": {
+    "raw_content": "<think>\nThe user is asking about how to properly use styling props like borderRadius, borderWidth, padding on gluestack-ui v3 components (Box, HStack, VStack) when using NativeWind, and how to avoid React warnings about unrecognized props on DOM elements.\n\nLet me look through the search results to see what information is available about this.\n\nFrom the search results:\n1. [1] discusses @gluestack-ui/nativewind-utils and utilities like tva, VariantProps\n2. [2] gives an overview of gluestack-ui v3 with NativeWind integration\n3. [3] discusses dark mode with Tailwind CSS variables\n4. [4] discusses customizing theme\n5. [5] shows an example of how Box component is implemented - it takes className, ViewProps for native, and accepts a className prop that gets passed to boxStyle function\n6. [7] mentions TypeScript variant props type inference issues\n7. [8] mentions Tailwind (NativeWind v4.1) integration\n\nLooking at the Box implementation in [5], I can see that:\n- The Box component takes className as a prop\n- On web (index.web.tsx), it renders as a `<div>` with `className={boxStyle({ class: className })}`\n- The styles are defined using the tva function from @gluestack-ui/nativewind-utils\n- The component properly handles React Server Components with a separate web implementation\n\nThe search results don't explicitly address the question about borderRadius, borderWidth, padding props and how to avoid React warnings. However, based on what I see in the code example:\n\n1. The components accept a className prop\n2. The className is processed through the boxStyle function using tva\n3. They support NativeWind which means Tailwind CSS classes\n\nThe proper way would be to use className with Tailwind utility classes since that's how gluestack-ui v3 with NativeWind is designed. \n\nI'll need to complete the partial thought from the next thinking. The search results lack specific details about style prop handling, so I'll carefully formulate guidance based on the component design:\n\nTailwind utility classes are the recommended approach for styling these components. Instead of using React Native-specific props like borderRadius, use Tailwind's equivalent classes such as `rounded-md` for border radius or `p-2` for padding. This method avoids React warnings by passing recognized web-compatible className props through the component's styling system.\n</think>\n\nBased on the gluestack-ui v3 architecture with NativeWind, styling properties should be applied through **className with Tailwind utility classes** rather than passed as individual props like `borderRadius` or `borderWidth`[1][2][5].\n\n## Correct Approach: Use Tailwind Classes via className\n\nThe proper way to style gluestack-ui components is to pass styling as Tailwind utility classes in the `className` prop[5]. For example:\n\n```jsx\nimport { Box } from \"@/components/ui/box\";\n\nexport default function App() {\n  return (\n    <Box className=\"rounded-lg border-2 border-gray-200 p-4\">\n      Content here\n    </Box>\n  );\n}\n```\n\nInstead of attempting:\n```jsx\n// ❌ Avoid this - causes React warnings\n<Box borderRadius=\"8px\" borderWidth={2} padding={16} />\n```\n\n## Why This Approach Works\n\nThe gluestack-ui v3 components are designed to use NativeWind integration, which means they leverage Tailwind CSS for both web and mobile[2]. The components accept a `className` prop that gets processed through the `tva` (Tailwind Variant Authority) utility function[1][5]. This approach ensures that:\n\n- **Web (React)**: Classes are applied directly to the DOM element without triggering React prop warnings\n- **Native (React Native)**: NativeWind handles the conversion of Tailwind classes to native styles\n- **Universal compatibility**: The same className works across both platforms seamlessly\n\n## Key Implementation Detail\n\nWhen you look at how Box is implemented[5], the web version renders a standard `<div>` element with the className processed through `boxStyle()`. This design pattern means that only valid HTML attributes and the `className` prop should be used—not React Native-style props like `borderRadius`, `borderWidth`, or `padding`.\n\nTo avoid the \"React does not recognize the borderRadius prop on a DOM element\" warning, ensure you're using Tailwind utility classes: `rounded-lg` for borderRadius, `border-2` for borderWidth, and `p-4` for padding, all passed through the `className` prop."
+  },
+  "raw_content": "<think>\nThe user is asking about how to properly use styling props like borderRadius, borderWidth, padding on gluestack-ui v3 components (Box, HStack, VStack) when using NativeWind, and how to avoid React warnings about unrecognized props on DOM elements.\n\nLet me look through the search results to see what information is available about this.\n\nFrom the search results:\n1. [1] discusses @gluestack-ui/nativewind-utils and utilities like tva, VariantProps\n2. [2] gives an overview of gluestack-ui v3 with NativeWind integration\n3. [3] discusses dark mode with Tailwind CSS variables\n4. [4] discusses customizing theme\n5. [5] shows an example of how Box component is implemented - it takes className, ViewProps for native, and accepts a className prop that gets passed to boxStyle function\n6. [7] mentions TypeScript variant props type inference issues\n7. [8] mentions Tailwind (NativeWind v4.1) integration\n\nLooking at the Box implementation in [5], I can see that:\n- The Box component takes className as a prop\n- On web (index.web.tsx), it renders as a `<div>` with `className={boxStyle({ class: className })}`\n- The styles are defined using the tva function from @gluestack-ui/nativewind-utils\n- The component properly handles React Server Components with a separate web implementation\n\nThe search results don't explicitly address the question about borderRadius, borderWidth, padding props and how to avoid React warnings. However, based on what I see in the code example:\n\n1. The components accept a className prop\n2. The className is processed through the boxStyle function using tva\n3. They support NativeWind which means Tailwind CSS classes\n\nThe proper way would be to use className with Tailwind utility classes since that's how gluestack-ui v3 with NativeWind is designed. \n\nI'll need to complete the partial thought from the next thinking. The search results lack specific details about style prop handling, so I'll carefully formulate guidance based on the component design:\n\nTailwind utility classes are the recommended approach for styling these components. Instead of using React Native-specific props like borderRadius, use Tailwind's equivalent classes such as `rounded-md` for border radius or `p-2` for padding. This method avoids React warnings by passing recognized web-compatible className props through the component's styling system.\n</think>\n\nBased on the gluestack-ui v3 architecture with NativeWind, styling properties should be applied through **className with Tailwind utility classes** rather than passed as individual props like `borderRadius` or `borderWidth`[1][2][5].\n\n## Correct Approach: Use Tailwind Classes via className\n\nThe proper way to style gluestack-ui components is to pass styling as Tailwind utility classes in the `className` prop[5]. For example:\n\n```jsx\nimport { Box } from \"@/components/ui/box\";\n\nexport default function App() {\n  return (\n    <Box className=\"rounded-lg border-2 border-gray-200 p-4\">\n      Content here\n    </Box>\n  );\n}\n```\n\nInstead of attempting:\n```jsx\n// ❌ Avoid this - causes React warnings\n<Box borderRadius=\"8px\" borderWidth={2} padding={16} />\n```\n\n## Why This Approach Works\n\nThe gluestack-ui v3 components are designed to use NativeWind integration, which means they leverage Tailwind CSS for both web and mobile[2]. The components accept a `className` prop that gets processed through the `tva` (Tailwind Variant Authority) utility function[1][5]. This approach ensures that:\n\n- **Web (React)**: Classes are applied directly to the DOM element without triggering React prop warnings\n- **Native (React Native)**: NativeWind handles the conversion of Tailwind classes to native styles\n- **Universal compatibility**: The same className works across both platforms seamlessly\n\n## Key Implementation Detail\n\nWhen you look at how Box is implemented[5], the web version renders a standard `<div>` element with the className processed through `boxStyle()`. This design pattern means that only valid HTML attributes and the `className` prop should be used—not React Native-style props like `borderRadius`, `borderWidth`, or `padding`.\n\nTo avoid the \"React does not recognize the borderRadius prop on a DOM element\" warning, ensure you're using Tailwind utility classes: `rounded-lg` for borderRadius, `border-2` for borderWidth, and `p-4` for padding, all passed through the `className` prop.",
+  "citations": [
+    "https://gluestack.io/ui/docs/home/getting-started/gluestack-ui-nativewind-utils",
+    "https://github.com/gluestack/gluestack-ui",
+    "https://gluestack.io/ui/docs/home/theme-configuration/dark-mode",
+    "https://gluestack.io/ui/docs/home/theme-configuration/customizing-theme",
+    "https://gluestack.io/ui/docs/components/box",
+    "https://gluestack.io/ui/docs/home/overview/introduction",
+    "https://github.com/gluestack/gluestack-ui/issues/3172",
+    "https://gluestack.io/blogs/gluestack-v3-release"
+  ],
+  "search_results": [
+    {
+      "title": "gluestack-ui/nativewind utils",
+      "url": "https://gluestack.io/ui/docs/home/getting-started/gluestack-ui-nativewind-utils",
+      "date": null,
+      "last_updated": "2024-11-11",
+      "snippet": "VariantProps Utility. The. VariantProps. utility allows for easy extraction of variants from a component. flush. This function facilitates server-side rendering ...",
+      "source": "web"
+    },
+    {
+      "title": "gluestack/gluestack-ui: React & React Native Components ... - GitHub",
+      "url": "https://github.com/gluestack/gluestack-ui",
+      "date": "2023-01-11",
+      "last_updated": "2025-10-22",
+      "snippet": "gluestack-ui v3 offers customizable, beautifully designed ... NativeWind Integration: Tailwind CSS support for seamless styling across web and mobile.",
+      "source": "web"
+    },
+    {
+      "title": "Tailwind Dark Mode Theme - gluestack UI",
+      "url": "https://gluestack.io/ui/docs/home/theme-configuration/dark-mode",
+      "date": null,
+      "last_updated": "2025-05-14",
+      "snippet": "gluestack-ui provides two ways of switching the color scheme or color mode: using CSS variables and using the dark: className support with nativewind.",
+      "source": "web"
+    },
+    {
+      "title": "Customizing Theme | gluestack-ui | Tailwind Css Theme",
+      "url": "https://gluestack.io/ui/docs/home/theme-configuration/customizing-theme",
+      "date": "2023-01-01",
+      "last_updated": "2025-04-13",
+      "snippet": "Customize your UI theme in gluestack-ui v3 by defining a theme config and applying it via GluestackUIProvider. Tailwind CSS theme support lets you style your",
+      "source": "web"
+    },
+    {
+      "title": "gluestack-ui Box Components | Installation, Usage, and API",
+      "url": "https://gluestack.io/ui/docs/components/box",
+      "date": "2023-01-01",
+      "last_updated": "2025-04-18",
+      "snippet": "Use gluestack-ui Box, a powerful box component for flexible layouts. Customize styles, props, and structure easily for web and native platforms.",
+      "source": "web"
+    },
+    {
+      "title": "Introduction - gluestack-UI | React, Next.js & React Native Components",
+      "url": "https://gluestack.io/ui/docs/home/overview/introduction",
+      "date": null,
+      "last_updated": "2025-06-16",
+      "snippet": "Elevate your UI with gluestack—React Native components, Tailwind styling & shadows for web & mobile apps. The best UI library for React, Next.js & React ...",
+      "source": "web"
+    },
+    {
+      "title": "Gluestack-UI V3 TypeScript Variant Props Type Inference Issues",
+      "url": "https://github.com/gluestack/gluestack-ui/issues/3172",
+      "date": "2025-08-31",
+      "last_updated": null,
+      "snippet": "After upgrading to Gluestack-UI V3, TypeScript type inference for variant properties (especially size , space , and boolean variants) is failing ...",
+      "source": "web"
+    },
+    {
+      "title": "Universal React & React Native Component Library - gluestack v3",
+      "url": "https://gluestack.io/blogs/gluestack-v3-release",
+      "date": "2025-09-03",
+      "last_updated": null,
+      "snippet": "Tailwind (NativeWind v4.1) integration for consistent styling across platforms. Instant theme propagation with CSS variables (web) & context ...",
+      "source": "web"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 67,
+    "completion_tokens": 948,
+    "total_tokens": 1015,
+    "search_context_size": "low",
+    "cost": {
+      "input_tokens_cost": 0,
+      "output_tokens_cost": 0.008,
+      "request_cost": 0.006,
+      "total_cost": 0.014
+    }
+  },
+  "model": "sonar-reasoning-pro",
+  "id": "1cf105ab-bf0d-49d2-a045-a3f2d7c9413c",
+  "created": 1761828747
+}

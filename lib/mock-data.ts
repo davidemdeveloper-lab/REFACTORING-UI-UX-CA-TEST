@@ -63,6 +63,42 @@ export const bookings = [
       { id: 'in-stay', label: 'Messaggi durante il soggiorno', date: '2024-10-07', completed: false },
       { id: 'checkout', label: 'Checkout & review', date: '2024-10-10', completed: false },
     ],
+    nextAction: 'Programma check-out express e invia survey anticipata',
+    lastAutomation: 'AI ha confermato upgrade minibar personalizzato',
+    aiConfidence: 0.92,
+    guestNotes: [
+      'Preferisce temperatura camera 21° e luce soffusa al rientro serale.',
+      'Arrivo previsto alle 18:30 con transfer dedicato.',
+    ],
+    guestPreferences: ['Pillow menu memory', 'Minibar detox', 'Spa duo domenica'],
+    manualAlerts: ['Confermare disponibilità late check-out', 'Preparare welcome kit senza lattosio'],
+    iotSnapshot: [
+      { id: 'clima', label: 'Clima camera 502', value: '21.5°', status: 'Stabile' },
+      { id: 'minibar', label: 'Minibar premium', value: '68% carico', status: 'Ok' },
+    ],
+    journeyMoments: [
+      {
+        id: 'moment-1',
+        title: 'Prenotazione completata',
+        description: 'Upsell suite panoramica confermato con pagamento caparra.',
+        timestamp: '08 set 2024 · 09:15',
+        owner: 'AI concierge',
+      },
+      {
+        id: 'moment-2',
+        title: 'Automazione pre check-in',
+        description: 'Raccolte preferenze minibar e orario arrivo; AI suggerisce welcome kit detox.',
+        timestamp: '02 ott 2024 · 18:00',
+        owner: 'AI concierge',
+      },
+      {
+        id: 'moment-3',
+        title: 'Alert human touch',
+        description: 'Ospite chiede estensione soggiorno: necessario intervento front desk.',
+        timestamp: '05 ott 2024 · 19:40',
+        owner: 'Staff reception',
+      },
+    ],
   },
   {
     id: 'reservation-2',
@@ -82,6 +118,35 @@ export const bookings = [
       { id: 'arrival', label: 'Arrivo previsto', date: '2024-09-18', completed: false },
       { id: 'in-stay', label: 'Messaggi durante il soggiorno', date: '2024-09-19', completed: false },
       { id: 'checkout', label: 'Checkout & review', date: '2024-09-22', completed: false },
+    ],
+    nextAction: 'Invia reminder transfer aeroporto e aggiorna preferenze camera',
+    lastAutomation: 'AI ha confermato upgrade spa serale con risposta positiva ospite.',
+    aiConfidence: 0.86,
+    guestNotes: [
+      'Viaggia con bambina di 6 anni: aggiungere set cortesia kids.',
+      'Richiesto cuscino ipoallergenico.',
+    ],
+    guestPreferences: ['Spa notturna', 'Trasporto privato', 'Colazione in camera'],
+    manualAlerts: ['Verificare driver transfer', 'Controllare disponibilità camera comunicante'],
+    iotSnapshot: [
+      { id: 'clima', label: 'Clima camera 410', value: '22.8°', status: 'Regolato AI' },
+      { id: 'minibar', label: 'Minibar family', value: '41% carico', status: 'Refill programmato' },
+    ],
+    journeyMoments: [
+      {
+        id: 'moment-1',
+        title: 'Richiesta transfer',
+        description: 'AI ha proposto transfer premium, ospite in attesa di conferma orario.',
+        timestamp: '12 set 2024 · 15:30',
+        owner: 'AI concierge',
+      },
+      {
+        id: 'moment-2',
+        title: 'Preferenze camera',
+        description: 'Ospite ha indicato temperatura ideale e welcome drink analcolico.',
+        timestamp: '14 set 2024 · 11:20',
+        owner: 'Antonio Marino',
+      },
     ],
   },
 ];
@@ -118,6 +183,9 @@ export const chatThreads = [
     unread: 2,
     lastMessageAt: '2024-09-14T11:20:00Z',
     lastMessagePreview: 'Possiamo lasciare la stanza alle 13:00?',
+    channel: 'WhatsApp',
+    requiresAttention: true,
+    attentionReason: 'AI in attesa di conferma disponibilità late check-out.',
     messages: [
       {
         id: 'msg-1',
@@ -132,6 +200,16 @@ export const chatThreads = [
         timestamp: '2024-09-14T11:21:10Z',
       },
     ],
+    aiSuggestions: [
+      'Conferma check-out alle 13:00 e invia istruzioni digital key drop.',
+      'Offri late lunch al rooftop come gesto di cortesia.',
+      'Proponi estensione soggiorno con sconto 10%.',
+    ],
+    debugLog: [
+      'Intent riconosciuto: modifica orario check-out (confidence 0.88).',
+      'Regola business: necessaria verifica disponibilità camere premium.',
+      'Escalation programmata al front desk dopo 10 minuti senza risposta.',
+    ],
   },
   {
     id: 'thread-2',
@@ -140,6 +218,8 @@ export const chatThreads = [
     unread: 0,
     lastMessageAt: '2024-09-13T17:45:00Z',
     lastMessagePreview: 'Lascio conferma per il trattamento duo.',
+    channel: 'Portal Chat',
+    requiresAttention: false,
     messages: [
       {
         id: 'msg-1',
@@ -159,6 +239,14 @@ export const chatThreads = [
         body: 'Perfetto, grazie! Lascio conferma per il trattamento duo.',
         timestamp: '2024-09-13T17:45:00Z',
       },
+    ],
+    aiSuggestions: [
+      'Invia reminder 2 ore prima del trattamento con link info spa.',
+      'Proponi upgrade sauna privata a €40.',
+    ],
+    debugLog: [
+      'Intent riconosciuto: conferma prenotazione SPA (confidence 0.94).',
+      'Nessuna escalation necessaria.',
     ],
   },
 ];
@@ -191,6 +279,27 @@ export const services = [
     description: 'Sincronizza conversazioni e template dinamici.',
     status: 'Connesso',
     actionLabel: 'Apri integrazione',
+  },
+];
+
+export const customerBanners = [
+  {
+    id: 'bn-1',
+    title: 'Prenota il transfer aeroporto',
+    description: 'Servizio premium con auto elettrica e driver dedicato.',
+    cta: 'Richiedi transfer',
+  },
+  {
+    id: 'bn-2',
+    title: 'Scopri il menù room service notturno',
+    description: 'Selezione gourmet disponibile fino alle 02:00.',
+    cta: 'Apri menù',
+  },
+  {
+    id: 'bn-3',
+    title: 'Percorso SPA sensoriale',
+    description: 'Accesso agevolato per ospiti con soggiorno superiore a 3 notti.',
+    cta: 'Prenota ora',
   },
 ];
 

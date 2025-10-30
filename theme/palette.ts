@@ -14,6 +14,18 @@ export const palette = {
   textSecondary: '#cbd5f5',
   textMuted: '#94a3b8',
   neutral: '#1e293b',
+  text: {
+    primary: '#f5f7fb',
+    secondary: '#cbd5f5',
+    muted: '#94a3b8',
+    positive: '#4ade80',
+  },
+  intent: {
+    accent: '#38bdf8',
+    success: '#4ade80',
+    warning: '#facc15',
+    danger: '#f87171',
+  },
 };
 
 export type Palette = typeof palette;

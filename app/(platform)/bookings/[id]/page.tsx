@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { notFound } from 'next/navigation';
 import { GlassCard } from '@/components/common/GlassCard';
 import { SectionHeader } from '@/components/common/SectionHeader';
@@ -10,7 +11,7 @@ import { Button, ButtonText } from '@/components/ui/button';
 import { Pressable } from '@/components/ui/pressable';
 import { bookings, guests } from '@/lib/mock-data';
 import { palette } from '@/theme/palette';
-import { Mail, Sparkles, ClipboardList } from 'lucide-react-native';
+import { AlertCircle, Bug, ClipboardList, Mail, Sparkles } from 'lucide-react-native';
 
 export default function BookingDetailPage({ params }: { params: { id: string } }) {
   const booking = bookings.find((item) => item.id === params.id);
@@ -18,28 +19,43 @@ export default function BookingDetailPage({ params }: { params: { id: string } }
     notFound();
   }
   const guest = guests.find((item) => item.id === booking.guestId);
+  const [debugMode, setDebugMode] = useState(false);
 
   return (
     <VStack className="gap-8">
       <GlassCard className="gap-6 border-white/10 bg-white/5">
         <SectionHeader
           title={`Prenotazione ${booking.code}`}
-          subtitle={`${booking.roomType} · ${new Date(booking.arrival).toLocaleDateString('it-IT')} → ${new Date(booking.departure).toLocaleDateString('it-IT')}`}
+          subtitle={`${booking.roomType} · ${new Date(booking.arrival).toLocaleDateString('it-IT')} → ${new Date(
+            booking.departure,
+          ).toLocaleDateString('it-IT')}`}
           action={
             <Button className="rounded-full border border-white/10 bg-white/10 px-5 py-3">
               <ButtonText className="text-sm text-white">Invia aggiornamento</ButtonText>
             </Button>
           }
         />
-        <HStack className="flex-col gap-4 md:flex-row">
-          <VStack className="flex-1 gap-1">
+        <HStack className="flex-col gap-4 xl:flex-row">
+          <VStack className="flex-1 gap-3">
             <Text className="text-xs uppercase tracking-[0.3em] text-slate-500">Ospite</Text>
             <Text className="text-lg font-semibold text-white">{guest?.name}</Text>
             <Text className="text-sm text-slate-300">{guest?.email}</Text>
+            <HStack className="flex-wrap gap-2">
+              {booking.guestPreferences.map((pref) => (
+                <Text
+                  key={pref}
+                  className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[11px] text-slate-200"
+                >
+                  {pref}
+                </Text>
+              ))}
+            </HStack>
           </VStack>
-          <VStack className="flex-1 gap-1">
-            <Text className="text-xs uppercase tracking-[0.3em] text-slate-500">Stato prenotazione</Text>
+          <VStack className="flex-1 gap-3">
+            <Text className="text-xs uppercase tracking-[0.3em] text-slate-500">Workflow</Text>
             <Text className="text-sm text-slate-200">{booking.status}</Text>
+            <Text className="text-sm text-emerald-200">Ultima automazione: {booking.lastAutomation}</Text>
+            <Text className="text-sm text-slate-300">Prossima azione: {booking.nextAction}</Text>
             <Text className="text-sm text-slate-300">
               Saldo da incassare € {booking.outstandingBalance.toLocaleString('it-IT')}
             </Text>
@@ -53,39 +69,163 @@ export default function BookingDetailPage({ params }: { params: { id: string } }
               <Mail color={palette.intent.accent} size={16} strokeWidth={1.4} />
               <Text className="text-xs text-slate-200">Invia promemoria</Text>
             </Pressable>
+            <Pressable
+              onPress={() => setDebugMode((prev) => !prev)}
+              className={`flex-row items-center gap-2 rounded-full border px-4 py-2 ${
+                debugMode ? 'border-white/20 bg-white/10' : 'border-white/10 bg-white/5'
+              }`}
+            >
+              <Bug color={palette.intent.accent} size={16} strokeWidth={1.4} />
+              <Text className="text-xs text-slate-200">Modalità debug automazioni</Text>
+            </Pressable>
           </VStack>
         </HStack>
       </GlassCard>
 
-      <AutomationTimeline steps={booking.automationTimeline} />
-
       <HStack className="flex-col gap-6 xl:flex-row">
-        <IoTStatusCard
-          temperature={guest?.roomTemperature ?? 21}
-          minibarLevel={guest?.minibarLevel ?? 50}
-          actions={["Accendi luci suite", "Pre-raffredda stanza", "Apri chat concierge"]}
+        <GuestInsightsCard
+          notes={booking.guestNotes}
+          preferences={booking.guestPreferences}
+          manualAlerts={booking.manualAlerts}
         />
-        <GlassCard className="flex-1 gap-4 border-white/10 bg-white/5">
-          <SectionHeader
-            title="Azioni collegate"
-            subtitle="Template e task per questa prenotazione"
+        <VStack className="flex-1 gap-6">
+          <AutomationTimeline steps={booking.automationTimeline} />
+          <JourneyMoments moments={booking.journeyMoments} />
+        </VStack>
+        <VStack className="w-full max-w-sm gap-6">
+          <IoTStatusCard
+            temperature={guest?.roomTemperature ?? 21}
+            minibarLevel={guest?.minibarLevel ?? 50}
+            actions={['Accendi luci suite', 'Pre-raffredda stanza', 'Apri chat concierge']}
           />
-          <VStack className="gap-3">
-            {booking.actions.map((action) => (
-              <HStack
-                key={action}
-                className="items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3"
-              >
-                <Text className="text-sm text-slate-200">{action}</Text>
-                <Pressable className="flex-row items-center gap-2 rounded-full border border-white/10 px-3 py-1">
-                  <ClipboardList color={palette.text.secondary} size={14} strokeWidth={1.3} />
-                  <Text className="text-xs text-slate-300">Apri task</Text>
-                </Pressable>
-              </HStack>
-            ))}
-          </VStack>
-        </GlassCard>
+          <DebugPanel
+            debugMode={debugMode}
+            manualAlerts={booking.manualAlerts}
+            actions={booking.actions}
+            aiConfidence={booking.aiConfidence}
+          />
+        </VStack>
       </HStack>
     </VStack>
+  );
+}
+
+function GuestInsightsCard({
+  notes,
+  preferences,
+  manualAlerts,
+}: {
+  notes: string[];
+  preferences: string[];
+  manualAlerts: string[];
+}) {
+  return (
+    <GlassCard className="w-full max-w-sm gap-4 border-white/10 bg-white/5">
+      <SectionHeader title="Insight ospite" subtitle="Note operative e preferenze in evidenza" />
+      <VStack className="gap-3">
+        <Text className="text-xs uppercase tracking-[0.3em] text-slate-500">Note concierge</Text>
+        {notes.map((note) => (
+          <Text key={note} className="rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-200">
+            {note}
+          </Text>
+        ))}
+      </VStack>
+      <VStack className="gap-2">
+        <Text className="text-xs uppercase tracking-[0.3em] text-slate-500">Preferenze</Text>
+        <HStack className="flex-wrap gap-2">
+          {preferences.map((pref) => (
+            <Text
+              key={pref}
+              className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] text-slate-200"
+            >
+              {pref}
+            </Text>
+          ))}
+        </HStack>
+      </VStack>
+      <VStack className="gap-2">
+        <Text className="text-xs uppercase tracking-[0.3em] text-slate-500">Alert manuali</Text>
+        {manualAlerts.map((alert) => (
+          <HStack key={alert} className="items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-3 py-2">
+            <ClipboardList color={palette.intent.accent} size={16} strokeWidth={1.4} />
+            <Text className="text-xs text-slate-200">{alert}</Text>
+          </HStack>
+        ))}
+      </VStack>
+    </GlassCard>
+  );
+}
+
+function JourneyMoments({
+  moments,
+}: {
+  moments: {
+    id: string;
+    title: string;
+    description: string;
+    timestamp: string;
+    owner: string;
+  }[];
+}) {
+  return (
+    <GlassCard className="gap-4 border-white/10 bg-white/5">
+      <SectionHeader title="Journey moments" subtitle="Cronologia azioni AI e staff" />
+      <VStack className="gap-3">
+        {moments.map((moment) => (
+          <VStack key={moment.id} className="gap-2 rounded-2xl border border-white/10 bg-[#101924]/70 px-4 py-3">
+            <HStack className="items-center justify-between">
+              <Text className="text-sm font-semibold text-white">{moment.title}</Text>
+              <Text className="text-xs text-slate-400">{moment.timestamp}</Text>
+            </HStack>
+            <Text className="text-sm text-slate-200">{moment.description}</Text>
+            <Text className="text-xs text-slate-400">Responsabile: {moment.owner}</Text>
+          </VStack>
+        ))}
+      </VStack>
+    </GlassCard>
+  );
+}
+
+function DebugPanel({
+  debugMode,
+  manualAlerts,
+  actions,
+  aiConfidence,
+}: {
+  debugMode: boolean;
+  manualAlerts: string[];
+  actions: string[];
+  aiConfidence: number;
+}) {
+  return (
+    <GlassCard className="gap-4 border-white/10 bg-white/5">
+      <SectionHeader
+        title="Debug automazioni"
+        subtitle={debugMode ? 'Log decisioni AI e fallback' : 'Attiva debug per visualizzare log'}
+      />
+      {debugMode ? (
+        <VStack className="gap-3">
+          <HStack className="items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1">
+            <Sparkles color={palette.intent.accent} size={14} strokeWidth={1.4} />
+            <Text className="text-xs text-slate-200">Confidence attuale {Math.round(aiConfidence * 100)}%</Text>
+          </HStack>
+          {actions.map((action) => (
+            <Text key={action} className="text-sm text-slate-200">
+              Automazione: {action}
+            </Text>
+          ))}
+          {manualAlerts.map((alert) => (
+            <HStack key={alert} className="items-center gap-2 rounded-2xl border border-amber-300/40 bg-amber-400/10 px-3 py-2">
+              <AlertCircle color={palette.intent.warning} size={14} strokeWidth={1.4} />
+              <Text className="text-xs text-amber-100">Fallback richiesto: {alert}</Text>
+            </HStack>
+          ))}
+        </VStack>
+      ) : (
+        <Text className="text-sm text-slate-300">
+          Attiva la modalità debug per analizzare decisioni AI e verificare dove intervenire manualmente.
+        </Text>
+      )}
+    </GlassCard>
   );
 }
