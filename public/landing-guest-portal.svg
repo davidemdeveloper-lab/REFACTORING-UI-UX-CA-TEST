@@ -1,0 +1,38 @@
+<svg width="720" height="1280" viewBox="0 0 720 1280" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="720" y2="1280" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1A2135" />
+      <stop offset="0.45" stop-color="#23304A" />
+      <stop offset="1" stop-color="#10131C" />
+    </linearGradient>
+    <linearGradient id="accent" x1="120" y1="180" x2="640" y2="940" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4AC8FF" stop-opacity="0.75" />
+      <stop offset="1" stop-color="#A6F7FF" stop-opacity="0" />
+    </linearGradient>
+    <filter id="blur" x="0" y="0" width="720" height="1280" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="60" />
+    </filter>
+  </defs>
+  <rect width="720" height="1280" rx="48" fill="url(#bg)" />
+  <g filter="url(#blur)">
+    <ellipse cx="520" cy="360" rx="320" ry="220" fill="url(#accent)" />
+  </g>
+  <g opacity="0.35">
+    <path d="M120 280H600" stroke="white" stroke-opacity="0.12" stroke-width="2" stroke-linecap="round" />
+    <path d="M120 420H600" stroke="white" stroke-opacity="0.1" stroke-width="2" stroke-linecap="round" />
+    <path d="M120 560H600" stroke="white" stroke-opacity="0.08" stroke-width="2" stroke-linecap="round" />
+  </g>
+  <rect x="170" y="220" width="380" height="120" rx="28" fill="#212B3E" fill-opacity="0.7" stroke="#4AC8FF" stroke-opacity="0.35" />
+  <text x="210" y="274" fill="#E6F6FF" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="28">Suite Panoramica 802</text>
+  <text x="210" y="306" fill="#B3CEE4" font-family="'Plus Jakarta Sans', sans-serif" font-size="18">Check-in digitale completato</text>
+  <text x="210" y="336" fill="#4AC8FF" font-family="'Space Grotesk', sans-serif" font-weight="600" font-size="16">Spa romantica prenotata</text>
+  <rect x="170" y="420" width="380" height="220" rx="32" fill="#151A26" fill-opacity="0.75" stroke="#A6F7FF" stroke-opacity="0.18" />
+  <text x="210" y="478" fill="#E6F6FF" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="24">Servizi disponibili</text>
+  <text x="210" y="520" fill="#9EB9D6" font-family="'Plus Jakarta Sans', sans-serif" font-size="18">• Prenotazione ristorante panoramico</text>
+  <text x="210" y="554" fill="#9EB9D6" font-family="'Plus Jakarta Sans', sans-serif" font-size="18">• Concierge digitale h24</text>
+  <text x="210" y="588" fill="#9EB9D6" font-family="'Plus Jakarta Sans', sans-serif" font-size="18">• Preferenze camera e minibar</text>
+  <rect x="170" y="680" width="380" height="220" rx="32" fill="#1F2737" fill-opacity="0.85" stroke="#4AC8FF" stroke-opacity="0.2" />
+  <text x="210" y="736" fill="#E6F6FF" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="24">Chat con Concierge AI</text>
+  <text x="210" y="780" fill="#4AC8FF" font-family="'Space Grotesk', sans-serif" font-size="18">"Vuoi aggiungere un massaggio di coppia alle 18:30?"</text>
+  <text x="210" y="814" fill="#B3CEE4" font-family="'Plus Jakarta Sans', sans-serif" font-size="18">Risposta in 32 secondi • Guardrail attivi</text>
+</svg>
