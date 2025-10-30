@@ -13,56 +13,65 @@ import { Bell, ChevronDown, Hotel, Search, SlidersHorizontal, Sparkles } from 'l
 export function AppTopbar() {
   return (
     <HStack
-      px={32}
-      py={20}
-      alignItems="center"
-      justifyContent="space-between"
-      borderBottomWidth={1}
-      borderBottomColor={palette.glassStroke}
-      bg="rgba(6,11,22,0.55)"
-      style={{ backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)' }}
+      className="items-center justify-between"
+      style={{
+        paddingLeft: 32,
+        paddingRight: 32,
+        paddingTop: 20,
+        paddingBottom: 20,
+        borderBottomWidth: 1,
+        borderBottomStyle: 'solid',
+        borderBottomColor: palette.glassStroke,
+        backgroundColor: 'rgba(6,11,22,0.55)',
+        backdropFilter: 'blur(24px)',
+        WebkitBackdropFilter: 'blur(24px)',
+      } as any}
     >
       <VStack space="xs">
-        <Text fontSize={18} fontWeight="700" color={palette.textPrimary}>
+        <Text style={{ fontSize: 18, fontWeight: '700', color: palette.textPrimary } as any}>
           Benvenuto, Davide
         </Text>
-        <HStack space="sm" alignItems="center">
+        <HStack space="sm" className="items-center">
           <Sparkles size={16} color={palette.accentSecondary} />
-          <Text fontSize={13} color={palette.textMuted}>
+          <Text style={{ fontSize: 13, color: palette.textMuted } as any}>
             3 suggerimenti AI pronti per migliorare il guest journey odierno
           </Text>
         </HStack>
-        <HStack space="sm" alignItems="center">
+        <HStack space="sm" className="items-center">
           <ContextPill icon={<Hotel size={14} color={palette.intent.accent} />} label="Skyline Resort" />
           <ContextPill icon={<SlidersHorizontal size={14} color={palette.intent.accent} />} label="Focus accoglienza" />
         </HStack>
       </VStack>
 
-      <HStack space="md" alignItems="center">
-        <Box w={280}>
+      <HStack space="md" className="items-center">
+        <Box style={{ width: 280 } as any}>
           <Input
             size="md"
             variant="outline"
-            borderColor="rgba(56,189,248,0.25)"
-            bg="rgba(8,15,28,0.65)"
-            borderRadius={20}
+            style={{
+              borderColor: 'rgba(56,189,248,0.25)',
+              backgroundColor: 'rgba(8,15,28,0.65)',
+              borderRadius: 20,
+            } as any}
           >
             <Search size={18} color={palette.textMuted} style={{ marginHorizontal: 12 }} />
-            <InputField placeholder="Cerca clienti, prenotazioni, template..." color={palette.textSecondary} />
+            <InputField placeholder="Cerca clienti, prenotazioni, template..." style={{ color: palette.textSecondary } as any} />
           </Input>
         </Box>
         <NotificationBell />
         <Box
-          w={40}
-          h={40}
-          borderRadius={999}
-          bg="rgba(56,189,248,0.18)"
-          borderColor="rgba(56,189,248,0.35)"
-          borderWidth={1}
-          alignItems="center"
-          justifyContent="center"
+          className="items-center justify-center"
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: 999,
+            backgroundColor: 'rgba(56,189,248,0.18)',
+            borderColor: 'rgba(56,189,248,0.35)',
+            borderWidth: 1,
+            borderStyle: 'solid',
+          } as any}
         >
-          <Text fontWeight="700" color={palette.accentPrimary}>
+          <Text style={{ fontWeight: '700', color: palette.accentPrimary } as any}>
             D
           </Text>
         </Box>
@@ -83,33 +92,37 @@ function ContextPill({ icon, label }: { icon: ReactNode; label: string }) {
 
 function NotificationBell() {
   return (
-    <Box position="relative">
+    <Box style={{ position: 'relative' } as any}>
       <Box
-        w={40}
-        h={40}
-        borderRadius={999}
-        alignItems="center"
-        justifyContent="center"
-        bg="rgba(148,163,184,0.18)"
-        borderWidth={1}
-        borderColor="rgba(148,163,184,0.25)"
+        className="items-center justify-center"
+        style={{
+          width: 40,
+          height: 40,
+          borderRadius: 999,
+          backgroundColor: 'rgba(148,163,184,0.18)',
+          borderWidth: 1,
+          borderStyle: 'solid',
+          borderColor: 'rgba(148,163,184,0.25)',
+        } as any}
       >
         <Bell size={18} color={palette.textSecondary} />
       </Box>
       <Box
-        position="absolute"
-        top={4}
-        right={4}
-        w={16}
-        h={16}
-        borderRadius={999}
-        bg={palette.accentSecondary}
-        alignItems="center"
-        justifyContent="center"
-        borderWidth={1}
-        borderColor="#fff"
+        className="items-center justify-center"
+        style={{
+          position: 'absolute',
+          top: 4,
+          right: 4,
+          width: 16,
+          height: 16,
+          borderRadius: 999,
+          backgroundColor: palette.accentSecondary,
+          borderWidth: 1,
+          borderStyle: 'solid',
+          borderColor: '#fff',
+        } as any}
       >
-        <Text fontSize={10} fontWeight="700" color="#fff">
+        <Text style={{ fontSize: 10, fontWeight: '700', color: '#fff' } as any}>
           5
         </Text>
       </Box>

@@ -1,6 +1,7 @@
 import React from 'react';
 import type { VariantProps } from '@gluestack-ui/utils/nativewind-utils';
 import { textStyle } from './styles';
+import { filterDOMProps } from '../utils/filterDOMProps';
 
 type ITextProps = React.ComponentProps<'span'> & VariantProps<typeof textStyle>;
 
@@ -20,6 +21,7 @@ const Text = React.forwardRef<React.ComponentRef<'span'>, ITextProps>(
     }: { className?: string } & ITextProps,
     ref
   ) {
+    const filteredProps = filterDOMProps(props);
     return (
       <span
         className={textStyle({
@@ -33,7 +35,7 @@ const Text = React.forwardRef<React.ComponentRef<'span'>, ITextProps>(
           highlight: highlight as boolean,
           class: className,
         })}
-        {...props}
+        {...filteredProps}
         ref={ref}
       />
     );

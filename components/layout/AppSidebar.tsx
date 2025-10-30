@@ -34,36 +34,44 @@ export function AppSidebar() {
 
   return (
     <Box
-      w={240}
-      h="100%"
-      bg={palette.surfaceMuted}
-      borderRightColor={palette.glassStroke}
-      borderRightWidth={1}
-      style={{ backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)' }}
-      px={20}
-      py={28}
+      style={{
+        width: 240,
+        height: '100%',
+        backgroundColor: palette.surfaceMuted,
+        borderRightColor: palette.glassStroke,
+        borderRightWidth: 1,
+        borderRightStyle: 'solid',
+        paddingLeft: 20,
+        paddingRight: 20,
+        paddingTop: 28,
+        paddingBottom: 28,
+        backdropFilter: 'blur(24px)',
+        WebkitBackdropFilter: 'blur(24px)',
+      } as any}
     >
       <VStack space="lg">
-        <HStack alignItems="center" gap={12}>
+        <HStack className="items-center" style={{ gap: 12 } as any}>
           <Box
-            w={44}
-            h={44}
-            borderRadius={14}
-            bg="rgba(56,189,248,0.2)"
-            alignItems="center"
-            justifyContent="center"
-            borderColor="rgba(56,189,248,0.4)"
-            borderWidth={1}
+            className="items-center justify-center"
+            style={{
+              width: 44,
+              height: 44,
+              borderRadius: 14,
+              backgroundColor: 'rgba(56,189,248,0.2)',
+              borderColor: 'rgba(56,189,248,0.4)',
+              borderWidth: 1,
+              borderStyle: 'solid',
+            } as any}
           >
-            <Text fontSize={20} fontWeight="700" color={palette.accentPrimary}>
+            <Text style={{ fontSize: 20, fontWeight: '700', color: palette.accentPrimary } as any}>
               CA
             </Text>
           </Box>
           <VStack>
-            <Text fontSize={16} fontWeight="700" color={palette.textPrimary}>
+            <Text style={{ fontSize: 16, fontWeight: '700', color: palette.textPrimary } as any}>
               Customer Automator
             </Text>
-            <Text fontSize={12} color={palette.textMuted}>
+            <Text style={{ fontSize: 12, color: palette.textMuted } as any}>
               Experience Hub
             </Text>
           </VStack>
@@ -76,17 +84,22 @@ export function AppSidebar() {
             return (
               <Link key={item.href} href={item.href} style={{ textDecoration: 'none' }}>
                 <HStack
-                  alignItems="center"
-                  gap={12}
-                  px={14}
-                  py={12}
-                  borderRadius={14}
-                  bg={active ? 'rgba(56,189,248,0.16)' : 'transparent'}
-                  borderWidth={active ? 1 : 0}
-                  borderColor={active ? 'rgba(56,189,248,0.35)' : 'transparent'}
+                  className="items-center"
+                  style={{
+                    gap: 12,
+                    paddingLeft: 14,
+                    paddingRight: 14,
+                    paddingTop: 12,
+                    paddingBottom: 12,
+                    borderRadius: 14,
+                    backgroundColor: active ? 'rgba(56,189,248,0.16)' : 'transparent',
+                    borderWidth: active ? 1 : 0,
+                    borderStyle: active ? 'solid' : 'none',
+                    borderColor: active ? 'rgba(56,189,248,0.35)' : 'transparent',
+                  } as any}
                 >
                   <Icon color={active ? palette.accentPrimary : palette.textMuted} size={20} />
-                  <Text color={active ? palette.textPrimary : palette.textMuted} fontWeight="600">
+                  <Text style={{ color: active ? palette.textPrimary : palette.textMuted, fontWeight: '600' } as any}>
                     {item.label}
                   </Text>
                 </HStack>
@@ -103,12 +116,20 @@ export function AppSidebar() {
 
 function MetallicFooter() {
   return (
-    <Box mt="auto" pt={24} borderTopWidth={1} borderTopColor="rgba(148,163,184,0.18)">
+    <Box
+      style={{
+        marginTop: 'auto',
+        paddingTop: 24,
+        borderTopWidth: 1,
+        borderTopStyle: 'solid',
+        borderTopColor: 'rgba(148,163,184,0.18)',
+      } as any}
+    >
       <VStack space="xs">
-        <Text fontSize={12} color={palette.textMuted}>
+        <Text style={{ fontSize: 12, color: palette.textMuted } as any}>
           Ultima sincronizzazione
         </Text>
-        <Text fontSize={13} fontWeight="600" color={palette.textSecondary}>
+        <Text style={{ fontSize: 13, fontWeight: '600', color: palette.textSecondary } as any}>
           Oggi, 10:15 - Tutti i sistemi attivi
         </Text>
       </VStack>

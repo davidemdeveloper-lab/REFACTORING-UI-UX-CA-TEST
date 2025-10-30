@@ -20,37 +20,42 @@ export function ChatLayout() {
   const messages = chatMessages[activeThread] ?? [];
 
   return (
-    <HStack gap={24} flexWrap="wrap" justifyContent="center">
+    <HStack className="flex-wrap justify-center" style={{ gap: 24 } as any}>
       <MetalGlassCard padding={16}>
-        <VStack space="md" w={320} style={{ height: '70vh' }}>
-          <Text fontSize={18} fontWeight="700" color={palette.textPrimary}>
+        <VStack space="md" style={{ width: 320, height: '70vh' } as any}>
+          <Text style={{ fontSize: 18, fontWeight: '700', color: palette.textPrimary } as any}>
             Conversazioni
           </Text>
-          <ScrollView flex={1} showsVerticalScrollIndicator={false}>
+          <ScrollView style={{ flex: 1 } as any} showsVerticalScrollIndicator={false}>
             <VStack space="sm">
               {chatThreads.map((thread) => {
                 const active = thread.id === activeThread;
                 return (
                   <Pressable key={thread.id} onPress={() => setActiveThread(thread.id)}>
                     <Box
-                      borderRadius={16}
-                      px={14}
-                      py={12}
-                      bg={active ? 'rgba(56,189,248,0.14)' : 'rgba(15,23,42,0.45)'}
-                      borderWidth={1}
-                      borderColor={active ? 'rgba(56,189,248,0.35)' : 'rgba(148,163,184,0.18)'}
+                      style={{
+                        borderRadius: 16,
+                        paddingLeft: 14,
+                        paddingRight: 14,
+                        paddingTop: 12,
+                        paddingBottom: 12,
+                        backgroundColor: active ? 'rgba(56,189,248,0.14)' : 'rgba(15,23,42,0.45)',
+                        borderWidth: 1,
+                        borderStyle: 'solid',
+                        borderColor: active ? 'rgba(56,189,248,0.35)' : 'rgba(148,163,184,0.18)',
+                      } as any}
                     >
                       <VStack space="xs">
-                        <HStack justifyContent="space-between" alignItems="center">
-                          <Text fontWeight="700" color={palette.textPrimary}>
+                        <HStack className="justify-between items-center">
+                          <Text style={{ fontWeight: '700', color: palette.textPrimary } as any}>
                             {thread.guest}
                           </Text>
                           {thread.unread > 0 && <StatusPill label={`${thread.unread} nuovi`} tone="warning" />}
                         </HStack>
-                        <Text fontSize={12} color={palette.textMuted}>
+                        <Text style={{ fontSize: 12, color: palette.textMuted } as any}>
                           {thread.lastMessagePreview}
                         </Text>
-                        <HStack justifyContent="space-between" alignItems="center">
+                        <HStack className="justify-between items-center">
                           <StatusPill
                             label={thread.status}
                             tone={
@@ -61,7 +66,7 @@ export function ChatLayout() {
                                 : 'muted'
                             }
                           />
-                          <Text fontSize={11} color={palette.textMuted}>
+                          <Text style={{ fontSize: 11, color: palette.textMuted } as any}>
                             {thread.updatedAt}
                           </Text>
                         </HStack>
@@ -76,19 +81,19 @@ export function ChatLayout() {
       </MetalGlassCard>
 
       <MetalGlassCard padding={16}>
-        <VStack space="md" w={520} style={{ height: '70vh' }}>
-          <HStack justifyContent="space-between" alignItems="center">
+        <VStack space="md" style={{ width: 520, height: '70vh' } as any}>
+          <HStack className="justify-between items-center">
             <VStack>
-              <Text fontSize={18} fontWeight="700" color={palette.textPrimary}>
+              <Text style={{ fontSize: 18, fontWeight: '700', color: palette.textPrimary } as any}>
                 {chatThreads.find((thread) => thread.id === activeThread)?.guest ?? 'Conversazione'}
               </Text>
-              <Text fontSize={13} color={palette.textMuted}>
+              <Text style={{ fontSize: 13, color: palette.textMuted } as any}>
                 {chatThreads.find((thread) => thread.id === activeThread)?.room}
               </Text>
             </VStack>
             <StatusPill label="IA co-pilot" tone="accent" />
           </HStack>
-          <ScrollView flex={1} showsVerticalScrollIndicator={false}>
+          <ScrollView style={{ flex: 1 } as any} showsVerticalScrollIndicator={false}>
             <VStack space="sm">
               {messages.map((message) => (
                 <MessageBubble key={message.id} role={message.from} timestamp={message.timestamp}>
@@ -97,19 +102,24 @@ export function ChatLayout() {
               ))}
             </VStack>
           </ScrollView>
-          <HStack alignItems="center" gap={12}>
-            <Input flex={1} variant="outline" bg="rgba(8,15,28,0.65)" borderRadius={20}>
-              <InputField placeholder="Scrivi una risposta o chiedi supporto all’AI..." />
+          <HStack className="items-center" style={{ gap: 12 } as any}>
+            <Input
+              style={{ flex: 1, backgroundColor: 'rgba(8,15,28,0.65)', borderRadius: 20 } as any}
+              variant="outline"
+            >
+              <InputField placeholder="Scrivi una risposta o chiedi supporto all'AI..." />
             </Input>
             <Box
-              w={44}
-              h={44}
-              borderRadius={14}
-              bg="rgba(56,189,248,0.2)"
-              alignItems="center"
-              justifyContent="center"
-              borderWidth={1}
-              borderColor="rgba(56,189,248,0.35)"
+              className="items-center justify-center"
+              style={{
+                width: 44,
+                height: 44,
+                borderRadius: 14,
+                backgroundColor: 'rgba(56,189,248,0.2)',
+                borderWidth: 1,
+                borderStyle: 'solid',
+                borderColor: 'rgba(56,189,248,0.35)',
+              } as any}
             >
               <SendHorizontal size={20} color={palette.accentPrimary} />
             </Box>
@@ -118,8 +128,8 @@ export function ChatLayout() {
       </MetalGlassCard>
 
       <MetalGlassCard padding={16}>
-        <VStack space="md" w={260} style={{ height: '70vh' }}>
-          <Text fontSize={16} fontWeight="700" color={palette.textPrimary}>
+        <VStack space="md" style={{ width: 260, height: '70vh' } as any}>
+          <Text style={{ fontSize: 16, fontWeight: '700', color: palette.textPrimary } as any}>
             Insight AI
           </Text>
           <VStack space="sm">
@@ -159,21 +169,26 @@ function MessageBubble({ children, role, timestamp }: MessageBubbleProps) {
   const textColor = role === 'guest' ? palette.textPrimary : palette.textSecondary;
 
   return (
-    <VStack alignItems={alignment} w="100%">
+    <VStack style={{ alignItems: alignment, width: '100%' } as any}>
       <Box
-        maxW="85%"
-        borderRadius={16}
-        px={14}
-        py={10}
-        bg={bgColor}
-        borderWidth={1}
-        borderColor="rgba(148,163,184,0.2)"
+        style={{
+          maxWidth: '85%',
+          borderRadius: 16,
+          paddingLeft: 14,
+          paddingRight: 14,
+          paddingTop: 10,
+          paddingBottom: 10,
+          backgroundColor: bgColor,
+          borderWidth: 1,
+          borderStyle: 'solid',
+          borderColor: 'rgba(148,163,184,0.2)',
+        } as any}
       >
-        <Text fontSize={14} color={textColor}>
+        <Text style={{ fontSize: 14, color: textColor } as any}>
           {children}
         </Text>
       </Box>
-      <Text fontSize={11} color={palette.textMuted} mt={4}>
+      <Text style={{ fontSize: 11, color: palette.textMuted, marginTop: 4 } as any}>
         {timestamp}
       </Text>
     </VStack>
@@ -188,21 +203,26 @@ interface InsightCardProps {
 function InsightCard({ title, description }: InsightCardProps) {
   return (
     <Box
-      borderRadius={16}
-      px={14}
-      py={12}
-      bg="rgba(15,23,42,0.5)"
-      borderWidth={1}
-      borderColor="rgba(56,189,248,0.18)"
+      style={{
+        borderRadius: 16,
+        paddingLeft: 14,
+        paddingRight: 14,
+        paddingTop: 12,
+        paddingBottom: 12,
+        backgroundColor: 'rgba(15,23,42,0.5)',
+        borderWidth: 1,
+        borderStyle: 'solid',
+        borderColor: 'rgba(56,189,248,0.18)',
+      } as any}
     >
       <VStack space="xs">
-        <HStack space="xs" alignItems="center">
+        <HStack space="xs" className="items-center">
           <ArrowUpCircle size={16} color={palette.accentPrimary} />
-          <Text fontSize={13} fontWeight="600" color={palette.textPrimary}>
+          <Text style={{ fontSize: 13, fontWeight: '600', color: palette.textPrimary } as any}>
             {title}
           </Text>
         </HStack>
-        <Text fontSize={12} color={palette.textSecondary}>
+        <Text style={{ fontSize: 12, color: palette.textSecondary } as any}>
           {description}
         </Text>
       </VStack>
