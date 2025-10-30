@@ -15,15 +15,17 @@ import {
   CalendarClock,
   BookOpenCheck,
   MessageSquareText,
+  UserCircle2,
 } from 'lucide-react-native';
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: Home },
+  { href: '/bookings', label: 'Prenotazioni', icon: CalendarClock },
+  { href: '/chat', label: 'Chat & AI', icon: MessageSquareText },
   { href: '/clients', label: 'Clienti', icon: Users },
   { href: '/clients/add', label: 'Aggiungi Cliente', icon: UserPlus },
-  { href: '/reservations', label: 'Prenotazioni', icon: CalendarClock },
   { href: '/templates', label: 'Template Email', icon: NotebookPen },
-  { href: '/chat', label: 'Chat & AI', icon: MessageSquareText },
+  { href: '/client-portal', label: 'Area Cliente', icon: UserCircle2 },
   { href: '/services', label: 'Hub Servizi', icon: BookOpenCheck },
 ];
 

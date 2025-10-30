@@ -1,12 +1,14 @@
 'use client';
 
+import { ReactNode } from 'react';
 import { HStack } from '@/components/ui/hstack';
 import { VStack } from '@/components/ui/vstack';
 import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import { Input, InputField } from '@/components/ui/input';
+import { Pressable } from '@/components/ui/pressable';
 import { palette } from '@/theme/palette';
-import { Bell, Search, Sparkles } from 'lucide-react-native';
+import { Bell, ChevronDown, Hotel, Search, SlidersHorizontal, Sparkles } from 'lucide-react-native';
 
 export function AppTopbar() {
   return (
@@ -29,6 +31,10 @@ export function AppTopbar() {
           <Text fontSize={13} color={palette.textMuted}>
             3 suggerimenti AI pronti per migliorare il guest journey odierno
           </Text>
+        </HStack>
+        <HStack space="sm" alignItems="center">
+          <ContextPill icon={<Hotel size={14} color={palette.intent.accent} />} label="Skyline Resort" />
+          <ContextPill icon={<SlidersHorizontal size={14} color={palette.intent.accent} />} label="Focus accoglienza" />
         </HStack>
       </VStack>
 
@@ -62,6 +68,16 @@ export function AppTopbar() {
         </Box>
       </HStack>
     </HStack>
+  );
+}
+
+function ContextPill({ icon, label }: { icon: ReactNode; label: string }) {
+  return (
+    <Pressable className="flex-row items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
+      {icon}
+      <Text className="text-xs text-slate-200">{label}</Text>
+      <ChevronDown size={12} color={palette.textSecondary} />
+    </Pressable>
   );
 }
 
