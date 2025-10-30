@@ -1,0 +1,26 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "components/navigation/**/*.ts",
+    "components/navigation/**/*.tsx",
+    "components/common/**/*.ts",
+    "components/common/**/*.tsx",
+    "components/templates/**/*.ts",
+    "components/templates/**/*.tsx",
+    "components/bookings/**/*.ts",
+    "components/bookings/**/*.tsx",
+    "components/clients/**/*.ts",
+    "components/clients/**/*.tsx",
+    "components/chat/**/*.ts",
+    "components/chat/**/*.tsx",
+    "components/iot/**/*.ts",
+    "components/iot/**/*.tsx",
+    "components/notifications/**/*.ts",
+    "components/notifications/**/*.tsx",
+    "data/**/*.ts",
+    "lib/**/*.ts",
+    "types/**/*.ts"
+  ]
+}
