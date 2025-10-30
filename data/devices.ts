@@ -1,0 +1,48 @@
+import type { Device } from '@/types';
+
+export const devices: Device[] = [
+  {
+    id: 'iot-001',
+    name: 'Climatizzatore Suite 501',
+    location: 'Piano 5 • Suite Aurora',
+    status: 'online',
+    battery: 100,
+    signal: 92,
+    lastSync: '2025-01-08T18:05:00Z',
+    type: 'room',
+    icon: 'thermometer-sun',
+  },
+  {
+    id: 'iot-002',
+    name: 'Diffusore Aromi Respiro',
+    location: 'Spa - Sala Respiro',
+    status: 'offline',
+    battery: 64,
+    signal: 0,
+    lastSync: '2025-01-08T06:55:00Z',
+    type: 'wellness',
+    icon: 'flower2',
+  },
+  {
+    id: 'iot-003',
+    name: 'Smart Lock 302',
+    location: 'Piano 3 • Camera Comfort',
+    status: 'online',
+    battery: 78,
+    signal: 80,
+    lastSync: '2025-01-08T18:25:00Z',
+    type: 'room',
+    icon: 'lock',
+  },
+  {
+    id: 'iot-004',
+    name: 'Stazione Meteo Rooftop',
+    location: 'Terrazza panoramica',
+    status: 'maintenance',
+    battery: 88,
+    signal: 67,
+    lastSync: '2025-01-07T14:12:00Z',
+    type: 'common',
+    icon: 'wind',
+  },
+];
