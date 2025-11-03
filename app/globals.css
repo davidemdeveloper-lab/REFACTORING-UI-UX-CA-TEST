@@ -3,19 +3,31 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-background: #f6f2eb;
+  --color-surface: #ffffff;
+  --color-primary-500: #c47b2c;
+  --color-primary-600: #aa6a24;
+  --color-accent-emerald: #1f7a4d;
+  --color-neutral-900: #1f2933;
+  --color-neutral-600: #475467;
+  --color-neutral-200: #e4e1db;
+  --color-border: rgba(31, 41, 51, 0.12);
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  --shadow-card: 0 8px 30px rgba(36, 30, 18, 0.08);
+  --font-base: 'Geist', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    sans-serif;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--color-neutral-900);
+  background: var(--color-background);
+  font-family: var(--font-base);
+  margin: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
