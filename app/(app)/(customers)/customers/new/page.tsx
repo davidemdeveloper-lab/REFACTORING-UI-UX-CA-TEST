@@ -65,6 +65,8 @@ type RateOption = {
   suggestedPrice: number;
 };
 
+type RateSelection = '' | 'all' | RatePlanId;
+
 type ProposalRoom = {
   id: string;
   roomType: string;
@@ -74,7 +76,7 @@ type ProposalRoom = {
   spaPrice: number;
   notes: string;
   rateOptions: RateOption[];
-  selectedRatePlan: 'all' | RatePlanId;
+  selectedRatePlan: RateSelection;
   isEditing: boolean;
 };
 
@@ -183,7 +185,7 @@ function createProposalRoom(): ProposalRoom {
     spaPrice: 35,
     notes: '',
     rateOptions: generateRateOptions(undefined, 2, 0),
-    selectedRatePlan: 'all',
+    selectedRatePlan: '',
     isEditing: true,
   };
 }
@@ -212,6 +214,9 @@ function getChildCount(value: string) {
 }
 
 function getVisibleRateOptions(room: ProposalRoom) {
+  if (!room.selectedRatePlan) {
+    return [];
+  }
   if (room.selectedRatePlan === 'all') {
     return room.rateOptions;
   }
@@ -423,7 +428,7 @@ export default function CustomerIntakePage() {
   ) => {
     updateRoom(proposalId, roomId, (current) => ({
       ...current,
-      selectedRatePlan: (value as ProposalRoom['selectedRatePlan']) ?? 'all',
+      selectedRatePlan: (value as RateSelection) ?? '',
     }));
   };
 
@@ -913,7 +918,7 @@ export default function CustomerIntakePage() {
                               Tariffe
                             </Text>
                             <Select
-                              selectedValue={room.selectedRatePlan}
+                              selectedValue={room.selectedRatePlan || undefined}
                               onValueChange={(value) =>
                                 handleRatePlanChange(proposal.id, room.id, value)
                               }
@@ -1008,11 +1013,12 @@ export default function CustomerIntakePage() {
                             Tariffe
                           </Text>
                           <Box className="grid gap-3 md:grid-cols-2">
-                            {getVisibleRateOptions(room).map((option) => (
-                              <Box
-                                key={option.id}
-                                className="rounded-2xl border border-[rgba(196,123,44,0.35)] bg-[var(--color-surface)] px-4 py-4"
-                              >
+                            {room.roomType && room.selectedRatePlan
+                              ? getVisibleRateOptions(room).map((option) => (
+                                <Box
+                                  key={option.id}
+                                  className="rounded-2xl border border-[rgba(196,123,44,0.35)] bg-[var(--color-surface)] px-4 py-4"
+                                >
                                 <HStack className="items-center gap-2">
                                   <BedDouble size={18} color="#aa6a24" strokeWidth={2} />
                                   <Text className="text-sm font-semibold text-[var(--color-neutral-900)]">
@@ -1059,7 +1065,12 @@ export default function CustomerIntakePage() {
                                   </Input>
                                 </HStack>
                               </Box>
-                            ))}
+                              ))
+                              : (
+                                <Text className="text-sm text-[var(--color-neutral-500)]">
+                                  Seleziona stanza e tariffe per visualizzare i prezzi suggeriti.
+                                </Text>
+                              )}
                           </Box>
                         </Box>
 
