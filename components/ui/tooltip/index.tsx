@@ -75,23 +75,45 @@ const tooltipTextStyle = tva({
   },
 });
 
-type ITooltipProps = React.ComponentProps<typeof UITooltip> &
-  VariantProps<typeof tooltipStyle> & { className?: string };
+type ITooltipProps = Omit<React.ComponentProps<typeof UITooltip>, 'trigger'> &
+  VariantProps<typeof tooltipStyle>;
 type ITooltipContentProps = React.ComponentProps<typeof UITooltip.Content> &
   VariantProps<typeof tooltipContentStyle> & { className?: string };
 type ITooltipTextProps = React.ComponentProps<typeof UITooltip.Text> &
   VariantProps<typeof tooltipTextStyle> & { className?: string };
 
-const Tooltip = React.forwardRef<
+// Custom Tooltip wrapper to support Tooltip.Trigger pattern
+const TooltipImpl = React.forwardRef<
   React.ComponentRef<typeof UITooltip>,
   ITooltipProps
->(function Tooltip({ className, ...props }, ref) {
+>(function Tooltip({ children, ...props }, ref) {
+  // Extract Trigger and Content from children
+  let triggerElement: React.ReactElement | null = null;
+  let contentElements: React.ReactNode[] = [];
+
+  React.Children.forEach(children, (child) => {
+    if (React.isValidElement(child)) {
+      if ((child.type as any).displayName === 'TooltipTrigger') {
+        triggerElement = child;
+      } else {
+        contentElements.push(child);
+      }
+    }
+  });
+
   return (
     <UITooltip
       ref={ref}
-      className={tooltipStyle({ class: className })}
       {...props}
-    />
+      trigger={(triggerProps) => {
+        if (triggerElement) {
+          return React.cloneElement(triggerElement, triggerProps);
+        }
+        return null;
+      }}
+    >
+      {contentElements}
+    </UITooltip>
   );
 });
 
@@ -124,8 +146,27 @@ const TooltipText = React.forwardRef<
   );
 });
 
-Tooltip.displayName = 'Tooltip';
+// TooltipTrigger is a simple wrapper that passes children
+const TooltipTrigger = React.forwardRef<
+  any,
+  { children: React.ReactNode; ref?: any; onHoverIn?: () => void; onHoverOut?: () => void }
+>(function TooltipTrigger({ children, ...props }, ref) {
+  if (React.isValidElement(children)) {
+    return React.cloneElement(children as any, { ...props, ref });
+  }
+  return <View ref={ref} {...props}>{children}</View>;
+});
+
+TooltipImpl.displayName = 'Tooltip';
 TooltipContent.displayName = 'TooltipContent';
 TooltipText.displayName = 'TooltipText';
+TooltipTrigger.displayName = 'TooltipTrigger';
 
-export { Tooltip, TooltipContent, TooltipText };
+// Attach Trigger as a subcomponent
+const Tooltip = TooltipImpl as typeof TooltipImpl & {
+  Trigger: typeof TooltipTrigger;
+};
+
+Tooltip.Trigger = TooltipTrigger;
+
+export { Tooltip, TooltipContent, TooltipText, TooltipTrigger };
