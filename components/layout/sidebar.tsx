@@ -14,6 +14,9 @@ type SidebarProps = {
   onNavigate?: (route: SidebarRoute) => void;
 };
 
+const ACTIVE_ICON_COLOR = '#aa6a24';
+const INACTIVE_ICON_COLOR = 'rgba(99, 112, 128, 1)';
+
 function SidebarComponent({ activeRoute, onNavigate }: SidebarProps) {
   const router = useRouter();
 
@@ -53,11 +56,7 @@ function SidebarComponent({ activeRoute, onNavigate }: SidebarProps) {
                 >
                   <IconComponent
                     size={20}
-                    color={
-                      isActive
-                        ? 'var(--color-primary-600)'
-                        : 'rgba(99, 112, 128, 1)'
-                    }
+                    color={isActive ? ACTIVE_ICON_COLOR : INACTIVE_ICON_COLOR}
                   />
                   <Text
                     className={`text-sm font-semibold ${

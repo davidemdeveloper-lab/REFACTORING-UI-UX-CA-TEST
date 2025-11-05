@@ -26,10 +26,10 @@ export function SectionCard({
 }: SectionCardProps) {
   return (
     <Box
-      className={`mb-6 rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-[var(--shadow-card)] ${className ?? ''}`}
+      className={`mb-6 rounded-3xl bg-[var(--color-surface)] shadow-[var(--shadow-card)] ${className ?? ''}`}
     >
       <HStack
-        className={`items-start justify-between border-b border-[var(--color-border)] ${
+        className={`items-start justify-between ${
           padding === 'lg' ? 'px-8 py-6' : 'px-6 py-4'
         }`}
       >

@@ -13,50 +13,97 @@ import { SectionCard } from '@/components/shared/section-card';
 import { Timeline } from '@/components/shared/timeline';
 import { NotesBoard } from '@/components/shared/notes-board';
 import { CustomerPanel } from '@/components/shared/customer-panel';
+import { Badge } from '@/components/ui/badge';
+import { AlertTriangle, Droplets, ThermometerSun } from 'lucide-react-native';
 import {
   useGetBookingByIdQuery,
   useGetCustomerByIdQuery,
   useGetNotesQuery,
 } from '@/services/mockApi';
 
-function DetailRow({ label, value }: { label: string; value: string }) {
+function DetailTile({
+  label,
+  value,
+  highlight = false,
+}: {
+  label: string;
+  value: string;
+  highlight?: boolean;
+}) {
   return (
-    <Box className="flex-1 rounded-2xl border border-[var(--color-border)] bg-[var(--color-background)] px-4 py-3">
-      <Text className="text-xs font-semibold uppercase tracking-[0.25em] text-[var(--color-neutral-600)]">
+    <Box
+      className={`rounded-2xl border px-4 py-3 ${
+        highlight
+          ? 'border-[rgba(196,123,44,0.45)] bg-[rgba(196,123,44,0.08)]'
+          : 'border-[var(--color-border)] bg-[var(--color-background)]'
+      }`}
+    >
+      <Text className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[var(--color-neutral-500)]">
         {label}
       </Text>
-      <Text className="mt-2 text-sm font-semibold text-[var(--color-neutral-900)]">
+      <Text
+        className={`mt-2 text-sm ${
+          highlight
+            ? 'font-semibold text-[var(--color-primary-600)]'
+            : 'text-[var(--color-neutral-800)]'
+        }`}
+      >
         {value}
       </Text>
     </Box>
   );
 }
 
-function IoTCard({ temperature, minibarLevel }: { temperature?: number; minibarLevel?: number }) {
+function IoTCard({
+  temperature,
+  minibarLevel,
+}: {
+  temperature?: number;
+  minibarLevel?: number;
+}) {
   return (
-    <Box className="mt-4 rounded-2xl border border-[var(--color-border)] bg-[rgba(31,122,77,0.12)] px-5 py-4">
-      <Text className="text-xs font-semibold uppercase tracking-[0.25em] text-[#0f766e]">
-        Snapshot IoT
-      </Text>
+    <Box className="mt-4 rounded-2xl border border-[rgba(31,122,77,0.25)] bg-[rgba(31,122,77,0.12)] px-5 py-4">
+      <HStack className="items-center justify-between">
+        <Text className="text-xs font-semibold uppercase tracking-[0.25em] text-[#0f766e]">
+          Snapshot IoT
+        </Text>
+        <HStack className="items-center gap-2">
+          <Badge
+            size="sm"
+            action="muted"
+            className="rounded-full bg-[rgba(16,185,129,0.14)] px-3 py-1 text-xs font-semibold text-[#0f766e]"
+          >
+            <Text className="text-xs font-semibold text-[#0f766e]">
+              Aggiornato
+            </Text>
+          </Badge>
+        </HStack>
+      </HStack>
       <HStack className="mt-3 gap-4">
-        <Box className="flex-1">
-          <Text className="text-[13px] font-semibold text-[#0f766e]">
-            Temperatura
-          </Text>
-          <Text className="mt-1 text-2xl font-semibold text-[#0f766e]">
-            {temperature ? `${temperature.toFixed(1)}°C` : '—'}
+        <Box className="flex-1 rounded-xl border border-[rgba(31,122,77,0.25)] bg-white/60 px-4 py-3">
+          <HStack className="items-center gap-2">
+            <ThermometerSun size={18} color="#0f766e" strokeWidth={2} />
+            <Text className="text-[13px] font-semibold text-[#0f766e]">
+              Temperatura
+            </Text>
+          </HStack>
+          <Text className="mt-2 text-2xl font-semibold text-[#0f766e]">
+            {temperature != null ? `${temperature.toFixed(1)}°C` : '—'}
           </Text>
         </Box>
-        <Box className="flex-1">
-          <Text className="text-[13px] font-semibold text-[#0f766e]">
-            Minibar
-          </Text>
-          <Text className="mt-1 text-2xl font-semibold text-[#0f766e]">
-            {minibarLevel ? `${minibarLevel}%` : '—'}
+        <Box className="flex-1 rounded-xl border border-[rgba(31,122,77,0.25)] bg-white/60 px-4 py-3">
+          <HStack className="items-center gap-2">
+            <Droplets size={18} color="#0f766e" strokeWidth={2} />
+            <Text className="text-[13px] font-semibold text-[#0f766e]">
+              Minibar
+            </Text>
+          </HStack>
+          <Text className="mt-2 text-2xl font-semibold text-[#0f766e]">
+            {minibarLevel != null ? `${minibarLevel}%` : '—'}
           </Text>
         </Box>
       </HStack>
-      <Text className="mt-2 text-xs text-[#0f766e]">
+      <Text className="mt-3 text-xs text-[#0f766e]">
         Dati dimostrativi aggiornati dalle room automation.
       </Text>
     </Box>
@@ -112,35 +159,103 @@ export default function BookingDetailPage() {
         <Box className="flex-1">
           <SectionCard
             title={`Prenotazione n° ${booking.bookingNumber}`}
-            subtitle="Dati operativi e stato comunicazioni per questa prenotazione."
+            subtitle="Dati operativi, stato comunicazioni e comfort camera."
           >
-            <VStack space="md">
-              <HStack className="flex-row gap-4">
-                <DetailRow label="Check-in" value={booking.checkIn} />
-                <DetailRow label="Check-out" value={booking.checkOut} />
+            <Box>
+              <HStack className="flex-row flex-wrap gap-2">
+                <Badge
+                  size="sm"
+                  action="muted"
+                  className="rounded-full bg-[rgba(31,122,77,0.16)] px-3 py-1 text-xs font-semibold text-[#0f766e]"
+                >
+                  <Text className="text-xs font-semibold text-[#0f766e]">
+                    {booking.status}
+                  </Text>
+                </Badge>
+                <Badge
+                  size="sm"
+                  action="muted"
+                  className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                    booking.paymentStatus === 'Pagato'
+                      ? 'bg-[rgba(22,163,74,0.18)] text-[#15803d]'
+                      : 'bg-[rgba(234,179,8,0.22)] text-[#92400e]'
+                  }`}
+                >
+                  <Text
+                    className={`text-xs font-semibold ${
+                      booking.paymentStatus === 'Pagato'
+                        ? 'text-[#15803d]'
+                        : 'text-[#92400e]'
+                    }`}
+                  >
+                    Pagamento · {booking.paymentStatus}
+                  </Text>
+                </Badge>
+                <Badge
+                  size="sm"
+                  action="muted"
+                  className="rounded-full bg-[rgba(148,163,184,0.18)] px-3 py-1 text-xs font-semibold text-[var(--color-neutral-600)]"
+                >
+                  <Text className="text-xs font-semibold text-[var(--color-neutral-600)]">
+                    Canale · {booking.channel}
+                  </Text>
+                </Badge>
+                {booking.roomNumber ? (
+                  <Badge
+                    size="sm"
+                    action="muted"
+                    className="rounded-full bg-[rgba(59,130,246,0.14)] px-3 py-1 text-xs font-semibold text-[#1d4ed8]"
+                  >
+                    <Text className="text-xs font-semibold text-[#1d4ed8]">
+                      Camera · {booking.roomNumber}
+                    </Text>
+                  </Badge>
+                ) : null}
               </HStack>
-              <HStack className="flex-row gap-4">
-                <DetailRow
-                  label="Camere"
-                  value={`${booking.rooms} · ${booking.guests} ospiti`}
+
+              {booking.attentionReason ? (
+                <Box className="mt-4 rounded-2xl border border-[rgba(236,72,153,0.25)] bg-[rgba(236,72,153,0.12)] px-4 py-4">
+                  <HStack className="items-start gap-3">
+                    <AlertTriangle size={20} color="#be123c" strokeWidth={2} />
+                    <Box>
+                      <Text className="text-xs font-semibold uppercase tracking-[0.25em] text-[#be123c]">
+                        Richiede attenzione
+                      </Text>
+                      <Text className="mt-2 text-sm leading-6 text-[#be123c]">
+                        {booking.attentionReason}
+                      </Text>
+                    </Box>
+                  </HStack>
+                </Box>
+              ) : null}
+
+              <Box className="mt-4 grid gap-4 md:grid-cols-2">
+                <DetailTile label="Check-in" value={booking.checkIn} />
+                <DetailTile label="Check-out" value={booking.checkOut} />
+                <DetailTile
+                  label="Ospiti & camere"
+                  value={`${booking.guests} ospiti · ${booking.rooms} camere`}
                 />
-                <DetailRow
-                  label="Pagamenti"
-                  value={`${booking.paymentStatus} · ${booking.status}`}
-                />
-              </HStack>
-              <HStack className="flex-row gap-4">
-                <DetailRow
+                <DetailTile
                   label="Stato comunicazione"
                   value={booking.statoComunicazione}
                 />
-                <DetailRow label="Prossimo invio" value={booking.prossimoInvio} />
-              </HStack>
+                <DetailTile
+                  label="Ultimo evento"
+                  value={booking.ultimoEvento}
+                />
+                <DetailTile
+                  label="Prossimo invio"
+                  value={booking.prossimoInvio}
+                  highlight
+                />
+              </Box>
+
               <IoTCard
                 temperature={booking.iotSnapshot?.temperature}
                 minibarLevel={booking.iotSnapshot?.minibarLevel}
               />
-            </VStack>
+            </Box>
           </SectionCard>
 
           <SectionCard
@@ -150,19 +265,36 @@ export default function BookingDetailPage() {
             <Timeline entries={booking.timeline} />
           </SectionCard>
 
+        </Box>
+
+        <VStack space="lg" className="w-full max-w-[360px]">
           <NotesBoard
             notes={notes}
             title="Note prenotazione"
-            onCreateNote={() => router.push('/bookings')}
+            onCreateNote={() => router.push('/notes')}
+            resolveContext={(note) => ({
+              label: booking.roomNumber
+                ? `Camera · ${booking.roomNumber}`
+                : `Prenotazione · ${booking.bookingNumber}`,
+              tone:
+                note.status === 'Aperto'
+                  ? 'warning'
+                  : note.status === 'Risolto'
+                  ? 'success'
+                  : 'info',
+            })}
           />
-        </Box>
-
-        <CustomerPanel
-          customer={customer}
-          notes={notes}
-          showBookings={false}
-          onAddNote={() => router.push('/bookings')}
-        />
+          <CustomerPanel
+            customer={customer}
+            bookings={[booking]}
+            notes={notes}
+            showBookings={false}
+            showTimeline={false}
+            showNotes={false}
+            onAddNote={() => router.push('/notes')}
+            onOpenCustomer={() => router.push(`/customers/${customer.id}`)}
+          />
+        </VStack>
       </HStack>
     </Box>
   );

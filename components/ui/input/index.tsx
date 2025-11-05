@@ -102,19 +102,60 @@ const inputFieldStyle = tva({
 });
 
 type IInputProps = React.ComponentProps<typeof UIInput> &
-  VariantProps<typeof inputStyle> & { className?: string };
+  VariantProps<typeof inputStyle> & {
+    className?: string;
+    inputClassName?: string;
+  };
 const Input = React.forwardRef<React.ComponentRef<typeof UIInput>, IInputProps>(
   function Input(
-    { className, variant = 'outline', size = 'md', ...props },
+    {
+      className,
+      variant = 'outline',
+      size = 'md',
+      children,
+      inputClassName,
+      isDisabled,
+      isInvalid,
+      isReadOnly,
+      isRequired,
+      isHovered,
+      isFocused,
+      isFocusVisible,
+      ...inputProps
+    },
     ref
   ) {
+    const stateProps = {
+      ...(isDisabled !== undefined && { isDisabled }),
+      ...(isInvalid !== undefined && { isInvalid }),
+      ...(isReadOnly !== undefined && { isReadOnly }),
+      ...(isRequired !== undefined && { isRequired }),
+      ...(isHovered !== undefined && { isHovered }),
+      ...(isFocused !== undefined && { isFocused }),
+      ...(isFocusVisible !== undefined && { isFocusVisible }),
+    };
+
     return (
       <UIInput
         ref={ref}
-        {...props}
+        {...stateProps}
         className={inputStyle({ variant, size, class: className })}
         context={{ variant, size }}
-      />
+      >
+        {children ?? (
+          <UIInput.Input
+            {...stateProps}
+            {...inputProps}
+            className={inputFieldStyle({
+              parentVariants: {
+                variant,
+                size,
+              },
+              class: inputClassName,
+            })}
+          />
+        )}
+      </UIInput>
     );
   }
 );

@@ -25,7 +25,10 @@ import {
 } from '@/components/ui/modal';
 import { Input } from '@/components/ui/input';
 import { Textarea, TextareaInput } from '@/components/ui/textarea';
-import { UsersRound, MailCheck, Tag } from 'lucide-react-native';
+import { UsersRound, MailCheck } from 'lucide-react-native';
+import { PRIMARY_ICON_COLOR } from '@/constants/colors';
+import { Badge } from '@/components/ui/badge';
+import { ListFilterBar } from '@/components/shared/list-filter-bar';
 
 function formatDate(value: string) {
   return new Date(value).toLocaleDateString('it-IT', {
@@ -53,12 +56,43 @@ export default function CustomersPage() {
     (customer) => customer.highPriority
   ).length;
 
+  const filterTokens = useMemo(() => {
+    const tokens: { id: string; label: string }[] = [];
+    if (highAttentionCount > 0) {
+      tokens.push({ id: 'high-priority', label: 'Alta attenzione' });
+    }
+    if (newsletterCount > 0) {
+      tokens.push({ id: 'newsletter', label: 'Iscritti newsletter' });
+    }
+    tokens.push(
+      { id: 'check-in-today', label: 'Check-in oggi' },
+      { id: 'check-out-today', label: 'Check-out oggi' },
+      { id: 'arrivi-48h', label: 'Arrivi prossime 48h' },
+      { id: 'partenze-48h', label: 'Partenze prossime 48h' }
+    );
+
+    return tokens;
+  }, [highAttentionCount, newsletterCount]);
+
   return (
     <Box className="pb-16">
       <PageToolbar
         searchPlaceholder="Cerca cliente per nome, email o tag..."
-        primaryActionLabel="Nuovo cliente"
-        onPrimaryAction={() => router.push('/customers')}
+        primaryActionLabel="Accogli cliente"
+        onPrimaryAction={() => router.push('/customers/new')}
+        extraActions={
+          <Button
+            size="md"
+            variant="outline"
+            action="secondary"
+            className="rounded-full border-[var(--color-primary-border-soft)] bg-[var(--color-surface)] px-5"
+            onPress={() => router.push('/bookings/new')}
+          >
+            <Text className="text-sm font-semibold text-[var(--color-neutral-700)]">
+              Aggiungi prenotazione
+            </Text>
+          </Button>
+        }
       />
 
       <HStack className="flex-col gap-6 lg:flex-row">
@@ -68,13 +102,14 @@ export default function CustomersPage() {
             subtitle="Ricerca centrale con stato comunicazioni, evento recente e prossime azioni."
             contentClassName="space-y-4"
           >
+            <ListFilterBar filters={filterTokens} />
             {customers.map((customer) => (
               <EntityCard
                 key={customer.id}
                 title={`${customer.firstName} ${customer.lastName}`}
                 subtitle={`Ultimo aggiornamento · ${formatDate(customer.lastUpdate)}`}
                 status={{
-                  label: customer.statoComunicazione,
+                  label: customer.highPriority ? 'Alta attenzione' : customer.statoComunicazione,
                   tone: customer.highPriority ? 'warning' : 'info',
                 }}
                 description={
@@ -85,19 +120,25 @@ export default function CustomersPage() {
                 }
                 badges={[
                   {
-                    label: customer.newsletter
-                      ? 'Newsletter · iscritto'
-                      : 'Newsletter · non iscritto',
+                    label: `Ultimo evento · ${customer.ultimoEvento}`,
                     tone: 'neutral',
                   },
                   {
-                    label: `Tag · ${customer.tags.join(', ') || '—'}`,
-                    tone: 'neutral',
+                    label: `Prossimo evento · ${customer.prossimoInvio}`,
+                    tone: 'info',
                   },
+                  {
+                    label: customer.newsletter
+                      ? 'Newsletter · iscritto'
+                      : 'Newsletter · non iscritto',
+                    tone: customer.newsletter ? 'success' : 'neutral',
+                  },
+                  ...customer.tags.slice(0, 2).map((tag) => ({
+                    label: `Tag · ${tag}`,
+                    tone: 'neutral' as const,
+                  })),
                 ]}
                 meta={[
-                  { label: 'Ultimo evento', value: customer.ultimoEvento },
-                  { label: 'Prossimo invio', value: customer.prossimoInvio },
                   {
                     label: 'Priorità da',
                     value: customer.prioritySince
@@ -118,27 +159,20 @@ export default function CustomersPage() {
           </SectionCard>
         </Box>
 
-        <VStack space="lg" className="w-full max-w-[340px]">
-          <StatCard
-            label="Iscritti newsletter"
-            value={`${newsletterCount}`}
-            helper={`Su ${customers.length} clienti gestiti`}
-            icon={<MailCheck size={26} color="var(--color-primary-600)" strokeWidth={2} />}
-            tone="positive"
-          />
+        <VStack space="lg" className="w-full max-w-[300px]">
           <StatCard
             label="Clienti ad alta attenzione"
             value={`${highAttentionCount}`}
             helper="AI fallback o richieste sensibili in corso"
-            icon={<UsersRound size={26} color="var(--color-primary-600)" strokeWidth={2} />}
+            icon={<UsersRound size={26} color={PRIMARY_ICON_COLOR} strokeWidth={2} />}
             tone={highAttentionCount > 0 ? 'warning' : 'default'}
           />
           <StatCard
-            label="Tag più comuni"
-            value="Top focus"
-            helper="Categorie da monitorare"
-            icon={<Tag size={26} color="var(--color-primary-600)" strokeWidth={2} />}
-            chips={Array.from(new Set(customers.flatMap((c) => c.tags))).slice(0, 4)}
+            label="Iscritti newsletter"
+            value={`${newsletterCount}`}
+            helper={`Su ${customers.length} clienti gestiti`}
+            icon={<MailCheck size={26} color={PRIMARY_ICON_COLOR} strokeWidth={2} />}
+            tone="positive"
           />
           <NotesBoard
             notes={customerNotes}
@@ -152,10 +186,24 @@ export default function CustomersPage() {
                 onPress={() => setNoteModalOpen(true)}
               >
                 <Text className="text-xs font-semibold text-[var(--color-primary-600)]">
-                  Aggiungi nota
-                </Text>
-              </Button>
-            }
+                Aggiungi nota
+              </Text>
+            </Button>
+          }
+            resolveContext={(note) => ({
+              label:
+                note.target === 'Customer'
+                  ? 'Cliente'
+                  : note.target === 'Booking'
+                  ? 'Prenotazione collegata'
+                  : 'Turno',
+              tone:
+                note.status === 'Aperto'
+                  ? 'warning'
+                  : note.status === 'Risolto'
+                  ? 'success'
+                  : 'neutral',
+            })}
           />
         </VStack>
       </HStack>

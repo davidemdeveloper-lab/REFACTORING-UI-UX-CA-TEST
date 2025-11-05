@@ -7,17 +7,8 @@ import { Box } from '@/components/ui/box';
 import { HStack } from '@/components/ui/hstack';
 import { VStack } from '@/components/ui/vstack';
 import { Text } from '@/components/ui/text';
-import {
-  Table,
-  TableBody,
-  TableData,
-  TableHeader,
-  TableHead,
-  TableRow,
-} from '@/components/ui/table';
 import { PageToolbar } from '@/components/shared/page-toolbar';
 import { SectionCard } from '@/components/shared/section-card';
-import { EntityCard } from '@/components/shared/entity-card';
 import { NotesBoard } from '@/components/shared/notes-board';
 import { StatCard } from '@/components/shared/stat-card';
 import {
@@ -31,6 +22,7 @@ import { Customer } from '@/types';
 import { useAppDispatch } from '@/store/hooks';
 import { setSelectedConversationId } from '@/store/slices/uiSlice';
 import { ThermometerSun, Droplets, AlertTriangle } from 'lucide-react-native';
+import { PRIMARY_ICON_COLOR } from '@/constants/colors';
 import {
   Modal,
   ModalBackdrop,
@@ -43,6 +35,9 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea, TextareaInput } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
+import { PriorityAlert } from '@/components/shared/priority-alert';
+import { CustomerStatusCard } from '@/components/shared/customer-status-card';
+import { BookingStatusCard } from '@/components/shared/booking-status-card';
 
 function formatDate(dateString: string) {
   return new Date(dateString).toLocaleDateString('it-IT', {
@@ -58,6 +53,211 @@ function formatDateTime(dateString: string) {
     hour: '2-digit',
     minute: '2-digit',
   });
+}
+
+function formatCustomerUpdate(dateString: string | undefined) {
+  if (!dateString) {
+    return null;
+  }
+  const date = new Date(dateString);
+  if (Number.isNaN(date.getTime())) {
+    return null;
+  }
+  const day = date.toLocaleDateString('it-IT', {
+    day: '2-digit',
+    month: '2-digit',
+  });
+  const time = date.toLocaleTimeString('it-IT', {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+  return `${day} · ${time}`;
+}
+
+function parseNextEvent(value: string | undefined | null) {
+  if (!value) {
+    return { label: 'Evento da pianificare', when: '—' };
+  }
+  const parts = value
+    .split('·')
+    .map((part) => part.trim())
+    .filter(Boolean);
+  if (parts.length === 0) {
+    return { label: 'Evento da pianificare', when: '—' };
+  }
+  if (parts.length === 1) {
+    return { label: parts[0], when: '—' };
+  }
+  return { label: parts[0], when: parts.slice(1).join(' · ') };
+}
+
+type CommunicationState = {
+  label: string;
+  tone: 'info' | 'success' | 'warning' | 'neutral';
+  description: string;
+};
+
+function deriveCommunicationState(customer: Customer): CommunicationState {
+  const ultimoEvento = customer.ultimoEvento.toLowerCase();
+
+  const patterns: Array<{
+    match: RegExp;
+    result: CommunicationState;
+  }> = [
+    {
+      match: /pagamento/,
+      result: {
+        label: 'In attesa check-in',
+        tone: 'success',
+        description: 'Pagamento completato: prepara accoglienza e chiavi digitali.',
+      },
+    },
+    {
+      match: /late checkout|transfer/,
+      result: {
+        label: 'Serve follow-up concierge',
+        tone: 'warning',
+        description: 'Contatta il cliente per confermare late checkout e transfer.',
+      },
+    },
+    {
+      match: /allergie|cucina/,
+      result: {
+        label: 'Coordinamento staff',
+        tone: 'info',
+        description: 'Condividi gli aggiornamenti con cucina e housekeeping.',
+      },
+    },
+    {
+      match: /early check-in/,
+      result: {
+        label: 'Richiede conferma housekeeping',
+        tone: 'warning',
+        description: 'Verifica disponibilità camera e aggiorna il cliente.',
+      },
+    },
+  ];
+
+  const matched = patterns.find((pattern) => pattern.match.test(ultimoEvento));
+
+  if (matched) {
+    return matched.result;
+  }
+
+  return {
+    label: 'Monitoraggio automazioni',
+    tone: 'neutral',
+    description: 'Controlla timeline e note per anticipare le richieste.',
+  };
+}
+
+function derivePriorityTone(customer: Customer): 'warning' | 'info' | 'neutral' {
+  const prioritySource = (customer.prioritySource ?? '').toLowerCase();
+  const reason = (customer.priorityReason ?? '').toLowerCase();
+
+  if (
+    prioritySource.includes('ai') ||
+    reason.includes('fallback') ||
+    reason.includes('errore') ||
+    reason.includes('pagamento')
+  ) {
+    return 'warning';
+  }
+
+  if (
+    prioritySource.includes('cucina') ||
+    prioritySource.includes('concierge') ||
+    reason.includes('allerg') ||
+    reason.includes('housekeeping')
+  ) {
+    return 'info';
+  }
+
+  return 'neutral';
+}
+
+function startOfDay(date: Date) {
+  const copy = new Date(date);
+  copy.setHours(0, 0, 0, 0);
+  return copy;
+}
+
+function deriveBookingTimeline(checkIn: string, checkOut: string) {
+  const now = new Date();
+  const today = startOfDay(now);
+
+  const checkInDate = new Date(checkIn);
+  const checkOutDate = new Date(checkOut);
+
+  if (Number.isNaN(checkInDate.getTime()) || Number.isNaN(checkOutDate.getTime())) {
+    return {
+      tone: 'upcoming' as const,
+      detail: 'Data non disponibile',
+    };
+  }
+
+  const checkInDay = startOfDay(checkInDate);
+  const checkOutDay = startOfDay(checkOutDate);
+
+  if (checkInDay.getTime() <= today.getTime() && today.getTime() <= checkOutDay.getTime()) {
+    return {
+      tone: 'inhouse' as const,
+      detail: `Check-out il ${checkOutDate.toLocaleDateString('it-IT', {
+        day: '2-digit',
+        month: '2-digit',
+      })}`,
+    };
+  }
+
+  const diffDays = Math.round(
+    (checkInDay.getTime() - today.getTime()) / (24 * 60 * 60 * 1000)
+  );
+
+  if (diffDays === 0) {
+    return {
+      tone: 'today' as const,
+      detail: `Check-in oggi alle ${checkInDate.toLocaleTimeString('it-IT', {
+        hour: '2-digit',
+        minute: '2-digit',
+      })}`,
+    };
+  }
+
+  if (diffDays === 1) {
+    return {
+      tone: 'upcoming' as const,
+      detail: 'Arrivo tra 1 giorno',
+    };
+  }
+
+  if (diffDays > 1) {
+    return {
+      tone: 'upcoming' as const,
+      detail: `Arrivo tra ${diffDays} giorni`,
+    };
+  }
+
+  return {
+    tone: 'inhouse' as const,
+    detail: `Check-in completato · checkout il ${checkOutDate.toLocaleDateString('it-IT', {
+      day: '2-digit',
+      month: '2-digit',
+    })}`,
+  };
+}
+
+function deriveBookingStatusTone(status: string): 'info' | 'success' | 'warning' | 'neutral' {
+  const normalized = status.toLowerCase();
+  if (normalized.includes('confermat')) {
+    return 'success';
+  }
+  if (normalized.includes('attesa') || normalized.includes('pagamento')) {
+    return 'warning';
+  }
+  if (normalized.includes('in house') || normalized.includes('in corso')) {
+    return 'info';
+  }
+  return 'neutral';
 }
 
 export default function DashboardPage() {
@@ -78,6 +278,15 @@ export default function DashboardPage() {
     [customers]
   );
 
+  const customerStatusList = useMemo(() => {
+    const toTimestamp = (value?: string) =>
+      value ? new Date(value).getTime() : 0;
+
+    return [...customers]
+      .sort((a, b) => toTimestamp(b.lastUpdate) - toTimestamp(a.lastUpdate))
+      .slice(0, 5);
+  }, [customers]);
+
   const upcomingBookings = useMemo(
     () =>
       [...bookings]
@@ -97,8 +306,21 @@ export default function DashboardPage() {
     <Box className="pb-16">
       <PageToolbar
         searchPlaceholder="Cerca cliente o prenotazione..."
-        primaryActionLabel="Aggiungi cliente"
-        onPrimaryAction={() => router.push('/customers')}
+        primaryActionLabel="Accogli cliente"
+        onPrimaryAction={() => router.push('/customers/new')}
+        extraActions={
+          <Button
+            size="md"
+            variant="outline"
+            action="secondary"
+            className="rounded-full border-[var(--color-primary-border-soft)] bg-[var(--color-surface)] px-5"
+            onPress={() => router.push('/bookings/new')}
+          >
+            <Text className="text-sm font-semibold text-[var(--color-neutral-700)]">
+              Aggiungi prenotazione
+            </Text>
+          </Button>
+        }
       />
 
       <HStack className="flex-row gap-6">
@@ -115,198 +337,122 @@ export default function DashboardPage() {
                 </Text>
               </Box>
             ) : (
-              highPriorityCustomers.map((customer) => (
-                <EntityCard
-                  key={customer.id}
-                  title={`${customer.firstName} ${customer.lastName}`}
-                  subtitle={`Ultimo evento · ${customer.ultimoEvento}`}
-                  status={{
-                    label: 'Alta attenzione',
-                    tone: 'warning',
-                  }}
-                  description={
+              <Box className="max-h-[360px] space-y-3 overflow-y-auto pr-1">
+                {highPriorityCustomers.map((customer) => {
+                  const conversation = conversations.find(
+                    (item) => item.customerId === customer.id
+                  );
+                  const statusLabel =
+                    customer.prioritySource ?? 'Intervento richiesto';
+                  const message =
                     customer.priorityReason ??
-                    'Intervento immediato richiesto: apri la conversazione per maggiori dettagli.'
-                  }
-                  badges={[
-                    {
-                      label: `Tag · ${customer.tags.join(', ') || '—'}`,
-                      tone: 'neutral',
-                    },
-                    {
-                      label: customer.prioritySource
-                        ? `Fonte · ${customer.prioritySource}`
-                        : 'Fonte · Manuale',
-                      tone: 'neutral',
-                    },
-                  ]}
-                  meta={[
-                    {
-                      label: 'Ultimo aggiornamento',
-                      value: formatDateTime(customer.lastUpdate),
-                    },
-                    {
-                      label: 'Prossimo invio',
-                      value: customer.prossimoInvio,
-                      emphasize: true,
-                    },
-                    {
-                      label: 'Newsletter',
-                      value: customer.newsletter ? 'Iscritto' : 'Non iscritto',
-                    },
-                    {
-                      label: 'Priorità da',
-                      value: customer.prioritySince
-                        ? formatDateTime(customer.prioritySince)
-                        : '—',
-                    },
-                  ]}
-                  rightAccessory={
-                    <Box className="rounded-full bg-[rgba(236,69,90,0.16)] px-3 py-1">
-                      <Text className="text-xs font-semibold text-[#be123c]">
-                        Vai alla chat
-                      </Text>
-                    </Box>
-                  }
-                  onPress={() => {
-                    const conversation = conversations.find(
-                      (item) => item.customerId === customer.id
-                    );
-                    if (conversation) {
-                      dispatch(setSelectedConversationId(conversation.id));
-                      router.push(`/chat?conversation=${conversation.id}`);
-                      return;
-                    }
-                    router.push(`/customers/${customer.id}`);
-                  }}
-                />
-              ))
+                    customer.ultimoEvento ??
+                    'Richiesta in attesa di gestione';
+
+                  return (
+                    <PriorityAlert
+                      key={customer.id}
+                      guestName={`${customer.firstName} ${customer.lastName}`}
+                      statusLabel={statusLabel}
+                      tone={derivePriorityTone(customer)}
+                      message={message}
+                      lastEvent={customer.ultimoEvento}
+                      updatedAt={formatDateTime(customer.lastUpdate)}
+                      onAction={() => {
+                        if (conversation) {
+                          dispatch(setSelectedConversationId(conversation.id));
+                          router.push(`/chat?conversation=${conversation.id}`);
+                          return;
+                        }
+                        router.push(`/customers/${customer.id}`);
+                      }}
+                      actionLabel="Apri chat"
+                    />
+                  );
+                })}
+              </Box>
             )}
           </SectionCard>
 
-          <SectionCard
-            title="Stato clienti"
-            subtitle="Monitoraggio comunicazioni e prossime azioni di automazione."
-            padding="md"
-            className="overflow-hidden"
-          >
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Cliente</TableHead>
-                  <TableHead>Stato comunicazione</TableHead>
-                  <TableHead>Ultimo evento</TableHead>
-                  <TableHead>Prossimo invio</TableHead>
-                  <TableHead>Newsletter</TableHead>
-                  <TableHead>N. soggiorni</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {customers.slice(0, 6).map((customer) => (
-                  <TableRow key={customer.id}>
-                    <TableData>
-                      <Text className="text-sm font-semibold text-[var(--color-neutral-900)]">
-                        {customer.firstName} {customer.lastName}
-                      </Text>
-                      <Text className="mt-1 text-xs text-[var(--color-neutral-500)]">
-                        Ultimo aggiornamento · {formatDate(customer.lastUpdate)}
-                      </Text>
-                    </TableData>
-                    <TableData>
-                      <Text className="text-sm text-[var(--color-neutral-700)]">
-                        {customer.statoComunicazione}
-                      </Text>
-                    </TableData>
-                    <TableData>
-                      <Text className="text-sm text-[var(--color-neutral-700)]">
-                        {customer.ultimoEvento}
-                      </Text>
-                    </TableData>
-                    <TableData>
-                      <Text className="text-sm font-semibold text-[var(--color-neutral-900)]">
-                        {customer.prossimoInvio}
-                      </Text>
-                    </TableData>
-                    <TableData>
-                      <Text className="text-sm text-[var(--color-neutral-700)]">
-                        {customer.newsletter ? 'Si' : 'No'}
-                      </Text>
-                    </TableData>
-                    <TableData>
-                      <Text className="text-sm text-[var(--color-neutral-900)]">
-                        {customer.staysCount}
-                      </Text>
-                    </TableData>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </SectionCard>
+          <HStack className="flex-col gap-6 xl:flex-row">
+            <SectionCard
+              title="Stato clienti"
+              subtitle="Panoramica dei clienti attivi con automazioni e step manuali da seguire."
+              padding="md"
+              className="flex-1"
+              contentClassName="space-y-4"
+            >
+              {customerStatusList.map((customer) => {
+                const communication = deriveCommunicationState(customer);
+                const nextEvent = parseNextEvent(customer.prossimoInvio);
+                const updatedAt = formatCustomerUpdate(customer.lastUpdate);
+                const updatedDisplay = updatedAt ?? '—';
+                const segment = customer.tags.slice(0, 2).join(', ') || '—';
 
-          <SectionCard
-            title="Prenotazioni imminenti"
-            subtitle="Occupati dei check-in prossimi e delle richieste aperte."
-            contentClassName="space-y-4"
-          >
-            {upcomingBookings.map((booking) => {
-              const relatedCustomer: Customer | undefined = customers.find(
-                (customer) => customer.id === booking.customerId
-              );
-              const checkIn = formatDate(booking.checkIn);
-              const checkOut = formatDate(booking.checkOut);
-              return (
-                <EntityCard
-                  key={booking.id}
-                  title={`Prenotazione n° ${booking.bookingNumber}`}
-                  subtitle={`${relatedCustomer?.firstName ?? ''} ${
-                    relatedCustomer?.lastName ?? ''
-                  } · ${checkIn} → ${checkOut}`}
-                  status={{
-                    label: booking.status,
-                    tone:
-                      booking.status === 'Confermata'
-                        ? 'success'
-                        : booking.status === 'In attesa pagamento'
-                        ? 'warning'
-                        : 'neutral',
-                  }}
-                  description={booking.attentionReason}
-                  badges={[
-                    {
-                      label: `${booking.rooms} stanze · ${booking.guests} ospiti`,
-                      tone: 'neutral',
-                    },
-                    {
-                      label: `Stato comunicazione · ${booking.statoComunicazione}`,
-                      tone: 'info',
-                    },
-                  ]}
-                  meta={[
-                    {
-                      label: 'Ultimo evento',
-                      value: booking.ultimoEvento,
-                    },
-                    {
-                      label: 'Prossimo invio',
-                      value: booking.prossimoInvio,
-                    },
-                    {
-                      label: 'Pagamenti',
-                      value: `${booking.paymentStatus}`,
-                    },
-                    {
-                      label: 'Canale',
-                      value: booking.channel,
-                    },
-                  ]}
-                  onPress={() => router.push(`/bookings/${booking.id}`)}
-                />
-              );
-            })}
-          </SectionCard>
+                return (
+                  <CustomerStatusCard
+                    key={customer.id}
+                    name={`${customer.firstName} ${customer.lastName}`}
+                    updatedAt={updatedDisplay}
+                    tone={communication.tone}
+                    communicationLabel={communication.label}
+                    summary={communication.description}
+                    lastEvent={customer.ultimoEvento}
+                    nextEventLabel={nextEvent.label}
+                    nextEventWhen={nextEvent.when}
+                    segment={segment}
+                    newsletter={customer.newsletter}
+                    onPress={() => router.push(`/customers/${customer.id}`)}
+                  />
+                );
+              })}
+            </SectionCard>
+
+            <SectionCard
+              title="Prenotazioni imminenti"
+              subtitle="Occupati dei check-in prossimi e delle richieste aperte."
+              padding="md"
+              className="flex-1"
+              contentClassName="space-y-4"
+            >
+              {upcomingBookings.map((booking) => {
+                const relatedCustomer: Customer | undefined = customers.find(
+                  (customer) => customer.id === booking.customerId
+                );
+                const checkIn = formatDate(booking.checkIn);
+                const checkOut = formatDate(booking.checkOut);
+                const timeline = deriveBookingTimeline(booking.checkIn, booking.checkOut);
+                const nextStep = parseNextEvent(booking.prossimoInvio);
+                const statusTone = deriveBookingStatusTone(booking.status);
+
+                return (
+                  <BookingStatusCard
+                    key={booking.id}
+                    bookingNumber={booking.bookingNumber}
+                    guestName={`${relatedCustomer?.firstName ?? ''} ${
+                      relatedCustomer?.lastName ?? ''
+                    }`.trim()}
+                    checkIn={checkIn}
+                    checkOut={checkOut}
+                    statusLabel={booking.status}
+                    statusTone={statusTone}
+                    roomsGuests={`${booking.rooms} stanze · ${booking.guests} ospiti`}
+                    nextEvent={
+                      nextStep.when === '—'
+                        ? nextStep.label
+                        : `${nextStep.label} · ${nextStep.when}`
+                    }
+                    timelineTone={timeline.tone}
+                    attentionNote={booking.attentionReason}
+                    onPress={() => router.push(`/bookings/${booking.id}`)}
+                  />
+                );
+              })}
+            </SectionCard>
+          </HStack>
         </Box>
 
-        <VStack space="lg" className="w-full max-w-[360px]">
+        <VStack space="lg" className="w-full max-w-[300px]">
           <StatCard
             label="Comfort camere"
             value={`${comfortRate}%`}
@@ -315,7 +461,7 @@ export default function DashboardPage() {
                 ? `${roomsOutOfRange.length} stanze da verificare`
                 : 'Tutte le stanze nel range ideale'
             }
-            icon={<ThermometerSun size={26} color="var(--color-primary-600)" strokeWidth={2} />}
+            icon={<ThermometerSun size={26} color={PRIMARY_ICON_COLOR} strokeWidth={2} />}
             chips={roomsOutOfRange}
             chipLabel="Fuori soglia"
             tone={comfortRate > 80 ? 'positive' : 'warning'}
@@ -328,7 +474,7 @@ export default function DashboardPage() {
                 ? 'Prepara il kit refill'
                 : 'Tutti i minibar sono ok.'
             }
-            icon={<Droplets size={26} color="var(--color-primary-600)" strokeWidth={2} />}
+            icon={<Droplets size={26} color={PRIMARY_ICON_COLOR} strokeWidth={2} />}
             chips={minibarToRefill}
             chipLabel="Camere"
             tone={minibarToRefill.length > 0 ? 'warning' : 'default'}
@@ -390,7 +536,7 @@ export default function DashboardPage() {
             </Box>
             <Box className="rounded-2xl border border-[rgba(196,123,44,0.25)] bg-[rgba(196,123,44,0.08)] px-4 py-3">
               <HStack className="items-start gap-3">
-                <AlertTriangle size={18} color="var(--color-primary-600)" strokeWidth={2} />
+                <AlertTriangle size={18} color={PRIMARY_ICON_COLOR} strokeWidth={2} />
                 <Text className="text-xs leading-5 text-[var(--color-neutral-600)]">
                   Le note create qui sono mock e non vengono salvate. Usa questo modulo per
                   documentare i passaggi di turno da collegare al backend quando sarà pronto.

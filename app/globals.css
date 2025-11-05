@@ -7,6 +7,8 @@
   --color-surface: #ffffff;
   --color-primary-500: #c47b2c;
   --color-primary-600: #aa6a24;
+  --color-primary-border-strong: rgba(170, 106, 36, 0.45);
+  --color-primary-border-soft: rgba(170, 106, 36, 0.3);
   --color-accent-emerald: #1f7a4d;
   --color-neutral-900: #1f2933;
   --color-neutral-600: #475467;

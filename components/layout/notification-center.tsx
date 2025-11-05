@@ -65,7 +65,7 @@ export function NotificationCenter({
 
   return (
     <Box
-      className={`absolute right-6 top-8 bottom-6 w-[380px] rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] px-6 py-6 shadow-lg transition-all duration-200 ${
+      className={`absolute right-6 top-8 bottom-6 w-[380px] rounded-3xl border border-[var(--color-primary-border-soft)] bg-[var(--color-surface)] px-6 py-6 shadow-lg transition-all duration-200 ${
         isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'
       }`}
     >
@@ -83,7 +83,7 @@ export function NotificationCenter({
           variant='outline'
           action='default'
           onPress={onClose}
-          className="h-9 w-9 rounded-full border-[var(--color-border)] bg-transparent"
+          className="h-9 w-9 rounded-full border-[var(--color-primary-border-soft)] bg-transparent"
         >
           <CloseIcon className="text-[var(--color-neutral-600)]" />
         </Button>
@@ -98,7 +98,7 @@ export function NotificationCenter({
           return (
             <Box
               key={notification.id}
-              className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-background)] p-4"
+              className="rounded-2xl border border-[var(--color-primary-border-soft)] bg-[var(--color-background)] p-4"
             >
               <HStack className="items-center justify-between">
                 <Badge
@@ -139,7 +139,7 @@ export function NotificationCenter({
                     size="sm"
                     variant="outline"
                     action="default"
-                    className="border-[var(--color-border)] bg-[var(--color-surface)] px-3"
+                    className="border-[var(--color-primary-border-soft)] bg-[var(--color-surface)] px-3"
                     onPress={() => onMarkAsResolved(notification.id)}
                   >
                     <Text className="text-xs font-semibold text-[var(--color-neutral-600)]">

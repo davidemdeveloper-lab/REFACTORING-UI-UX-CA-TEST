@@ -30,12 +30,22 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea, TextareaInput } from '@/components/ui/textarea';
 import { CalendarCheck, CreditCard, MessageCircle } from 'lucide-react-native';
+import { PRIMARY_ICON_COLOR } from '@/constants/colors';
+import { Badge } from '@/components/ui/badge';
+import { Pressable } from '@/components/ui/pressable';
 
 export default function BookingsPage() {
   const router = useRouter();
   const { data: bookings = [] } = useGetBookingsQuery();
   const { data: customers = [] } = useGetCustomersQuery();
   const { data: notes = [] } = useGetNotesQuery();
+  const bookingsById = useMemo(() => {
+    const map = new Map<string, (typeof bookings)[number]>();
+    bookings.forEach((booking) => {
+      map.set(booking.id, booking);
+    });
+    return map;
+  }, [bookings]);
 
   const bookingNotes = useMemo(
     () => notes.filter((note) => note.target === 'Booking'),
@@ -57,8 +67,21 @@ export default function BookingsPage() {
     <Box className="pb-16">
       <PageToolbar
         searchPlaceholder="Cerca prenotazione per cliente, data o canale..."
-        primaryActionLabel="Nuova prenotazione"
-        onPrimaryAction={() => router.push('/bookings')}
+        primaryActionLabel="Aggiungi prenotazione"
+        onPrimaryAction={() => router.push('/bookings/new')}
+        extraActions={
+          <Button
+            size="md"
+            variant="outline"
+            action="secondary"
+            className="rounded-full border-[var(--color-primary-border-soft)] bg-[var(--color-surface)] px-5"
+            onPress={() => router.push('/customers/new')}
+          >
+            <Text className="text-sm font-semibold text-[var(--color-neutral-700)]">
+              Accogli cliente
+            </Text>
+          </Button>
+        }
       />
 
       <HStack className="flex-col gap-6 lg:flex-row">
@@ -70,6 +93,20 @@ export default function BookingsPage() {
           >
             {bookings.map((booking) => {
               const customer = customers.find((c) => c.id === booking.customerId);
+              const statusTone =
+                booking.status === 'Confermata'
+                  ? 'success'
+                  : booking.status === 'In attesa pagamento'
+                  ? 'warning'
+                  : booking.status === 'Cancellata'
+                  ? 'danger'
+                  : 'info';
+              const paymentTone =
+                booking.paymentStatus === 'Pagato'
+                  ? 'success'
+                  : booking.paymentStatus === 'Parziale'
+                  ? 'info'
+                  : 'warning';
               return (
                 <EntityCard
                   key={booking.id}
@@ -79,30 +116,48 @@ export default function BookingsPage() {
                   } · Check-in ${booking.checkIn} · Check-out ${booking.checkOut}`}
                   status={{
                     label: booking.status,
-                    tone:
-                      booking.status === 'Confermata'
-                        ? 'success'
-                        : booking.status === 'In attesa pagamento'
-                        ? 'warning'
-                        : 'info',
+                    tone: statusTone,
                   }}
                   description={booking.attentionReason}
                   badges={[
                     {
                       label: `Pagamento · ${booking.paymentStatus}`,
-                      tone:
-                        booking.paymentStatus === 'Pagato'
-                          ? 'success'
-                          : 'warning',
+                      tone: paymentTone,
                     },
                     {
                       label: `Canale · ${booking.channel}`,
                       tone: 'neutral',
                     },
-                  ]}
+                    booking.roomNumber
+                      ? {
+                          label: `Camera · ${booking.roomNumber}`,
+                          tone: 'info',
+                        }
+                      : undefined,
+                  ].filter(Boolean) as { label: string; tone?: 'info' | 'success' | 'warning' | 'danger' | 'neutral' }[]}
+                  badgesSecondary={
+                    <HStack className="flex-wrap items-center gap-2">
+                      <Badge
+                        size="sm"
+                        action="muted"
+                        className="rounded-full bg-[rgba(31,41,55,0.08)] px-3 py-1 text-xs font-semibold text-[var(--color-neutral-800)]"
+                      >
+                        <Text className="text-xs font-semibold text-[var(--color-neutral-800)]">
+                          Ultimo evento · {booking.ultimoEvento}
+                        </Text>
+                      </Badge>
+                      <Badge
+                        size="sm"
+                        action="muted"
+                        className="rounded-full bg-[rgba(59,130,246,0.14)] px-3 py-1 text-xs font-semibold text-[#1d4ed8]"
+                      >
+                        <Text className="text-xs font-semibold text-[#1d4ed8]">
+                          Prossimo evento · {booking.prossimoInvio}
+                        </Text>
+                      </Badge>
+                    </HStack>
+                  }
                   meta={[
-                    { label: 'Ultimo evento', value: booking.ultimoEvento },
-                    { label: 'Prossimo invio', value: booking.prossimoInvio },
                     {
                       label: 'Stato comunicazione',
                       value: booking.statoComunicazione,
@@ -119,44 +174,67 @@ export default function BookingsPage() {
           </SectionCard>
         </Box>
 
-        <VStack space="lg" className="w-full max-w-[340px]">
+        <VStack space="lg" className="w-full max-w-[300px]">
           <StatCard
             label="Prenotazioni confermate"
             value={`${confirmed}`}
             helper="Soggiorni pronti all'arrivo"
-            icon={<CalendarCheck size={26} color="var(--color-primary-600)" strokeWidth={2} />}
+            icon={<CalendarCheck size={26} color={PRIMARY_ICON_COLOR} strokeWidth={2} />}
             tone="positive"
           />
           <StatCard
             label="Pagamenti da chiudere"
             value={`${awaitingPayment}`}
             helper="Prenotazioni con incasso in sospeso"
-            icon={<CreditCard size={26} color="var(--color-primary-600)" strokeWidth={2} />}
+            icon={<CreditCard size={26} color={PRIMARY_ICON_COLOR} strokeWidth={2} />}
             tone={awaitingPayment > 0 ? 'warning' : 'default'}
           />
           <StatCard
             label="Follow-up richiesti"
             value={`${bookings.filter((b) => b.attentionReason).length}`}
             helper="Azioni manuali suggerite dall'AI"
-            icon={<MessageCircle size={26} color="var(--color-primary-600)" strokeWidth={2} />}
+            icon={<MessageCircle size={26} color={PRIMARY_ICON_COLOR} strokeWidth={2} />}
+            tone={bookings.some((b) => b.attentionReason) ? 'warning' : 'default'}
           />
-          <NotesBoard
-            notes={bookingNotes}
-            title="Note prenotazioni"
-            actionSlot={
-              <Button
-                size="sm"
-                variant="outline"
-                action="primary"
-                className="rounded-full border-[var(--color-primary-600)] bg-transparent px-4 py-2"
-                onPress={() => setNoteModalOpen(true)}
-              >
-                <Text className="text-xs font-semibold text-[var(--color-primary-600)]">
-                  Aggiungi nota
-                </Text>
-              </Button>
-            }
-          />
+          <SectionCard
+            title="Follow-up richiesti"
+            subtitle="Azioni che l'AI suggerisce di monitorare manualmente."
+            padding="md"
+            contentClassName="space-y-3"
+          >
+            {bookings
+              .filter((booking) => booking.attentionReason)
+              .map((booking) => (
+                <Pressable
+                  key={`followup-${booking.id}`}
+                  className="flex items-start justify-between gap-3 rounded-2xl border border-[var(--color-border)] bg-[var(--color-background)] px-4 py-3 transition-colors duration-150 data-[hover=true]:border-[#aa6a24] data-[hover=true]:bg-[rgba(196,123,44,0.08)]"
+                  onPress={() => router.push(`/bookings/${booking.id}`)}
+                >
+                  <Box className="flex-1">
+                    <Text className="text-sm font-semibold text-[var(--color-neutral-900)]">
+                      Prenotazione n° {booking.bookingNumber}
+                    </Text>
+                    <Text className="text-xs text-[var(--color-neutral-600)]">
+                      {booking.attentionReason}
+                    </Text>
+                  </Box>
+                  <Box className="h-8 w-8 items-center justify-center rounded-full bg-[rgba(196,123,44,0.12)]">
+                    <MessageCircle size={16} color={PRIMARY_ICON_COLOR} strokeWidth={2} />
+                  </Box>
+                </Pressable>
+              ))}
+            <Button
+              size="sm"
+              variant="outline"
+              action="primary"
+              className="w-full rounded-full border-[var(--color-primary-600)] bg-transparent px-4 py-2"
+              onPress={() => setNoteModalOpen(true)}
+            >
+              <Text className="text-xs font-semibold text-[var(--color-primary-600)]">
+                Aggiungi nota
+              </Text>
+            </Button>
+          </SectionCard>
         </VStack>
       </HStack>
 

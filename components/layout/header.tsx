@@ -6,6 +6,7 @@ import { HStack } from '@/components/ui/hstack';
 import { Avatar, AvatarFallbackText } from '@/components/ui/avatar';
 import { Text } from '@/components/ui/text';
 import { Bell } from 'lucide-react-native';
+import { PRIMARY_ICON_COLOR } from '@/constants/colors';
 
 type HeaderProps = {
   onOpenNotifications: () => void;
@@ -35,7 +36,7 @@ export function Header({ onOpenNotifications, unreadCount }: HeaderProps) {
           className="rounded-full border-[var(--color-border)] bg-white px-5 py-2 shadow-sm"
         >
           <HStack className="items-center gap-2">
-            <Bell size={18} color="var(--color-primary-600)" />
+            <Bell size={18} color={PRIMARY_ICON_COLOR} />
             <Text className="text-sm font-semibold text-[var(--color-primary-600)]">
               Centro notifiche
             </Text>

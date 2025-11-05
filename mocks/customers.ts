@@ -64,6 +64,11 @@ export const customersMock: Customer[] = [
     staysCount: 2,
     lastUpdate: '2025-10-28T07:40:00Z',
     tags: ['Famiglia', 'Allergie'],
+    highPriority: true,
+    prioritySource: 'Cucina',
+    priorityReason:
+      'Aggiorna elenco allergeni e invia conferma personalizzata alla famiglia Greco.',
+    prioritySince: '2025-10-28T07:30:00Z',
     timeline: [
       {
         id: 'timeline-4',
@@ -139,6 +144,11 @@ export const customersMock: Customer[] = [
     staysCount: 1,
     lastUpdate: '2025-10-27T20:05:00Z',
     tags: ['Allergie', 'Famiglia'],
+    highPriority: true,
+    prioritySource: 'AI Fallback',
+    priorityReason:
+      'Necessario coordinarsi con cucina e housekeeping per conferma allergie aggiuntive.',
+    prioritySince: '2025-10-27T19:55:00Z',
     timeline: [
       {
         id: 'timeline-8',
@@ -174,6 +184,11 @@ export const customersMock: Customer[] = [
     staysCount: 2,
     lastUpdate: '2025-10-28T06:20:00Z',
     tags: ['Coppia'],
+    highPriority: true,
+    prioritySource: 'Early Check-in',
+    priorityReason:
+      'Cliente richiede camera pronta alle 11:00: verificare disponibilità e aggiornare housekeeping.',
+    prioritySince: '2025-10-28T06:15:00Z',
     timeline: [
       {
         id: 'timeline-10',

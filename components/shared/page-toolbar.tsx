@@ -29,12 +29,14 @@ export function PageToolbar({
   extraActions,
 }: PageToolbarProps) {
   return (
-    <Box className="mb-8 rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] px-6 py-5 shadow-[var(--shadow-card)]">
+    <Box className="mb-8 rounded-3xl border border-[var(--color-primary-border-soft)] bg-[var(--color-surface)] px-6 py-5 shadow-[var(--shadow-card)]">
       <HStack className="flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <Box className="w-full md:max-w-[320px]">
           <Input
+            variant="rounded"
             placeholder={searchPlaceholder}
-            className="h-11 rounded-full border-[var(--color-border)] bg-[var(--color-background)] px-4"
+            className="h-11 rounded-full border-[var(--color-primary-border-soft)] bg-[#fdf7ef]"
+            inputClassName="text-sm text-[var(--color-neutral-900)] placeholder:text-[var(--color-neutral-600)]"
           />
         </Box>
         <HStack className="items-center gap-3">
@@ -42,7 +44,7 @@ export function PageToolbar({
           <Button
             size="md"
             action="primary"
-            className="rounded-full bg-[var(--color-primary-600)] px-6"
+            className="rounded-full bg-[#aa6a24] px-6 data-[hover=true]:bg-[#8f591e] data-[active=true]:bg-[#754515]"
             onPress={onPrimaryAction}
           >
             <Text className="text-sm font-semibold text-white">
@@ -59,7 +61,7 @@ export function PageToolbar({
               size="sm"
               variant="outline"
               action={filter.active ? 'primary' : 'default'}
-              className={`rounded-full border-[var(--color-border)] bg-[var(--color-surface)] px-4 ${
+              className={`rounded-full border-[var(--color-primary-border-soft)] bg-[var(--color-surface)] px-4 ${
                 filter.active ? 'border-[var(--color-primary-600)]' : ''
               }`}
             >

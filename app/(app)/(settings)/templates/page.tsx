@@ -12,6 +12,7 @@ import { EntityCard } from '@/components/shared/entity-card';
 import { StatCard } from '@/components/shared/stat-card';
 import { useGetTemplatesQuery } from '@/services/mockApi';
 import { FileText, PenSquare } from 'lucide-react-native';
+import { PRIMARY_ICON_COLOR } from '@/constants/colors';
 
 export default function TemplatesPage() {
   const router = useRouter();
@@ -69,19 +70,19 @@ export default function TemplatesPage() {
             ))}
           </SectionCard>
         </Box>
-        <VStack space="lg" className="w-full max-w-[320px]">
+        <VStack space="lg" className="w-full max-w-[300px]">
           <StatCard
             label="Template attivi"
             value={`${activeCount}`}
             helper="Pronti per automazioni e invii manuali"
-            icon={<FileText size={26} color="var(--color-primary-600)" strokeWidth={2} />}
+            icon={<FileText size={26} color={PRIMARY_ICON_COLOR} strokeWidth={2} />}
             tone="positive"
           />
           <StatCard
             label="Bozze da completare"
             value={`${draftsCount}`}
             helper="Template da validare prima della pubblicazione"
-            icon={<PenSquare size={26} color="var(--color-primary-600)" strokeWidth={2} />}
+            icon={<PenSquare size={26} color={PRIMARY_ICON_COLOR} strokeWidth={2} />}
             tone={draftsCount > 0 ? 'warning' : 'default'}
           />
           <Box className="rounded-3xl border border-[var(--color-border)] bg-[var(--color-background)] px-5 py-5">

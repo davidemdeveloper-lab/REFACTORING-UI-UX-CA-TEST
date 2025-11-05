@@ -38,7 +38,7 @@ export function StatCard({
 }: StatCardProps) {
   return (
     <Box
-      className={`rounded-2xl border border-[var(--color-border)] ${toneBackground[tone]} px-5 py-4`}
+      className={`rounded-2xl border border-transparent ${toneBackground[tone]} px-5 py-4`}
     >
       <HStack className="items-center justify-between">
         <Box>
@@ -56,20 +56,20 @@ export function StatCard({
             </Text>
           ) : null}
           {chips && chips.length > 0 ? (
-            <Box className="mt-3 flex flex-wrap items-center gap-2">
+            <Box className="mt-3 flex-row flex-wrap items-center gap-2">
               {chipLabel ? (
                 <Text className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[var(--color-neutral-500)]">
                   {chipLabel}
                 </Text>
               ) : null}
-              {chips.map((chip) => (
-                <Box
-                  key={chip}
-                  className="rounded-full bg-white/60 px-3 py-1 text-xs font-semibold text-[var(--color-neutral-600)]"
-                >
-                  {chip}
-                </Box>
-              ))}
+          {chips.map((chip) => (
+            <Box
+              key={chip}
+              className="rounded-full bg-white/60 px-3 py-1 text-xs font-semibold text-[var(--color-neutral-600)]"
+            >
+              {chip}
+            </Box>
+          ))}
             </Box>
           ) : null}
         </Box>

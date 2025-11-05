@@ -8,6 +8,7 @@ import { Text } from '@/components/ui/text';
 import { Badge } from '@/components/ui/badge';
 import { Pressable } from '@/components/ui/pressable';
 import { ArrowRight } from 'lucide-react-native';
+import { PRIMARY_ICON_COLOR } from '@/constants/colors';
 
 type BadgeTone = 'info' | 'success' | 'warning' | 'danger' | 'neutral';
 
@@ -33,6 +34,7 @@ type EntityCardProps = {
   description?: string;
   badges?: { label: string; tone?: BadgeTone }[];
   meta?: { label: string; value: string; emphasize?: boolean }[];
+  badgesSecondary?: ReactNode;
   status?: { label: string; tone?: BadgeTone };
   rightAccessory?: ReactNode;
   onPress?: () => void;
@@ -44,6 +46,7 @@ export function EntityCard({
   description,
   badges = [],
   meta = [],
+  badgesSecondary,
   status,
   rightAccessory,
   onPress,
@@ -53,7 +56,7 @@ export function EntityCard({
   return (
     <Container
       onPress={onPress}
-      className="group/card mb-4 rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] px-5 py-5 transition-all duration-150 hover:border-[rgba(196,123,44,0.45)] hover:shadow-[0_12px_30px_rgba(36,30,18,0.12)]"
+      className="group/card mb-4 rounded-3xl border border-transparent bg-[var(--color-surface)] px-5 py-5 transition-all duration-150 data-[hover=true]:border-[#aa6a24] data-[hover=true]:shadow-[0_12px_30px_rgba(36,30,18,0.12)]"
     >
       <HStack className="items-start justify-between gap-6">
         <VStack space="md" className="flex-1">
@@ -107,6 +110,7 @@ export function EntityCard({
               ))}
             </HStack>
           ) : null}
+          {badgesSecondary ? badgesSecondary : null}
           {meta.length > 0 ? (
             <Box className="grid gap-4 md:grid-cols-2">
               {meta.map((item) => (
@@ -132,7 +136,7 @@ export function EntityCard({
           {rightAccessory}
           {onPress ? (
             <Box className="h-10 w-10 items-center justify-center rounded-full bg-[rgba(196,123,44,0.12)]">
-              <ArrowRight size={18} color="var(--color-primary-600)" strokeWidth={2} />
+              <ArrowRight size={18} color={PRIMARY_ICON_COLOR} strokeWidth={2} />
             </Box>
           ) : null}
         </Box>
