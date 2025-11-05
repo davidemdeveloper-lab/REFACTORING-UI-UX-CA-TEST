@@ -114,6 +114,8 @@ export interface Note {
   tags: string[];
 }
 
+export type ConversationChannel = 'Booking' | 'Email' | 'WhatsApp';
+
 export interface ChatMessage {
   id: string;
   author: 'Cliente' | 'Operatore' | 'AI';
@@ -121,12 +123,15 @@ export interface ChatMessage {
   timestamp: string;
   status?: 'Inviato' | 'Consegnato' | 'Letto';
   suggestions?: string[];
+  channel: ConversationChannel;
+  kind?: 'Chat' | 'Suggestion';
 }
 
 export interface Conversation {
   id: string;
   customerId: string;
-  channel: 'Booking' | 'Email' | 'WhatsApp';
+  channel: ConversationChannel;
+  channels?: ConversationChannel[];
   subject: string;
   unread: boolean;
   priority: 'Normale' | 'Alta';
