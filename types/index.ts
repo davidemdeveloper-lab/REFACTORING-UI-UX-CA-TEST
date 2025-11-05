@@ -114,19 +114,24 @@ export interface Note {
   tags: string[];
 }
 
+export type ChatChannel = 'Booking' | 'Email' | 'WhatsApp';
+
 export interface ChatMessage {
   id: string;
   author: 'Cliente' | 'Operatore' | 'AI';
   content: string;
   timestamp: string;
+  channel: ChatChannel;
   status?: 'Inviato' | 'Consegnato' | 'Letto';
+  kind?: 'chat' | 'suggestion';
   suggestions?: string[];
 }
 
 export interface Conversation {
   id: string;
   customerId: string;
-  channel: 'Booking' | 'Email' | 'WhatsApp';
+  channel: ChatChannel;
+  channels: ChatChannel[];
   subject: string;
   unread: boolean;
   priority: 'Normale' | 'Alta';
