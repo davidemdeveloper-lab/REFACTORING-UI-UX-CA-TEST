@@ -3,6 +3,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { Box } from '@/components/ui/box';
 import { HStack } from '@/components/ui/hstack';
 import { VStack } from '@/components/ui/vstack';
@@ -33,7 +34,14 @@ import {
   Search,
   Send,
   Sparkles,
+  ChevronUp,
+  Info,
 } from 'lucide-react-native';
+import {
+  Menu,
+  MenuItem,
+  MenuItemLabel,
+} from '@/components/ui/menu';
 import {
   channelIconMap,
   channelLabelMap,
@@ -44,13 +52,11 @@ function ConversationRow({
   conversation,
   isActive,
   customerName,
-  priorityReason,
   onPress,
 }: {
   conversation: Conversation;
   isActive: boolean;
   customerName: string;
-  priorityReason?: string;
   onPress: () => void;
 }) {
   const channels = conversation.channels ?? [conversation.channel];
@@ -67,51 +73,40 @@ function ConversationRow({
   const unread = conversation.unread;
   const isPriority = conversation.priority === 'Alta';
 
+  // Loghi dei canali
+  const channelLogos: Record<string, string> = {
+    Email: '/emailLogo.png',
+    WhatsApp: '/whatsappLogo.png',
+    Booking: '/BookingIcon.svg.png',
+  };
+
+  const unreadMessagesCount = conversation.messages.filter((m) => m.author === 'Cliente').length;
+
   return (
     <Pressable onPress={onPress} className="w-full">
       <Box
-        className={`relative mb-2 overflow-hidden rounded-3xl border px-4 py-4 transition-all duration-150 ${
+        className={`relative mb-2 overflow-hidden rounded-3xl border px-4 py-3 transition-all duration-150 ${
           isActive
             ? 'border-[rgba(196,123,44,0.45)] bg-[rgba(196,123,44,0.08)] shadow-[0_12px_28px_rgba(36,30,18,0.12)]'
-            : unread
-            ? 'border-[rgba(196,123,44,0.25)] bg-[rgba(196,123,44,0.12)]'
-            : 'border-transparent bg-[var(--color-background)] hover:border-[var(--color-border)]'
+            : 'border-[rgba(196,123,44,0.35)] bg-white hover:border-[rgba(196,123,44,0.45)]'
         }`}
       >
-        {unread ? (
-          <Box className="absolute left-0 top-0 h-full w-[6px] bg-[var(--color-primary-600)]" />
-        ) : null}
         <VStack space="xs">
-          <HStack className="items-start justify-between gap-3">
-            <VStack className="flex-1 gap-1">
-              <HStack className="items-center gap-2">
-                <Text
-                  className={`text-sm font-semibold ${
-                    unread
-                      ? 'text-[var(--color-neutral-900)]'
-                      : 'text-[var(--color-neutral-700)]'
-                  }`}
-                >
-                  {customerName}
-                </Text>
-                {unread ? (
-                  <Box className="h-2 w-2 rounded-full bg-[var(--color-primary-600)]" />
-                ) : null}
-              </HStack>
-              <Text className="text-xs text-[var(--color-neutral-500)] line-clamp-2">
-                {preview}
+          <HStack className="items-center justify-between gap-3">
+            <HStack className="flex-1 items-center gap-2">
+              <Text
+                className={`text-sm font-semibold ${
+                  unread
+                    ? 'text-[var(--color-neutral-900)]'
+                    : 'text-[var(--color-neutral-700)]'
+                }`}
+              >
+                {customerName}
               </Text>
-            </VStack>
-            <VStack className="items-end gap-2">
-              {lastMessageTime ? (
-                <Text className="text-[10px] font-medium uppercase tracking-[0.3em] text-[var(--color-neutral-400)]">
-                  {lastMessageTime}
-                </Text>
-              ) : null}
               <HStack className="items-center gap-1">
                 {channels.map((channel) => {
-                  const Icon = channelIconMap[channel];
-                  const channelTone = channelToneMap[channel];
+                  const logoSrc = channelLogos[channel];
+                  if (!logoSrc) return null;
                   return (
                     <Tooltip
                       key={`${conversation.id}-${channel}`}
@@ -119,9 +114,15 @@ function ConversationRow({
                       trigger={(triggerProps) => (
                         <Pressable
                           {...triggerProps}
-                          className={`h-7 w-7 items-center justify-center rounded-full border ${channelTone.background} ${channelTone.border}`}
+                          className="flex h-5 w-5 items-center justify-center rounded-full border border-[var(--color-border)] bg-white overflow-hidden"
                         >
-                          <Icon size={14} color={channelTone.iconColor} strokeWidth={2} />
+                          <Image
+                            src={logoSrc}
+                            alt={channel}
+                            width={20}
+                            height={20}
+                            className="object-cover"
+                          />
                         </Pressable>
                       )}
                     >
@@ -132,21 +133,39 @@ function ConversationRow({
                   );
                 })}
               </HStack>
-            </VStack>
-          </HStack>
-          {priorityReason ? (
-            <Text className="text-[11px] text-[var(--color-neutral-500)]">
-              {priorityReason}
-            </Text>
-          ) : null}
-          {isPriority ? (
-            <HStack className="items-center gap-1">
-              <AlertCircle size={14} color="#be123c" strokeWidth={2} />
-              <Text className="text-xs font-semibold uppercase tracking-[0.2em] text-[#be123c]">
-                Alta attenzione
-              </Text>
             </HStack>
+            <HStack className="items-center gap-2">
+              {lastMessageTime ? (
+                <Text className="text-[10px] font-medium uppercase tracking-[0.3em] text-[var(--color-neutral-400)]">
+                  {lastMessageTime}
+                </Text>
+              ) : null}
+              {unread && unreadMessagesCount > 0 ? (
+                <Box className="flex h-5 w-5 items-center justify-center rounded-full bg-[#be123c]">
+                  <Text className="text-[9px] font-bold text-white">
+                    {unreadMessagesCount}
+                  </Text>
+                </Box>
+              ) : null}
+            </HStack>
+          </HStack>
+          {isPriority ? (
+            <Badge
+              size="sm"
+              action="muted"
+              className="mt-1 w-fit rounded-full bg-[rgba(236,69,90,0.16)] px-3 py-1"
+            >
+              <HStack className="items-center gap-1">
+                <AlertCircle size={11} color="#be123c" strokeWidth={2} />
+                <Text className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#be123c]">
+                  Alta attenzione
+                </Text>
+              </HStack>
+            </Badge>
           ) : null}
+          <Text className="text-xs text-[var(--color-neutral-500)] line-clamp-1 mt-1">
+            {preview}
+          </Text>
         </VStack>
       </Box>
     </Pressable>
@@ -212,6 +231,8 @@ export default function ChatPage() {
   const [draftMessage, setDraftMessage] = useState('');
   const [isListCollapsed, setIsListCollapsed] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedChannel, setSelectedChannel] = useState<'Email' | 'WhatsApp' | 'Booking'>('Email');
+  const [isCustomerPanelOpen, setIsCustomerPanelOpen] = useState(false);
 
   const filteredConversations = useMemo(() => {
     const query = searchTerm.trim().toLowerCase();
@@ -252,6 +273,13 @@ export default function ChatPage() {
     [conversations]
   );
 
+  // Loghi dei canali
+  const channelLogos: Record<string, string> = {
+    Email: '/emailLogo.png',
+    WhatsApp: '/whatsappLogo.png',
+    Booking: '/BookingIcon.svg.png',
+  };
+
   const handleAddSuggestion = (suggestion: string) => {
     setDraftMessage((prev) => (prev ? `${prev}\n${suggestion}` : suggestion));
   };
@@ -267,16 +295,62 @@ export default function ChatPage() {
             >
               <ChevronRight size={18} color="#c47b2c" strokeWidth={2} />
             </Pressable>
-            <VStack space="md" className="items-center">
+            <VStack space="md" className="flex-1 items-center justify-start pt-4">
               <Box className="flex h-10 w-10 items-center justify-center rounded-full bg-[rgba(196,123,44,0.15)]">
                 <MessageCircle size={20} color="#c47b2c" strokeWidth={2} />
               </Box>
               <Text className="text-[11px] text-center font-semibold uppercase tracking-[0.3em] text-[var(--color-neutral-500)]">
                 Chat
               </Text>
-              <Text className="text-xs text-center text-[var(--color-neutral-500)]">
-                {unreadCount} da leggere
-              </Text>
+              <VStack space="sm" className="mt-4 items-center">
+                {conversations.slice(0, 8).map((conv) => {
+                  const customerName = customerMetaMap[conv.customerId]?.name ?? 'Cliente';
+                  const initials = customerName
+                    .split(' ')
+                    .map((n) => n[0])
+                    .join('')
+                    .toUpperCase()
+                    .slice(0, 2);
+                  const isSelected = conv.id === selectedConversationId;
+                  const unreadCount = conv.messages.filter((m) => m.author === 'Cliente').length;
+                  return (
+                    <Tooltip
+                      key={conv.id}
+                      placement="right"
+                      trigger={(triggerProps) => (
+                        <Pressable
+                          {...triggerProps}
+                          onPress={() => dispatch(setSelectedConversationId(conv.id))}
+                          className="relative"
+                        >
+                          <Box
+                            className={`flex h-10 w-10 items-center justify-center rounded-full bg-[rgba(196,123,44,0.12)] ${
+                              isSelected
+                                ? 'border-[3px] border-[#c47b2c] shadow-[0_0_0_2px_rgba(196,123,44,0.2)]'
+                                : 'border border-[rgba(196,123,44,0.4)]'
+                            }`}
+                          >
+                            <Text className="text-xs font-semibold text-[var(--color-primary-700)]">
+                              {initials}
+                            </Text>
+                          </Box>
+                          {conv.unread && unreadCount > 0 ? (
+                            <Box className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#be123c] border-2 border-white">
+                              <Text className="text-[9px] font-bold text-white">
+                                {unreadCount}
+                              </Text>
+                            </Box>
+                          ) : null}
+                        </Pressable>
+                      )}
+                    >
+                      <TooltipContent>
+                        <TooltipText>{customerName}</TooltipText>
+                      </TooltipContent>
+                    </Tooltip>
+                  );
+                })}
+              </VStack>
             </VStack>
             <Box className="rounded-full bg-[rgba(196,123,44,0.12)] px-3 py-1">
               <Text className="text-[10px] font-semibold uppercase tracking-[0.3em] text-[var(--color-primary-600)]">
@@ -341,7 +415,6 @@ export default function ChatPage() {
                   customerName={
                     customerMetaMap[item.customerId]?.name ?? 'Cliente'
                   }
-                  priorityReason={customerMetaMap[item.customerId]?.priorityReason}
                   onPress={() => dispatch(setSelectedConversationId(item.id))}
                 />
               ))}
@@ -356,170 +429,250 @@ export default function ChatPage() {
           </Box>
         )}
 
-        <Box className="flex min-h-[78vh] flex-1 flex-col rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] px-6 py-6 shadow-[var(--shadow-card)]">
+        <Box className="flex h-[78vh] flex-1 flex-col rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-[var(--shadow-card)]">
           {conversation && customer ? (
-            <Box className="flex h-full flex-col gap-6">
-              <HStack className="flex-wrap items-start justify-between gap-4">
-                <Box className="min-w-[220px]">
-                  <Text className="text-2xl font-semibold text-[var(--color-neutral-900)]">
-                    {customer.firstName} {customer.lastName}
-                  </Text>
-                  <HStack className="mt-3 flex-wrap items-center gap-2">
+            <Box className="flex h-full flex-col">
+              {/* Header fisso */}
+              <Box className="border-b border-[var(--color-border)] px-6 py-4">
+                <HStack className="items-center justify-between gap-4">
+                  <HStack className="flex-1 items-center gap-3">
+                    <Text className="text-xl font-semibold text-[var(--color-neutral-900)]">
+                      {customer.firstName} {customer.lastName}
+                    </Text>
+                    <HStack className="items-center gap-1">
+                      {conversationChannels.map((channel) => {
+                        const logoSrc = channelLogos[channel];
+                        if (!logoSrc) return null;
+                        return (
+                          <Tooltip
+                            key={`${conversation.id}-header-${channel}`}
+                            placement="top"
+                            trigger={(triggerProps) => (
+                              <Pressable
+                                {...triggerProps}
+                                className="flex h-5 w-5 items-center justify-center rounded-full border border-[var(--color-border)] bg-white overflow-hidden"
+                              >
+                                <Image
+                                  src={logoSrc}
+                                  alt={channel}
+                                  width={20}
+                                  height={20}
+                                  className="object-cover"
+                                />
+                              </Pressable>
+                            )}
+                          >
+                            <TooltipContent>
+                              <TooltipText>{`Messaggi ${channelLabelMap[channel]}`}</TooltipText>
+                            </TooltipContent>
+                          </Tooltip>
+                        );
+                      })}
+                    </HStack>
                     {conversation.priority === 'Alta' ? (
                       <Badge
                         size="sm"
                         action="muted"
-                        className="rounded-full bg-[rgba(236,69,90,0.16)] px-3 py-1 text-xs font-semibold text-[#be123c]"
+                        className="rounded-full bg-[rgba(236,69,90,0.16)] px-3 py-1"
                       >
                         <HStack className="items-center gap-1">
-                          <AlertCircle size={14} color="#be123c" strokeWidth={2} />
-                          <Text className="text-xs font-semibold text-[#be123c] uppercase tracking-[0.2em]">
+                          <AlertCircle size={11} color="#be123c" strokeWidth={2} />
+                          <Text className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#be123c]">
                             Alta attenzione
                           </Text>
                         </HStack>
                       </Badge>
                     ) : null}
-                    {conversationChannels.map((channel) => {
-                      const Icon = channelIconMap[channel];
-                      const tone = channelToneMap[channel];
-                      return (
-                        <Tooltip
-                          key={`${conversation.id}-header-${channel}`}
-                          placement="top"
-                          trigger={(triggerProps) => (
-                            <Pressable
-                              {...triggerProps}
-                              className={`h-8 w-8 items-center justify-center rounded-full border ${tone.background} ${tone.border}`}
-                            >
-                              <Icon size={16} color={tone.iconColor} strokeWidth={2} />
-                            </Pressable>
-                          )}
-                        >
-                          <TooltipContent>
-                            <TooltipText>{`Messaggi ${channelLabelMap[channel]}`}</TooltipText>
-                          </TooltipContent>
-                        </Tooltip>
-                      );
-                    })}
                   </HStack>
-                  {customer.priorityReason ? (
-                    <Text className="mt-3 text-sm text-[var(--color-neutral-600)]">
-                      {customer.priorityReason}
-                    </Text>
-                  ) : null}
-                </Box>
-                <Box className="items-end">
-                  <Text className="text-xs font-semibold uppercase tracking-[0.25em] text-[var(--color-neutral-500)]">
-                    Stato chat
-                  </Text>
-                  <Text className="mt-2 text-sm font-semibold text-[var(--color-neutral-700)]">
-                    {conversation.unread ? 'Messaggi da leggere' : 'Conversazione aggiornata'}
-                  </Text>
-                  <Text className="mt-1 text-xs text-[var(--color-neutral-500)]">
-                    Ultimo aggiornamento ·{' '}
-                    {new Date(conversation.lastMessageAt).toLocaleTimeString('it-IT', {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
-                  </Text>
-                </Box>
-              </HStack>
-              <ConversationContext customer={customer} />
-              <Box className="flex flex-1 flex-col overflow-hidden">
-                <Box className="flex-1 overflow-y-auto pr-3">
-                  <VStack space="md">
-                    {chatMessages.map((message) => (
-                      <ChatBubble key={message.id} message={message} />
-                    ))}
-                  </VStack>
-                </Box>
-                <Box className="mt-4 rounded-3xl border border-[var(--color-border)] bg-[var(--color-background)] px-5 py-4">
-                  {assistantSuggestions.length > 0 ? (
-                    <Box className="mb-4 rounded-2xl border border-dashed border-[rgba(196,123,44,0.35)] bg-[rgba(196,123,44,0.08)] px-4 py-4">
-                      <HStack className="items-center gap-2">
-                        <Sparkles size={18} color="#c47b2c" strokeWidth={2} />
-                        <Text className="text-xs font-semibold uppercase tracking-[0.25em] text-[var(--color-primary-600)]">
-                          Suggerimenti AI
-                        </Text>
-                      </HStack>
-                      <VStack space="sm" className="mt-3">
-                        {assistantSuggestions.map((suggestion) => {
-                          const SuggestionIcon = channelIconMap[suggestion.channel];
-                          const tone = channelToneMap[suggestion.channel];
-                          return (
-                            <Box
-                              key={suggestion.id}
-                              className="rounded-2xl bg-[rgba(255,255,255,0.85)] px-4 py-3"
-                            >
-                              <HStack className="items-start justify-between gap-3">
-                                <Text className="flex-1 text-sm font-semibold text-[var(--color-neutral-900)]">
-                                  {suggestion.content}
-                                </Text>
-                                <Tooltip
-                                  placement="top"
-                                  trigger={(triggerProps) => (
-                                    <Pressable
-                                      {...triggerProps}
-                                      className={`h-8 w-8 items-center justify-center rounded-full border ${tone.background} ${tone.border}`}
-                                    >
-                                      <SuggestionIcon
-                                        size={16}
-                                        color={tone.iconColor}
-                                        strokeWidth={2}
-                                      />
-                                    </Pressable>
-                                  )}
-                                >
-                                  <TooltipContent>
-                                    <TooltipText>{`Suggerimento per ${channelLabelMap[suggestion.channel]}`}</TooltipText>
-                                  </TooltipContent>
-                                </Tooltip>
-                              </HStack>
-                              {suggestion.suggestions && suggestion.suggestions.length > 0 ? (
-                                <HStack className="mt-3 flex-row flex-wrap gap-2">
-                                  {suggestion.suggestions.map((option) => (
-                                    <Button
-                                      key={`${suggestion.id}-${option}`}
-                                      size="sm"
-                                      variant="outline"
-                                      action="default"
-                                      className="rounded-full border-[var(--color-border)] bg-[var(--color-surface)] px-3"
-                                      onPress={() => handleAddSuggestion(option)}
-                                    >
-                                      <Text className="text-xs font-semibold text-[var(--color-neutral-600)]">
-                                        {option}
-                                      </Text>
-                                    </Button>
-                                  ))}
-                                </HStack>
-                              ) : null}
-                            </Box>
-                          );
-                        })}
-                      </VStack>
-                    </Box>
-                  ) : null}
-                  <Textarea>
-                    <TextareaInput
-                      multiline
-                      placeholder="Scrivi una risposta o modifica un suggerimento AI..."
-                      value={draftMessage}
-                      onChangeText={setDraftMessage}
-                      className="min-h-[100px]"
+                  <Pressable
+                    onPress={() => setIsCustomerPanelOpen(!isCustomerPanelOpen)}
+                    className={`flex flex-row items-center gap-2 rounded-full border px-4 py-2 ${
+                      isCustomerPanelOpen
+                        ? 'border-[#c47b2c] bg-[rgba(196,123,44,0.08)]'
+                        : 'border-[var(--color-border)] bg-white hover:bg-[var(--color-background)]'
+                    }`}
+                  >
+                    <Info
+                      size={16}
+                      color={isCustomerPanelOpen ? '#c47b2c' : '#6b7280'}
+                      strokeWidth={2}
                     />
-                  </Textarea>
-                  <HStack className="mt-3 flex-row flex-wrap items-center justify-between gap-3">
-                    <Text className="text-xs text-[var(--color-neutral-500)]">
-                      Premi Invio per inviare oppure personalizza prima il messaggio.
+                    <Text
+                      className={`text-xs font-semibold ${
+                        isCustomerPanelOpen
+                          ? 'text-[var(--color-primary-600)]'
+                          : 'text-[var(--color-neutral-600)]'
+                      }`}
+                    >
+                      Dettagli cliente
                     </Text>
+                  </Pressable>
+                </HStack>
+                {customer.priorityReason ? (
+                  <Text className="mt-2 text-sm text-[var(--color-neutral-600)]">
+                    {customer.priorityReason}
+                  </Text>
+                ) : null}
+                <HStack className="mt-3 gap-4">
+                  <Box className="flex-1">
+                    <Text className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--color-neutral-500)]">
+                      Ultimo evento
+                    </Text>
+                    <Text className="mt-1 text-xs font-semibold text-[var(--color-neutral-800)]">
+                      {customer.ultimoEvento}
+                    </Text>
+                  </Box>
+                  <Box className="flex-1">
+                    <Text className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--color-neutral-500)]">
+                      Prossimo invio
+                    </Text>
+                    <Text className="mt-1 text-xs font-semibold text-[var(--color-primary-600)]">
+                      {customer.prossimoInvio}
+                    </Text>
+                  </Box>
+                </HStack>
+              </Box>
+
+              {/* Chat area scrollabile */}
+              <Box className="flex-1 overflow-y-auto px-6 py-4">
+                <VStack space="md">
+                  {chatMessages.map((message) => (
+                    <ChatBubble key={message.id} message={message} />
+                  ))}
+                </VStack>
+              </Box>
+
+              {/* Footer fisso */}
+              <Box className="border-t border-[var(--color-border)] px-6 py-4">
+                {assistantSuggestions.length > 0 ? (
+                  <Box className="mb-3">
+                    <HStack className="items-center gap-2 mb-2">
+                      <Sparkles size={14} color="#c47b2c" strokeWidth={2} />
+                      <Text className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[var(--color-primary-600)]">
+                        Suggerimenti AI
+                      </Text>
+                    </HStack>
+                    <HStack className="flex-row flex-wrap gap-2">
+                      {assistantSuggestions.map((suggestion) =>
+                        suggestion.suggestions?.map((option) => (
+                          <Tooltip
+                            key={`${suggestion.id}-${option}`}
+                            placement="top"
+                            trigger={(triggerProps) => (
+                              <Button
+                                {...triggerProps}
+                                size="sm"
+                                variant="outline"
+                                action="default"
+                                className="rounded-full border-[var(--color-border)] bg-[var(--color-surface)] px-3"
+                                onPress={() => handleAddSuggestion(option)}
+                              >
+                                <Text className="text-xs font-semibold text-[var(--color-neutral-600)]">
+                                  {option}
+                                </Text>
+                              </Button>
+                            )}
+                          >
+                            <TooltipContent>
+                              <TooltipText>{suggestion.content}</TooltipText>
+                            </TooltipContent>
+                          </Tooltip>
+                        ))
+                      )}
+                    </HStack>
+                  </Box>
+                ) : null}
+                <HStack className="items-end gap-2">
+                  <Box className="flex-1">
+                    <Textarea className="rounded-2xl border-[var(--color-border)] bg-white">
+                      <TextareaInput
+                        multiline
+                        placeholder="Scrivi una risposta..."
+                        value={draftMessage}
+                        onChangeText={setDraftMessage}
+                        className="min-h-[80px]"
+                      />
+                    </Textarea>
+                  </Box>
+                  <VStack space="xs">
+                    <Menu
+                      placement="top"
+                      offset={5}
+                      trigger={({ ...triggerProps }) => (
+                        <Pressable
+                          {...triggerProps}
+                          className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--color-border)] bg-white shadow-[0_4px_12px_rgba(15,23,42,0.12)] transition-colors duration-150"
+                        >
+                          <Image
+                            src={channelLogos[selectedChannel]}
+                            alt={selectedChannel}
+                            width={36}
+                            height={36}
+                            className="object-cover"
+                          />
+                        </Pressable>
+                      )}
+                    >
+                      <MenuItem
+                        key="booking"
+                        textValue="Booking"
+                        onPress={() => setSelectedChannel('Booking')}
+                        className="gap-3"
+                      >
+                        <Box className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full border border-[var(--color-border)] bg-white overflow-hidden">
+                          <Image
+                            src="/BookingIcon.svg.png"
+                            alt="Booking"
+                            width={24}
+                            height={24}
+                            className="object-cover"
+                          />
+                        </Box>
+                        <MenuItemLabel size="sm">Booking</MenuItemLabel>
+                      </MenuItem>
+                      <MenuItem
+                        key="email"
+                        textValue="Email"
+                        onPress={() => setSelectedChannel('Email')}
+                        className="gap-3"
+                      >
+                        <Box className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full border border-[var(--color-border)] bg-white overflow-hidden">
+                          <Image
+                            src="/emailLogo.png"
+                            alt="Email"
+                            width={24}
+                            height={24}
+                            className="object-cover"
+                          />
+                        </Box>
+                        <MenuItemLabel size="sm">Email</MenuItemLabel>
+                      </MenuItem>
+                      <MenuItem
+                        key="whatsapp"
+                        textValue="WhatsApp"
+                        onPress={() => setSelectedChannel('WhatsApp')}
+                        className="gap-3"
+                      >
+                        <Box className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full border border-[var(--color-border)] bg-white overflow-hidden">
+                          <Image
+                            src="/whatsappLogo.png"
+                            alt="WhatsApp"
+                            width={24}
+                            height={24}
+                            className="object-cover"
+                          />
+                        </Box>
+                        <MenuItemLabel size="sm">WhatsApp</MenuItemLabel>
+                      </MenuItem>
+                    </Menu>
                     <Pressable
                       onPress={() => setDraftMessage('')}
-                      className="h-11 w-11 items-center justify-center rounded-full bg-[var(--color-primary-600)]"
+                      className="flex h-11 w-11 items-center justify-center rounded-full border border-[#aa6a24] bg-white text-[#aa6a24] transition-colors duration-150 shadow-[0_4px_12px_rgba(15,23,42,0.12)] data-[hover=true]:bg-[#aa6a24] data-[hover=true]:text-white"
                     >
-                      <Send size={18} color="#ffffff" strokeWidth={2} />
+                      <Send size={18} color="currentColor" strokeWidth={2.5} />
                     </Pressable>
-                  </HStack>
-                </Box>
+                  </VStack>
+                </HStack>
               </Box>
             </Box>
           ) : (
@@ -531,18 +684,19 @@ export default function ChatPage() {
           )}
         </Box>
 
-        {customer ? (
+        {customer && isCustomerPanelOpen ? (
           <Box className="h-[78vh] w-full max-w-[320px] overflow-hidden">
-          <CustomerPanel
-            customer={customer}
-            notes={customerNotes}
-            onAddNote={() => router.push('/notes')}
-            onOpenCustomer={() => router.push(`/customers/${customer.id}`)}
-            showTimeline={false}
-            showBookings={false}
-            showNotes={false}
-            variant="compact"
-          />
+            <CustomerPanel
+              customer={customer}
+              notes={customerNotes}
+              onAddNote={() => router.push('/notes')}
+              onOpenCustomer={() => router.push(`/customers/${customer.id}`)}
+              onClose={() => setIsCustomerPanelOpen(false)}
+              showTimeline={false}
+              showBookings={false}
+              showNotes={true}
+              variant="compact"
+            />
           </Box>
         ) : null}
       </HStack>
@@ -553,37 +707,3 @@ export default function ChatPage() {
 // mock: conversationsMock, chatQuickActionsMock, customersMock, notesMock
 // actions: sendChatMessage(conversationId, payload), escalateToTeam(conversationId)
 // assumptions: selezione conversazione gestita via uiSlice e mock; invio messaggi ancora mock
-
-function ConversationContext({ customer }: { customer: Customer }) {
-  return (
-    <Box className="rounded-3xl border border-[var(--color-border)] bg-[var(--color-background)] px-5 py-5">
-      <HStack className="flex-wrap items-stretch gap-6">
-        <ContextMetric label="Ultimo evento" value={customer.ultimoEvento} />
-        <ContextMetric label="Prossimo invio" value={customer.prossimoInvio} />
-        <ContextMetric
-          label="Stato comunicazione"
-          value={customer.statoComunicazione}
-        />
-      </HStack>
-    </Box>
-  );
-}
-
-function ContextMetric({
-  label,
-  value,
-}: {
-  label: string;
-  value: string;
-}) {
-  return (
-    <VStack space="xs" className="min-w-[160px] flex-1">
-      <Text className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[var(--color-neutral-500)]">
-        {label}
-      </Text>
-      <Text className="text-sm font-semibold text-[var(--color-neutral-800)]">
-        {value}
-      </Text>
-    </VStack>
-  );
-}

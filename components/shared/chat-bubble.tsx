@@ -1,6 +1,7 @@
 'use client';
 
 import { ReactNode } from 'react';
+import Image from 'next/image';
 import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import { HStack } from '@/components/ui/hstack';
@@ -40,8 +41,8 @@ const authorTone: Record<
   },
   Operatore: {
     container:
-      'bg-[var(--color-primary-600)] border border-[rgba(196,123,44,0.4)] rounded-3xl',
-    text: 'text-white',
+      'bg-[rgba(59,130,246,0.16)] border border-[rgba(59,130,246,0.3)] rounded-3xl',
+    text: 'text-[var(--color-neutral-900)]',
     alignment: 'items-end self-end',
     metaAlignment: 'text-right',
     label: 'Team hotel',
@@ -58,14 +59,21 @@ const authorTone: Record<
 
 export function ChatBubble({ message, actionSlot }: ChatBubbleProps) {
   const tone = authorTone[message.author];
-  const ChannelIcon = channelIconMap[message.channel];
-  const channelTone = channelToneMap[message.channel];
   const timestamp = new Date(message.timestamp).toLocaleString('it-IT', {
     hour: '2-digit',
     minute: '2-digit',
     day: '2-digit',
     month: '2-digit',
   });
+
+  // Loghi dei canali
+  const channelLogos: Record<string, string> = {
+    Email: '/emailLogo.png',
+    WhatsApp: '/whatsappLogo.png',
+    Booking: '/BookingIcon.svg.png',
+  };
+
+  const logoSrc = channelLogos[message.channel];
 
   return (
     <VStack
@@ -88,25 +96,29 @@ export function ChatBubble({ message, actionSlot }: ChatBubbleProps) {
           tone.metaAlignment === 'text-right' ? 'flex-row-reverse' : ''
         }`}
       >
-        <Tooltip
-          placement="top"
-          trigger={(triggerProps) => (
-            <Pressable
-              {...triggerProps}
-              className={`h-8 w-8 items-center justify-center rounded-full border ${channelTone.background} ${channelTone.border}`}
-            >
-              <ChannelIcon
-                size={16}
-                color={channelTone.iconColor}
-                strokeWidth={2}
-              />
-            </Pressable>
-          )}
-        >
-          <TooltipContent>
-            <TooltipText>{`Messaggio ${channelLabelMap[message.channel]}`}</TooltipText>
-          </TooltipContent>
-        </Tooltip>
+        {logoSrc ? (
+          <Tooltip
+            placement="top"
+            trigger={(triggerProps) => (
+              <Pressable
+                {...triggerProps}
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--color-border)] bg-white overflow-hidden"
+              >
+                <Image
+                  src={logoSrc}
+                  alt={message.channel}
+                  width={32}
+                  height={32}
+                  className="object-cover"
+                />
+              </Pressable>
+            )}
+          >
+            <TooltipContent>
+              <TooltipText>{`Messaggio ${channelLabelMap[message.channel]}`}</TooltipText>
+            </TooltipContent>
+          </Tooltip>
+        ) : null}
         <Box className={`max-w-[520px] px-5 py-4 ${tone.container}`}>
           <Text className={`text-sm leading-6 ${tone.text}`}>
             {message.content}
