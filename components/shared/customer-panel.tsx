@@ -20,6 +20,7 @@ type CustomerPanelProps = {
   showTimeline?: boolean;
   showNotes?: boolean;
   showBookings?: boolean;
+  variant?: 'default' | 'compact';
 };
 
 const noteStatusTone: Record<Note['status'], { badge: string; text: string }> = {
@@ -68,14 +69,20 @@ export function CustomerPanel({
   showTimeline = true,
   showNotes = true,
   showBookings = true,
+  variant = 'default',
 }: CustomerPanelProps) {
   const visibleNotes = notes.slice(0, 2);
   const sortedBookings = [...bookings].sort(
     (a, b) => new Date(a.checkIn).getTime() - new Date(b.checkIn).getTime()
   );
+  const isCompact = variant === 'compact';
 
   return (
-    <Box className="w-full max-w-[360px] rounded-3xl border border-transparent bg-[var(--color-surface)] px-6 py-6 shadow-[var(--shadow-card)]">
+    <Box
+      className={`w-full rounded-3xl border border-transparent bg-[var(--color-surface)] px-6 py-6 shadow-[var(--shadow-card)] ${
+        isCompact ? 'max-w-[320px]' : 'max-w-[360px]'
+      }`}
+    >
       <VStack space="lg">
         <Box>
           <HStack className="items-start justify-between gap-3">
@@ -108,48 +115,50 @@ export function CustomerPanel({
               </Button>
             ) : null}
           </HStack>
-          <HStack className="mt-4 flex-row flex-wrap gap-2">
-            {customer.tags.map((tag) => (
+          {isCompact ? null : (
+            <HStack className="mt-4 flex-row flex-wrap gap-2">
+              {customer.tags.map((tag) => (
+                <Badge
+                  key={`${customer.id}-${tag}`}
+                  size="sm"
+                  action="muted"
+                  className="rounded-full bg-[rgba(196,123,44,0.12)] px-3 py-1 text-xs font-semibold text-[var(--color-primary-600)]"
+                >
+                  <Text className="text-xs font-semibold text-[var(--color-primary-600)]">
+                    {tag}
+                  </Text>
+                </Badge>
+              ))}
               <Badge
-                key={`${customer.id}-${tag}`}
                 size="sm"
                 action="muted"
-                className="rounded-full bg-[rgba(196,123,44,0.12)] px-3 py-1 text-xs font-semibold text-[var(--color-primary-600)]"
-              >
-                <Text className="text-xs font-semibold text-[var(--color-primary-600)]">
-                  {tag}
-                </Text>
-              </Badge>
-            ))}
-            <Badge
-              size="sm"
-              action="muted"
-              className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                customer.newsletter
-                  ? 'bg-[rgba(31,122,77,0.16)] text-[#0f766e]'
-                  : 'bg-[rgba(148,163,184,0.18)] text-[var(--color-neutral-600)]'
-              }`}
-            >
-              <Text
-                className={`text-xs font-semibold ${
-                  customer.newsletter ? 'text-[#0f766e]' : 'text-[var(--color-neutral-600)]'
+                className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                  customer.newsletter
+                    ? 'bg-[rgba(31,122,77,0.16)] text-[#0f766e]'
+                    : 'bg-[rgba(148,163,184,0.18)] text-[var(--color-neutral-600)]'
                 }`}
               >
-                Newsletter · {customer.newsletter ? 'Iscritto' : 'Non iscritto'}
-              </Text>
-            </Badge>
-            {customer.highPriority ? (
-              <Badge
-                size="sm"
-                action="muted"
-                className="rounded-full bg-[rgba(236,72,153,0.18)] px-3 py-1 text-xs font-semibold text-[#be123c]"
-              >
-                <Text className="text-xs font-semibold text-[#be123c]">
-                  Alta attenzione
+                <Text
+                  className={`text-xs font-semibold ${
+                    customer.newsletter ? 'text-[#0f766e]' : 'text-[var(--color-neutral-600)]'
+                  }`}
+                >
+                  Newsletter · {customer.newsletter ? 'Iscritto' : 'Non iscritto'}
                 </Text>
               </Badge>
-            ) : null}
-          </HStack>
+              {customer.highPriority ? (
+                <Badge
+                  size="sm"
+                  action="muted"
+                  className="rounded-full bg-[rgba(236,72,153,0.18)] px-3 py-1 text-xs font-semibold text-[#be123c]"
+                >
+                  <Text className="text-xs font-semibold text-[#be123c]">
+                    Alta attenzione
+                  </Text>
+                </Badge>
+              ) : null}
+            </HStack>
+          )}
         </Box>
 
         <Box className="rounded-2xl border border-transparent bg-[var(--color-background)] px-4 py-4">
@@ -189,7 +198,9 @@ export function CustomerPanel({
           </VStack>
         </Box>
 
-        {customer.highPriority || customer.priorityReason ? (
+        {isCompact
+          ? null
+          : customer.highPriority || customer.priorityReason ? (
           <Box className="rounded-2xl border border-[rgba(236,72,153,0.25)] bg-[rgba(236,72,153,0.12)] px-4 py-4">
             <Text className="text-xs font-semibold uppercase tracking-[0.25em] text-[#be123c]">
               Intervento richiesto
