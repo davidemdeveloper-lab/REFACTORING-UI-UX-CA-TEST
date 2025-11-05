@@ -95,6 +95,13 @@ const Tooltip = React.forwardRef<
   );
 });
 
+const TooltipTrigger = React.forwardRef<
+  React.ComponentRef<typeof UITooltip.Trigger>,
+  React.ComponentProps<typeof UITooltip.Trigger>
+>(function TooltipTrigger(props, ref) {
+  return <UITooltip.Trigger ref={ref} {...props} />;
+});
+
 const TooltipContent = React.forwardRef<
   React.ComponentRef<typeof UITooltip.Content>,
   ITooltipContentProps & { className?: string }
@@ -125,7 +132,8 @@ const TooltipText = React.forwardRef<
 });
 
 Tooltip.displayName = 'Tooltip';
+TooltipTrigger.displayName = 'TooltipTrigger';
 TooltipContent.displayName = 'TooltipContent';
 TooltipText.displayName = 'TooltipText';
 
-export { Tooltip, TooltipContent, TooltipText };
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipText };
