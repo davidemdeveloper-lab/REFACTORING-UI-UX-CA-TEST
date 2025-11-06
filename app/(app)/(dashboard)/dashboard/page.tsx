@@ -38,6 +38,7 @@ import { Button } from '@/components/ui/button';
 import { PriorityAlert } from '@/components/shared/priority-alert';
 import { CustomerStatusCard } from '@/components/shared/customer-status-card';
 import { BookingStatusCard } from '@/components/shared/booking-status-card';
+import { Badge, BadgeText } from '@/components/ui/badge';
 
 function formatDate(dateString: string) {
   return new Date(dateString).toLocaleDateString('it-IT', {
@@ -298,6 +299,54 @@ export default function DashboardPage() {
     [bookings]
   );
 
+  const customerFocus = useMemo(() => {
+    let manualFollowUps = 0;
+    let aiMonitoring = 0;
+
+    customerStatusList.forEach((customer) => {
+      const communication = deriveCommunicationState(customer);
+      if (communication.tone === 'warning') {
+        manualFollowUps += 1;
+      } else if (communication.tone === 'info') {
+        aiMonitoring += 1;
+      }
+    });
+
+    return {
+      manualFollowUps,
+      aiMonitoring,
+      stable:
+        customerStatusList.length - manualFollowUps - aiMonitoring,
+    };
+  }, [customerStatusList]);
+
+  const bookingFocus = useMemo(() => {
+    let arrivingToday = 0;
+    let inHouse = 0;
+    let upcoming = 0;
+
+    upcomingBookings.forEach((booking) => {
+      const timeline = deriveBookingTimeline(
+        booking.checkIn,
+        booking.checkOut
+      );
+
+      if (timeline.tone === 'today') {
+        arrivingToday += 1;
+      } else if (timeline.tone === 'inhouse') {
+        inHouse += 1;
+      } else {
+        upcoming += 1;
+      }
+    });
+
+    return {
+      arrivingToday,
+      inHouse,
+      upcoming,
+    };
+  }, [upcomingBookings]);
+
   const comfortRate = Math.round((comfortSummary?.comfortRate ?? 0) * 100);
   const roomsOutOfRange = comfortSummary?.roomsOutOfRange ?? [];
   const minibarToRefill = comfortSummary?.minibarToRefill ?? [];
@@ -323,8 +372,8 @@ export default function DashboardPage() {
         }
       />
 
-      <HStack className="flex-row gap-6">
-        <Box className="flex-1">
+      <Box className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,2.15fr)_minmax(320px,1fr)]">
+        <VStack space="6" className="min-w-0">
           <SectionCard
             title="Da gestire ora"
             subtitle="Clienti con richieste sensibili o AI fallback nelle ultime ore."
@@ -374,14 +423,36 @@ export default function DashboardPage() {
             )}
           </SectionCard>
 
-          <HStack className="flex-col gap-6 xl:flex-row">
+          <VStack space="6" className="min-w-0">
             <SectionCard
               title="Stato clienti"
               subtitle="Panoramica dei clienti attivi con automazioni e step manuali da seguire."
               padding="md"
               className="flex-1"
-              contentClassName="space-y-4"
+              contentClassName="space-y-5"
             >
+              <Box className="rounded-2xl border border-[rgba(196,123,44,0.18)] bg-[rgba(196,123,44,0.08)] px-4 py-3">
+                <VStack space="sm">
+                  <HStack className="flex-wrap items-center gap-3">
+                    <Badge
+                      size="sm"
+                      action="muted"
+                      className="rounded-full border border-[var(--color-primary-border-soft)] bg-white/80 px-3 py-1"
+                    >
+                      <BadgeText className="tracking-[0.35em] text-[10px] text-[var(--color-primary-600)]">
+                        percorso
+                      </BadgeText>
+                    </Badge>
+                    <Text className="text-sm font-semibold text-[var(--color-neutral-800)]">
+                      {customerFocus.manualFollowUps} follow-up prioritari
+                    </Text>
+                  </HStack>
+                  <Text className="text-xs leading-5 text-[var(--color-neutral-600)]">
+                    Prosegui con {customerFocus.aiMonitoring} automazioni in monitoraggio e {customerFocus.stable}
+                    {' '}clienti stabili per mantenere il flusso sotto controllo.
+                  </Text>
+                </VStack>
+              </Box>
               {customerStatusList.map((customer) => {
                 const communication = deriveCommunicationState(customer);
                 const nextEvent = parseNextEvent(customer.prossimoInvio);
@@ -413,8 +484,29 @@ export default function DashboardPage() {
               subtitle="Occupati dei check-in prossimi e delle richieste aperte."
               padding="md"
               className="flex-1"
-              contentClassName="space-y-4"
+              contentClassName="space-y-5"
             >
+              <Box className="rounded-2xl border border-[rgba(196,123,44,0.18)] bg-[rgba(196,123,44,0.08)] px-4 py-3">
+                <VStack space="sm">
+                  <HStack className="flex-wrap items-center gap-3">
+                    <Badge
+                      size="sm"
+                      action="muted"
+                      className="rounded-full border border-[var(--color-primary-border-soft)] bg-white/80 px-3 py-1"
+                    >
+                      <BadgeText className="tracking-[0.35em] text-[10px] text-[var(--color-primary-600)]">
+                        agenda
+                      </BadgeText>
+                    </Badge>
+                    <Text className="text-sm font-semibold text-[var(--color-neutral-800)]">
+                      {bookingFocus.arrivingToday} arrivi oggi · {bookingFocus.inHouse} ospiti in struttura
+                    </Text>
+                  </HStack>
+                  <Text className="text-xs leading-5 text-[var(--color-neutral-600)]">
+                    Prepara accoglienza e checkout con {bookingFocus.upcoming} arrivi oltre le 24 ore per anticipare le richieste.
+                  </Text>
+                </VStack>
+              </Box>
               {upcomingBookings.map((booking) => {
                 const relatedCustomer: Customer | undefined = customers.find(
                   (customer) => customer.id === booking.customerId
@@ -449,10 +541,10 @@ export default function DashboardPage() {
                 );
               })}
             </SectionCard>
-          </HStack>
-        </Box>
+          </VStack>
+        </VStack>
 
-        <VStack space="lg" className="w-full max-w-[300px]">
+        <VStack space="lg" className="w-full max-w-[320px]">
           <StatCard
             label="Comfort camere"
             value={`${comfortRate}%`}
@@ -497,7 +589,7 @@ export default function DashboardPage() {
             }
           />
         </VStack>
-      </HStack>
+      </Box>
 
       <Modal isOpen={isNoteModalOpen} onClose={() => setNoteModalOpen(false)}>
         <ModalBackdrop />
