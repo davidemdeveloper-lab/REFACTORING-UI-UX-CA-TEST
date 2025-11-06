@@ -329,6 +329,11 @@ export default function DashboardPage() {
             title="Da gestire ora"
             subtitle="Clienti con richieste sensibili o AI fallback nelle ultime ore."
             contentClassName="space-y-4"
+            actions={
+              <Text className="text-xs font-semibold uppercase tracking-[0.35em] text-[var(--color-primary-600)]">
+                Step 1
+              </Text>
+            }
           >
             {highPriorityCustomers.length === 0 ? (
               <Box className="rounded-2xl border border-dashed border-[var(--color-border)] bg-[var(--color-background)] px-6 py-10">
@@ -374,13 +379,18 @@ export default function DashboardPage() {
             )}
           </SectionCard>
 
-          <HStack className="flex-col gap-6 xl:flex-row">
+          <VStack space="xl" className="w-full">
             <SectionCard
               title="Stato clienti"
               subtitle="Panoramica dei clienti attivi con automazioni e step manuali da seguire."
               padding="md"
-              className="flex-1"
+              className="mb-0 w-full"
               contentClassName="space-y-4"
+              actions={
+                <Text className="text-xs font-semibold uppercase tracking-[0.35em] text-[var(--color-neutral-500)]">
+                  Step 2
+                </Text>
+              }
             >
               {customerStatusList.map((customer) => {
                 const communication = deriveCommunicationState(customer);
@@ -412,8 +422,13 @@ export default function DashboardPage() {
               title="Prenotazioni imminenti"
               subtitle="Occupati dei check-in prossimi e delle richieste aperte."
               padding="md"
-              className="flex-1"
+              className="mb-0 w-full"
               contentClassName="space-y-4"
+              actions={
+                <Text className="text-xs font-semibold uppercase tracking-[0.35em] text-[var(--color-neutral-500)]">
+                  Step 3
+                </Text>
+              }
             >
               {upcomingBookings.map((booking) => {
                 const relatedCustomer: Customer | undefined = customers.find(
@@ -449,7 +464,7 @@ export default function DashboardPage() {
                 );
               })}
             </SectionCard>
-          </HStack>
+          </VStack>
         </Box>
 
         <VStack space="lg" className="w-full max-w-[300px]">
