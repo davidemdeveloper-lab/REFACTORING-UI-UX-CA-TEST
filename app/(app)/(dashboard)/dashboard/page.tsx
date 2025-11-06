@@ -298,6 +298,85 @@ export default function DashboardPage() {
     [bookings]
   );
 
+  const bookingsWithMeta = useMemo(
+    () =>
+      upcomingBookings.map((booking) => {
+        const relatedCustomer = customers.find(
+          (customer) => customer.id === booking.customerId
+        );
+        const timeline = deriveBookingTimeline(
+          booking.checkIn,
+          booking.checkOut
+        );
+        const nextStep = parseNextEvent(booking.prossimoInvio);
+        const statusTone = deriveBookingStatusTone(booking.status);
+
+        const now = new Date();
+        const checkInDate = new Date(booking.checkIn);
+        const checkOutDate = new Date(booking.checkOut);
+
+        const hoursToCheckIn =
+          Number.isNaN(checkInDate.getTime())
+            ? null
+            : (checkInDate.getTime() - now.getTime()) / (1000 * 60 * 60);
+        const hoursToCheckOut =
+          Number.isNaN(checkOutDate.getTime())
+            ? null
+            : (checkOutDate.getTime() - now.getTime()) / (1000 * 60 * 60);
+
+        const isCheckInWithin48Hours =
+          typeof hoursToCheckIn === 'number' &&
+          hoursToCheckIn >= 0 &&
+          hoursToCheckIn <= 48;
+        const isCheckOutWithin48Hours =
+          typeof hoursToCheckOut === 'number' &&
+          hoursToCheckOut >= 0 &&
+          hoursToCheckOut <= 48;
+
+        return {
+          booking,
+          relatedCustomer,
+          timeline,
+          nextStep,
+          statusTone,
+          meta: {
+            isCheckInWithin48Hours,
+            isCheckOutWithin48Hours,
+          },
+        };
+      }),
+    [customers, upcomingBookings]
+  );
+
+  const bookingSummary = useMemo(
+    () =>
+      bookingsWithMeta.reduce(
+        (acc, item) => {
+          if (item.timeline.tone === 'inhouse') {
+            acc.inHouse += 1;
+            if (item.meta.isCheckOutWithin48Hours) {
+              acc.departingSoon += 1;
+            }
+          }
+
+          if (item.timeline.tone === 'today') {
+            acc.checkInToday += 1;
+          }
+
+          if (
+            item.meta.isCheckInWithin48Hours &&
+            item.timeline.tone !== 'today'
+          ) {
+            acc.arrivingSoon += 1;
+          }
+
+          return acc;
+        },
+        { inHouse: 0, departingSoon: 0, checkInToday: 0, arrivingSoon: 0 }
+      ),
+    [bookingsWithMeta]
+  );
+
   const comfortRate = Math.round((comfortSummary?.comfortRate ?? 0) * 100);
   const roomsOutOfRange = comfortSummary?.roomsOutOfRange ?? [];
   const minibarToRefill = comfortSummary?.minibarToRefill ?? [];
@@ -324,11 +403,12 @@ export default function DashboardPage() {
       />
 
       <HStack className="flex-row gap-6">
-        <Box className="flex-1">
+        <VStack space="lg" className="flex-1">
           <SectionCard
             title="Da gestire ora"
             subtitle="Clienti con richieste sensibili o AI fallback nelle ultime ore."
             contentClassName="space-y-4"
+            className="mb-0"
           >
             {highPriorityCustomers.length === 0 ? (
               <Box className="rounded-2xl border border-dashed border-[var(--color-border)] bg-[var(--color-background)] px-6 py-10">
@@ -374,83 +454,147 @@ export default function DashboardPage() {
             )}
           </SectionCard>
 
-          <HStack className="flex-col gap-6 xl:flex-row">
-            <SectionCard
-              title="Stato clienti"
-              subtitle="Panoramica dei clienti attivi con automazioni e step manuali da seguire."
-              padding="md"
-              className="flex-1"
-              contentClassName="space-y-4"
-            >
-              {customerStatusList.map((customer) => {
-                const communication = deriveCommunicationState(customer);
-                const nextEvent = parseNextEvent(customer.prossimoInvio);
-                const updatedAt = formatCustomerUpdate(customer.lastUpdate);
-                const updatedDisplay = updatedAt ?? '—';
-                const segment = customer.tags.slice(0, 2).join(', ') || '—';
+          <SectionCard
+            title="Stato clienti"
+            subtitle="Panoramica dei clienti attivi con automazioni e step manuali da seguire."
+            padding="md"
+            className="mb-0"
+            contentClassName="space-y-4"
+          >
+            {customerStatusList.map((customer) => {
+              const communication = deriveCommunicationState(customer);
+              const nextEvent = parseNextEvent(customer.prossimoInvio);
+              const updatedAt = formatCustomerUpdate(customer.lastUpdate);
+              const updatedDisplay = updatedAt ?? '—';
+              const segment = customer.tags.slice(0, 2).join(', ') || '—';
 
-                return (
-                  <CustomerStatusCard
-                    key={customer.id}
-                    name={`${customer.firstName} ${customer.lastName}`}
-                    updatedAt={updatedDisplay}
-                    tone={communication.tone}
-                    communicationLabel={communication.label}
-                    summary={communication.description}
-                    lastEvent={customer.ultimoEvento}
-                    nextEventLabel={nextEvent.label}
-                    nextEventWhen={nextEvent.when}
-                    segment={segment}
-                    newsletter={customer.newsletter}
-                    onPress={() => router.push(`/customers/${customer.id}`)}
-                  />
-                );
-              })}
-            </SectionCard>
+              return (
+                <CustomerStatusCard
+                  key={customer.id}
+                  name={`${customer.firstName} ${customer.lastName}`}
+                  updatedAt={updatedDisplay}
+                  tone={communication.tone}
+                  communicationLabel={communication.label}
+                  summary={communication.description}
+                  lastEvent={customer.ultimoEvento}
+                  nextEventLabel={nextEvent.label}
+                  nextEventWhen={nextEvent.when}
+                  segment={segment}
+                  newsletter={customer.newsletter}
+                  onPress={() => router.push(`/customers/${customer.id}`)}
+                />
+              );
+            })}
+          </SectionCard>
 
-            <SectionCard
-              title="Prenotazioni imminenti"
-              subtitle="Occupati dei check-in prossimi e delle richieste aperte."
-              padding="md"
-              className="flex-1"
-              contentClassName="space-y-4"
-            >
-              {upcomingBookings.map((booking) => {
-                const relatedCustomer: Customer | undefined = customers.find(
-                  (customer) => customer.id === booking.customerId
-                );
-                const checkIn = formatDate(booking.checkIn);
-                const checkOut = formatDate(booking.checkOut);
-                const timeline = deriveBookingTimeline(booking.checkIn, booking.checkOut);
-                const nextStep = parseNextEvent(booking.prossimoInvio);
-                const statusTone = deriveBookingStatusTone(booking.status);
+          <SectionCard
+            title="Prenotazioni imminenti"
+            subtitle="Occupati dei check-in prossimi e delle richieste aperte."
+            padding="md"
+            className="mb-0"
+            contentClassName="space-y-4"
+          >
+            {bookingsWithMeta.length === 0 ? (
+              <Box className="rounded-2xl border border-dashed border-[var(--color-border)] bg-[var(--color-background)] px-6 py-10">
+                <Text className="text-center text-sm text-[var(--color-neutral-600)]">
+                  Nessuna prenotazione imminente nelle prossime 48 ore.
+                </Text>
+              </Box>
+            ) : (
+              <>
+                <Box className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                  {[
+                    {
+                      key: 'inHouse' as const,
+                      label: 'Ospiti in struttura',
+                      value: bookingSummary.inHouse,
+                      helper:
+                        bookingSummary.departingSoon > 0
+                          ? `${bookingSummary.departingSoon} check-out entro 48h`
+                          : 'Nessun check-out entro 48h',
+                      accent:
+                        'border-[rgba(34,197,94,0.45)] bg-[rgba(34,197,94,0.12)] text-[#166534]',
+                    },
+                    {
+                      key: 'today' as const,
+                      label: 'Check-in di oggi',
+                      value: bookingSummary.checkInToday,
+                      helper:
+                        bookingSummary.checkInToday > 0
+                          ? 'Coordina concierge e housekeeping'
+                          : 'Nessun check-in previsto',
+                      accent:
+                        'border-[rgba(234,179,8,0.45)] bg-[rgba(234,179,8,0.12)] text-[#92400e]',
+                    },
+                    {
+                      key: 'arriving' as const,
+                      label: 'Arrivi prossime 48h',
+                      value: bookingSummary.arrivingSoon,
+                      helper:
+                        bookingSummary.arrivingSoon > 0
+                          ? 'Prepara automazioni di benvenuto'
+                          : 'Nessun arrivo ravvicinato',
+                      accent:
+                        'border-[rgba(59,130,246,0.45)] bg-[rgba(59,130,246,0.12)] text-[#1d4ed8]',
+                    },
+                  ].map((item) => (
+                    <Box
+                      key={item.key}
+                      className={`rounded-2xl border bg-[var(--color-surface)] px-4 py-3 shadow-[var(--shadow-soft)] ${item.accent}`}
+                    >
+                      <Text className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-neutral-600)]">
+                        {item.label}
+                      </Text>
+                      <HStack className="mt-2 items-end justify-between">
+                        <Text className="text-2xl font-semibold text-[var(--color-neutral-900)]">
+                          {item.value}
+                        </Text>
+                        <Box className="h-3 w-3 rounded-full bg-current opacity-70" />
+                      </HStack>
+                      <Text className="mt-1 text-xs text-[var(--color-neutral-600)]">
+                        {item.helper}
+                      </Text>
+                    </Box>
+                  ))}
+                </Box>
 
-                return (
-                  <BookingStatusCard
-                    key={booking.id}
-                    bookingNumber={booking.bookingNumber}
-                    guestName={`${relatedCustomer?.firstName ?? ''} ${
-                      relatedCustomer?.lastName ?? ''
-                    }`.trim()}
-                    checkIn={checkIn}
-                    checkOut={checkOut}
-                    statusLabel={booking.status}
-                    statusTone={statusTone}
-                    roomsGuests={`${booking.rooms} stanze · ${booking.guests} ospiti`}
-                    nextEvent={
-                      nextStep.when === '—'
-                        ? nextStep.label
-                        : `${nextStep.label} · ${nextStep.when}`
-                    }
-                    timelineTone={timeline.tone}
-                    attentionNote={booking.attentionReason}
-                    onPress={() => router.push(`/bookings/${booking.id}`)}
-                  />
-                );
-              })}
-            </SectionCard>
-          </HStack>
-        </Box>
+                {bookingsWithMeta.map((item) => {
+                  const checkIn = formatDate(item.booking.checkIn);
+                  const checkOut = formatDate(item.booking.checkOut);
+                  const guestName = `${item.relatedCustomer?.firstName ?? ''} ${
+                    item.relatedCustomer?.lastName ?? ''
+                  }`.trim();
+                  const nextEventText =
+                    item.nextStep.when === '—'
+                      ? item.nextStep.label
+                      : `${item.nextStep.label} · ${item.nextStep.when}`;
+                  const combinedNextEvent =
+                    item.timeline.detail &&
+                    item.timeline.detail !== 'Data non disponibile'
+                      ? `${item.timeline.detail} • ${nextEventText}`
+                      : nextEventText;
+
+                  return (
+                    <BookingStatusCard
+                      key={item.booking.id}
+                      bookingNumber={item.booking.bookingNumber}
+                      guestName={guestName}
+                      checkIn={checkIn}
+                      checkOut={checkOut}
+                      statusLabel={item.booking.status}
+                      statusTone={item.statusTone}
+                      roomsGuests={`${item.booking.rooms} stanze · ${item.booking.guests} ospiti`}
+                      nextEvent={combinedNextEvent}
+                      timelineTone={item.timeline.tone}
+                      attentionNote={item.booking.attentionReason}
+                      onPress={() => router.push(`/bookings/${item.booking.id}`)}
+                    />
+                  );
+                })}
+              </>
+            )}
+          </SectionCard>
+        </VStack>
 
         <VStack space="lg" className="w-full max-w-[300px]">
           <StatCard
