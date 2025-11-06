@@ -302,6 +302,69 @@ export default function DashboardPage() {
   const roomsOutOfRange = comfortSummary?.roomsOutOfRange ?? [];
   const minibarToRefill = comfortSummary?.minibarToRefill ?? [];
 
+  const customerOverview = useMemo(() => {
+    let manualFollowUps = 0;
+    let automationsScheduled = 0;
+
+    customers.forEach((customer) => {
+      const communication = deriveCommunicationState(customer);
+
+      if (communication.tone === 'warning') {
+        manualFollowUps += 1;
+      }
+
+      if (customer.prossimoInvio) {
+        automationsScheduled += 1;
+      }
+    });
+
+    return {
+      active: customers.length,
+      manualFollowUps,
+      automationsScheduled,
+    };
+  }, [customers]);
+
+  const bookingHighlights = useMemo(() => {
+    const now = new Date();
+    const today = startOfDay(now);
+    const inFortyEightHours = new Date(now.getTime() + 48 * 60 * 60 * 1000);
+
+    let checkInsToday = 0;
+    let checkOutsToday = 0;
+    let arrivalsNext48h = 0;
+
+    bookings.forEach((booking) => {
+      const checkInDate = new Date(booking.checkIn);
+      const checkOutDate = new Date(booking.checkOut);
+
+      if (Number.isNaN(checkInDate.getTime()) || Number.isNaN(checkOutDate.getTime())) {
+        return;
+      }
+
+      if (startOfDay(checkInDate).getTime() === today.getTime()) {
+        checkInsToday += 1;
+      }
+
+      if (startOfDay(checkOutDate).getTime() === today.getTime()) {
+        checkOutsToday += 1;
+      }
+
+      if (
+        checkInDate.getTime() > now.getTime() &&
+        checkInDate.getTime() <= inFortyEightHours.getTime()
+      ) {
+        arrivalsNext48h += 1;
+      }
+    });
+
+    return {
+      checkInsToday,
+      checkOutsToday,
+      arrivalsNext48h,
+    };
+  }, [bookings]);
+
   return (
     <Box className="pb-16">
       <PageToolbar
@@ -324,10 +387,11 @@ export default function DashboardPage() {
       />
 
       <HStack className="flex-row gap-6">
-        <Box className="flex-1">
+        <VStack space="6" className="flex-1">
           <SectionCard
             title="Da gestire ora"
             subtitle="Clienti con richieste sensibili o AI fallback nelle ultime ore."
+            className="mb-0"
             contentClassName="space-y-4"
           >
             {highPriorityCustomers.length === 0 ? (
@@ -373,15 +437,41 @@ export default function DashboardPage() {
               </Box>
             )}
           </SectionCard>
+          <SectionCard
+            title="Stato clienti"
+            subtitle="Panoramica dei clienti attivi con automazioni e step manuali da seguire."
+            padding="md"
+            className="mb-0"
+            contentClassName="space-y-5"
+          >
+            <Box className="grid gap-3 sm:grid-cols-3">
+              {[{
+                label: 'Clienti attivi',
+                value: customerOverview.active,
+              },
+              {
+                label: 'Follow-up manuali',
+                value: customerOverview.manualFollowUps,
+              },
+              {
+                label: 'Automazioni programmate',
+                value: customerOverview.automationsScheduled,
+              }].map((item) => (
+                <Box
+                  key={item.label}
+                  className="rounded-2xl border border-[rgba(196,123,44,0.18)] bg-[rgba(196,123,44,0.06)] px-4 py-3"
+                >
+                  <Text className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-[var(--color-primary-600)]">
+                    {item.label}
+                  </Text>
+                  <Text className="mt-2 text-2xl font-semibold text-[var(--color-neutral-900)]">
+                    {item.value}
+                  </Text>
+                </Box>
+              ))}
+            </Box>
 
-          <HStack className="flex-col gap-6 xl:flex-row">
-            <SectionCard
-              title="Stato clienti"
-              subtitle="Panoramica dei clienti attivi con automazioni e step manuali da seguire."
-              padding="md"
-              className="flex-1"
-              contentClassName="space-y-4"
-            >
+            <Box className="space-y-4">
               {customerStatusList.map((customer) => {
                 const communication = deriveCommunicationState(customer);
                 const nextEvent = parseNextEvent(customer.prossimoInvio);
@@ -406,15 +496,44 @@ export default function DashboardPage() {
                   />
                 );
               })}
-            </SectionCard>
+            </Box>
+          </SectionCard>
 
-            <SectionCard
-              title="Prenotazioni imminenti"
-              subtitle="Occupati dei check-in prossimi e delle richieste aperte."
-              padding="md"
-              className="flex-1"
-              contentClassName="space-y-4"
-            >
+          <SectionCard
+            title="Prenotazioni imminenti"
+            subtitle="Occupati dei check-in prossimi e delle richieste aperte."
+            padding="md"
+            className="mb-0"
+            contentClassName="space-y-5"
+          >
+            <Box className="grid gap-3 sm:grid-cols-3">
+              {[{
+                label: 'Check-in oggi',
+                value: bookingHighlights.checkInsToday,
+              },
+              {
+                label: 'Check-out oggi',
+                value: bookingHighlights.checkOutsToday,
+              },
+              {
+                label: 'Arrivi prossime 48h',
+                value: bookingHighlights.arrivalsNext48h,
+              }].map((item) => (
+                <Box
+                  key={item.label}
+                  className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-background)] px-4 py-3"
+                >
+                  <Text className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-[var(--color-neutral-500)]">
+                    {item.label}
+                  </Text>
+                  <Text className="mt-2 text-2xl font-semibold text-[var(--color-neutral-900)]">
+                    {item.value}
+                  </Text>
+                </Box>
+              ))}
+            </Box>
+
+            <Box className="space-y-4">
               {upcomingBookings.map((booking) => {
                 const relatedCustomer: Customer | undefined = customers.find(
                   (customer) => customer.id === booking.customerId
@@ -448,9 +567,9 @@ export default function DashboardPage() {
                   />
                 );
               })}
-            </SectionCard>
-          </HStack>
-        </Box>
+            </Box>
+          </SectionCard>
+        </VStack>
 
         <VStack space="lg" className="w-full max-w-[300px]">
           <StatCard
